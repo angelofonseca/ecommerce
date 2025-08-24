@@ -4,7 +4,7 @@ services:
     image: mysql:8
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: 8vT!pQ2@rXzLw9sA
       MYSQL_DATABASE: ecommerce
     ports:
       - "3306:3306"
@@ -19,7 +19,7 @@ services:
     ports:
       - "3001:3001"
     environment:
-      DATABASE_URL: "mysql://root:root@db:3306/ecommerce"
+      DATABASE_URL: "mysql://root:8vT!pQ2@rXzLw9sA@db:3306/ecommerce"
     volumes:
       - ./backend:/app
     command: ["npm", "run", "dev"]
