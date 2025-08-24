@@ -13,3 +13,84 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model Marca {
+  id       Int       @id @default(autoincrement())
+  nome     String
+  produtos Produto[]
+
+  @@map("marcas")
+}
+
+model Categoria {
+  id       Int       @id @default(autoincrement())
+  nome     String
+  produtos Produto[]
+
+  @@map("categorias")
+}
+
+model Produto {
+  id          Int       @id @default(autoincrement())
+  nome        String
+  foto        String?
+  descricao   String?
+  preco       Float
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  categoriaId Int
+  marcaId     Int
+  categoria   Categoria @relation(fields: [categoriaId], references: [id])
+  marca       Marca     @relation(fields: [marcaId], references: [id])
+  pedidos     Pedido[]
+  estoque     Estoque?
+
+  @@map("produtos")
+}
+
+model Cliente {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  cpf       String   @unique
+  email     String
+  telefone  String?
+  endereco  String?
+  createdAt DateTime @default(now())
+  vendas    Venda[]
+
+  @@map("clientes")
+}
+
+model Venda {
+  id        Int      @id @default(autoincrement())
+  clienteId Int
+  createdAt DateTime @default(now())
+  status    String
+  valor     Float
+  cliente   Cliente  @relation(fields: [clienteId], references: [id])
+  pedidos   Pedido[]
+
+  @@map("vendas")
+}
+
+model Pedido {
+  id         Int     @id @default(autoincrement())
+  vendaId    Int
+  produtoId  Int
+  quantidade Int
+  precoUnit  Float
+  venda      Venda   @relation(fields: [vendaId], references: [id])
+  produto    Produto @relation(fields: [produtoId], references: [id])
+
+  @@map("pedidos")
+}
+
+model Estoque {
+  produtoId  Int      @id
+  quantidade Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  produto    Produto  @relation(fields: [produtoId], references: [id])
+
+  @@map("estoque")
+}
