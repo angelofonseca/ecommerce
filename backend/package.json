@@ -8,7 +8,7 @@
     "dev": "npx nodemon --exec node --loader ts-node/esm src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "docker:up": "docker-compose up -d",
-    "db:migrate": "docker exec -it ecommerce-backend npx prisma migrate dev --name 'popula tabela'",
+    "db:migrate": "docker exec -it ecommerce-backend npx prisma migrate dev --name 'init'",
     "setup": "npm run docker:up && npm run db:migrate"
   },
   "keywords": [],
@@ -25,6 +25,7 @@
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.3.0",
     "nodemon": "^3.1.10",
     "prisma": "^6.15.0",

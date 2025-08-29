@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import Login from '../Interfaces/Login.js';
 import UserService from '../services/UserService.js';
+import Login from '../Interfaces/Login';
 
 export default class UserController {
   constructor(

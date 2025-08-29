@@ -1,11 +1,12 @@
 import bcrypt from 'bcryptjs';
-import auth from '../utils/auth';
+import auth from '../utils/auth.js';
 import utils from '../utils/utils.js';
-import Message from '../Interfaces/Message.js';
-import Token from '../Interfaces/Token.js';
-import Login from '../Interfaces/Login.js';
-import ServiceResponse from '../Interfaces/ServiceResponse.js';
-import UserModel from '../Interfaces/IUser.js';
+
+import Message from '../Interfaces/Message';
+import Token from '../Interfaces/Token';
+import Login from '../Interfaces/Login';
+import ServiceResponse from '../Interfaces/ServiceResponse';
+import UserModel from '../Interfaces/IUser';
 
 const emptyFieldsMessage: Message = { message: 'All fields must be filled' };
 const invalidMessage: Message = { message: 'Invalid email or password' };
@@ -37,8 +38,8 @@ export default class UserService {
       return { status: 401, data: invalidMessage };
     }
 
-    // const token = auth.createToken({ email, id });
+    const token = auth.createToken({ email, id });
 
-    return { status: 200, data: { 'token': 'token' } };
+    return { status: 200, data: { token } };
   }
 }
