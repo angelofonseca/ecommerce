@@ -14,83 +14,71 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Marca {
-  id       Int       @id @default(autoincrement())
-  nome     String
-  produtos Produto[]
-
-  @@map("marcas")
+model Brand {
+  id      Int       @id @default(autoincrement())
+  name    String
+  product Product[]
 }
 
-model Categoria {
-  id       Int       @id @default(autoincrement())
-  nome     String
-  produtos Produto[]
-
-  @@map("categorias")
+model Category {
+  id      Int       @id @default(autoincrement())
+  name    String
+  product Product[]
 }
 
-model Produto {
-  id          Int       @id @default(autoincrement())
-  nome        String
-  foto        String?
-  descricao   String?
-  preco       Float
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  categoriaId Int
-  marcaId     Int
-  categoria   Categoria @relation(fields: [categoriaId], references: [id])
-  marca       Marca     @relation(fields: [marcaId], references: [id])
-  pedidos     Pedido[]
-  estoque     Estoque?
-
-  @@map("produtos")
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  photo       String?
+  description String?
+  price       Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  categoryId  Int
+  brandId     Int
+  category    Category @relation(fields: [categoryId], references: [id])
+  brand       Brand    @relation(fields: [brandId], references: [id])
+  orders      Order[]
+  stock       Stock?
 }
 
-model Cliente {
+model User {
   id        Int      @id @default(autoincrement())
-  nome      String
+  name      String
   cpf       String   @unique
-  email     String
-  telefone  String?
-  endereco  String?
+  email     String   @unique
+  password  String
+  phone     String?
+  address   String?
   createdAt DateTime @default(now())
-  vendas    Venda[]
-
-  @@map("clientes")
+  updatedAt DateTime @updatedAt
+  sale      Sale[]
 }
 
-model Venda {
+model Sale {
   id        Int      @id @default(autoincrement())
-  clienteId Int
+  userId    Int
   createdAt DateTime @default(now())
   status    String
-  valor     Float
-  cliente   Cliente  @relation(fields: [clienteId], references: [id])
-  pedidos   Pedido[]
-
-  @@map("vendas")
+  value     Float
+  user      User     @relation(fields: [userId], references: [id])
+  order     Order[]
 }
 
-model Pedido {
-  id         Int     @id @default(autoincrement())
-  vendaId    Int
-  produtoId  Int
-  quantidade Int
-  precoUnit  Float
-  venda      Venda   @relation(fields: [vendaId], references: [id])
-  produto    Produto @relation(fields: [produtoId], references: [id])
-
-  @@map("pedidos")
+model Order {
+  id        Int     @id @default(autoincrement())
+  saleId    Int
+  productId Int
+  quantity  Int
+  priceUnit Float
+  sale      Sale    @relation(fields: [saleId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
 }
 
-model Estoque {
-  produtoId  Int      @id
-  quantidade Int
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  produto    Produto  @relation(fields: [produtoId], references: [id])
-
-  @@map("estoque")
+model Stock {
+  productId Int      @id
+  quantity  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  product   Product  @relation(fields: [productId], references: [id])
 }

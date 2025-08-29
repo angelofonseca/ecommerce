@@ -6,20 +6,20 @@ const prisma = new PrismaClient()
 const router = Router()
 
 router.get("/", async (req, res) => {
-    const categorias = await prisma.categoria.findMany()
-    res.status(200).json([categorias])
+    const categories = await prisma.category.findMany()
+    res.status(200).json([categories])
 })
 
 router.post("/", async (req, res) => {
-    const { nome } = req.body
+    const { name } = req.body
 
-    if (!nome) res.status(400).json({erro: "Nome inválido"})
+    if (!name) res.status(400).json({erro: "name inválido"})
 
-    const categoria = await prisma.categoria.create({
-        data: { nome }
+    const category = await prisma.category.create({
+        data: { name }
     })
 
-    res.status(201).json(categoria)
+    res.status(201).json(category)
 })
 
 export default router

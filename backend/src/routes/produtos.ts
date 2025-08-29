@@ -6,30 +6,30 @@ const prisma = new PrismaClient()
 const router = Router()
 
 router.get("/", async (req, res) => {
-    const produtos = await prisma.produto.findMany()
-    res.status(200).json([produtos])
+    const products = await prisma.product.findMany()
+    res.status(200).json([products])
 })
 
 router.post("/", async (req, res) => {
-    const { nome, foto, descricao, preco, categoriaId, marcaId } = req.body
+    const { name, photo, description, price, categoryId, brandId } = req.body
 
-    if (!nome || !foto || !descricao || !preco || !categoriaId || !marcaId) {
+    if (!name || !photo || !description || !price || !categoryId || !brandId) {
         res.status(400).json({erro: "Erro: Enviar todos os atributos"})
         return
     }
 
-    const produto = await prisma.produto.create({
+    const product = await prisma.product.create({
         data: {
-            nome,
-            foto,
-            descricao,
-            preco,
-            categoriaId,
-            marcaId
+            name,
+            photo,
+            description,
+            price,
+            categoryId,
+            brandId
         }
     })
 
-    res.status(201).json(produto)
+    res.status(201).json(product)
 })
 
 export default router
