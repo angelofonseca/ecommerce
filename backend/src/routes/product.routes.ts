@@ -14,7 +14,7 @@ router.post("/", async (req, res) => {
     const { name, photo, description, price, categoryId, brandId } = req.body
 
     if (!name || !photo || !description || !price || !categoryId || !brandId) {
-        res.status(400).json({erro: "Erro: Enviar todos os atributos"})
+        res.status(400).json({erro: "An attribute is missing"})
         return
     }
 

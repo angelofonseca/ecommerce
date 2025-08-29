@@ -13,7 +13,7 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
     const { name } = req.body
 
-    if (!name) res.status(400).json({erro: "name inválido"})
+    if (!name) res.status(400).json({erro: "Invalid category"})
 
     const category = await prisma.category.create({
         data: { name }

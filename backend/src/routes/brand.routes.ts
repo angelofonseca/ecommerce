@@ -13,7 +13,7 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
     const { name } = req.body
 
-    if (!name) res.status(400).json({erro: "Invalid name"})
+    if (!name) res.status(400).json({erro: "Invalid brand"})
 
     const brand = await prisma.brand.create({
         data: { name }

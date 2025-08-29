@@ -20,6 +20,7 @@ export default class UserService {
     if (!user.email || !user.password) {
       return { status: 400, data: emptyFieldsMessage };
     }
+    
     const { email, password } = user;
 
     if (!utils.isValidEmail(email) || password.length < 6) {
