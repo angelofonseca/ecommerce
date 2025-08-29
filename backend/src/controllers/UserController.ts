@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import Login from '../Interfaces/Login';
+import Login from '../Interfaces/Login.js';
 import UserService from '../services/UserService.js';
 
 export default class UserController {

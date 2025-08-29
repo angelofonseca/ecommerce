@@ -3,7 +3,6 @@ services:
     image: mysql:8
     restart: always
     environment:
-      JWT_SECRET: 966f7d97ca798d29c533dc7eb605f24cf006e5747182bd046e9eaeedf42e4c33
       MYSQL_ROOT_PASSWORD: 8vT!pQ2@rXzLw9sA
       MYSQL_DATABASE: ecommerce
     ports:
@@ -20,6 +19,7 @@ services:
     ports:
       - "3001:3001"
     environment:
+      JWT_SECRET: 966f7d97ca798d29c533dc7eb605f24cf006e5747182bd046e9eaeedf42e4c33
       DATABASE_URL: "mysql://root:8vT!pQ2@rXzLw9sA@db:3306/ecommerce"
     volumes:
       - ./backend:/app

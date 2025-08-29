@@ -1,6 +1,6 @@
 import { PrismaClient } from "../generated/prisma/client.js"
-import IUser from "../Interfaces/IUser";
-import User from '../Interfaces/User';
+import IUser from "../Interfaces/IUser.js";
+import User from '../Interfaces/User.js';
 
 
 export default class UserModel implements IUser {

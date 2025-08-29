@@ -1,13 +1,16 @@
 import jwt from "jsonwebtoken";
+import Login from "../Interfaces/Login.js";
 
-const createToken = (payload: any) => {
-  const token = jwt.sign(payload, process.env.JWT_SECRET as string, {expiresIn: '7d'})
-  return token
-};
+const secret = process.env.JWT_SECRET as string;
+console.log(typeof jwt.sign);
+// const createToken = (payload: Login) => {
+//   const token = jwt.sign(payload, secret, {expiresIn: '7d'});
+//   return token;
+// };
 
 const verifyToken = (token: string) => {
-  const user = jwt.verify(token, process.env.JWT_SECRET as string)
-  return user
+  const user = jwt.verify(token, secret);
+  return user;
 };
 
-export default { createToken, verifyToken };
+export default { verifyToken };
