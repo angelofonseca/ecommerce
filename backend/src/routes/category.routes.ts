@@ -1,25 +1,25 @@
-import { Router } from "express"
-import { PrismaClient } from "../generated/prisma/client.js"
+import { Router } from "express";
+import { PrismaClient } from "../generated/prisma/client.js";
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
-const router = Router()
+const router = Router();
 
 router.get("/", async (req, res) => {
-    const categories = await prisma.category.findMany()
-    res.status(200).json([categories])
-})
+  const categories = await prisma.category.findMany();
+  res.status(200).json([categories]);
+});
 
 router.post("/", async (req, res) => {
-    const { name } = req.body
+  const { name } = req.body;
 
-    if (!name) res.status(400).json({erro: "Invalid category"})
+  if (!name) res.status(400).json({ erro: "Invalid category" });
 
-    const category = await prisma.category.create({
-        data: { name }
-    })
+  const category = await prisma.category.create({
+    data: { name },
+  });
 
-    res.status(201).json(category)
-})
+  res.status(201).json(category);
+});
 
-export default router
+export default router;

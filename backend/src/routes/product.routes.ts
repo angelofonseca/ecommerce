@@ -1,37 +1,37 @@
-import { Router } from "express"
-import { PrismaClient } from "../generated/prisma/client.js"
-import jwtMiddleware from "../middlewares/auth.middleware.js"
-import isAdmin from "../middlewares/isAdmin.middleware.js"
+import { Router } from "express";
+import { PrismaClient } from "../generated/prisma/client.js";
+import jwtMiddleware from "../middlewares/auth.middleware.js";
+import isAdmin from "../middlewares/isAdmin.middleware.js";
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
-const router = Router()
+const router = Router();
 
 router.get("/", async (req, res) => {
-    const products = await prisma.product.findMany()
-    res.status(200).json([products])
-})
+  const products = await prisma.product.findMany();
+  res.status(200).json([products]);
+});
 
 router.post("/", jwtMiddleware, isAdmin, async (req, res) => {
-    const { name, photo, description, price, categoryId, brandId } = req.body
+  const { name, photo, description, price, categoryId, brandId } = req.body;
 
-    if (!name || !photo || !description || !price || !categoryId || !brandId) {
-        res.status(400).json({erro: "An attribute is missing"})
-        return
-    }
+  if (!name || !photo || !description || !price || !categoryId || !brandId) {
+    res.status(400).json({ erro: "An attribute is missing" });
+    return;
+  }
 
-    const product = await prisma.product.create({
-        data: {
-            name,
-            photo,
-            description,
-            price,
-            categoryId,
-            brandId
-        }
-    })
+  const product = await prisma.product.create({
+    data: {
+      name,
+      photo,
+      description,
+      price,
+      categoryId,
+      brandId,
+    },
+  });
 
-    res.status(201).json(product)
-})
+  res.status(201).json(product);
+});
 
-export default router
+export default router;

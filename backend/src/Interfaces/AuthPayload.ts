@@ -1,5 +1,4 @@
-import type { Role } from "../generated/prisma/index.js";
-
+import { Role } from "../generated/prisma";
 
 export default interface AuthPayload {
   id: number;

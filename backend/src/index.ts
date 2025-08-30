@@ -1,16 +1,15 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import productRoutes from "./routes/product.routes.js"
-import brandRoutes from "./routes/brand.routes.js"
-import categoryRoutes from "./routes/category.routes.js"
-import userRoutes from "./routes/user.routes.js"
+import productRoutes from "./routes/product.routes.js";
+import brandRoutes from "./routes/brand.routes.js";
+import categoryRoutes from "./routes/category.routes.js";
+import userRoutes from "./routes/user.routes.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 dotenv.config();
-
 
 app.use(cors());
 app.use(express.json());

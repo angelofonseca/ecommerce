@@ -10,5 +10,5 @@ const isValidCPF = (cpf: string): boolean => {
 
 export default {
   isValidEmail,
-  isValidCPF
-}
+  isValidCPF,
+};

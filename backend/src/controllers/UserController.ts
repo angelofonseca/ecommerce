@@ -1,12 +1,10 @@
-import { Request, Response } from 'express';
-import UserService from '../services/UserService.js';
-import User from '../Interfaces/User.js';
-import Login from '../Interfaces/Login';
+import { Request, Response } from "express";
+import UserService from "../services/UserService.js";
+import User from "../Interfaces/User.js";
+import Login from "../Interfaces/Login";
 
 export default class UserController {
-  constructor(
-    private service: UserService,
-  ) {}
+  constructor(private service: UserService) {}
 
   async login(req: Request, res: Response) {
     const { data, status } = await this.service.login(req.body as Login);
@@ -14,7 +12,7 @@ export default class UserController {
     res.status(status).json(data);
   }
 
-    async create(req: Request, res: Response) {
+  async create(req: Request, res: Response) {
     const { data, status } = await this.service.create(req.body as User);
 
     res.status(status).json(data);
