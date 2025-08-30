@@ -1,25 +1,19 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import produtosRoutes from "./routes/produtos.js";
-import marcasRoutes from "./routes/marcas.js";
-import categoriasRoutes from "./routes/categorias.js";
-import userRoute from "./routes/userRoutes.js";
-process.on('uncaughtException', (err) => {
-    console.error('Uncaught Exception:', err);
-});
-process.on('unhandledRejection', (reason, promise) => {
-    console.error('Unhandled Rejection:', reason);
-});
+import productRoutes from "./routes/product.routes.js";
+import brandRoutes from "./routes/brand.routes.js";
+import categoryRoutes from "./routes/category.routes.js";
+import userRoutes from "./routes/user.routes.js";
 const app = express();
 const PORT = process.env.PORT || 3000;
 dotenv.config();
 app.use(cors());
 app.use(express.json());
-app.use("/produtos", produtosRoutes);
-app.use("/marcas", marcasRoutes);
-app.use("/categorias", categoriasRoutes);
-app.use("/user", userRoute);
+app.use("/product", productRoutes);
+app.use("/brand", brandRoutes);
+app.use("/category", categoryRoutes);
+app.use("/user", userRoutes);
 app.get("/", (req, res) => {
     res.send("API Working");
 });

@@ -19,12 +19,12 @@ export default class UserService {
         if (!foundUser) {
             return { status: 401, data: invalidMessage };
         }
-        const { id, password: hash } = foundUser;
+        const { id, password: hash, role } = foundUser;
         const userPassword = bcrypt.compareSync(password, hash);
         if (!userPassword) {
             return { status: 401, data: invalidMessage };
         }
-        const token = auth.createToken({ email, id });
-        return { status: 200, data: { 'token': 'token' } };
+        const token = auth.createToken({ email, id, role });
+        return { status: 200, data: { token } };
     }
 }
