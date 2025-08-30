@@ -1,5 +1,7 @@
 import { Router } from "express"
 import { PrismaClient } from "../generated/prisma/client.js"
+import jwtMiddleware from "../middlewares/auth.middleware.js"
+import isAdmin from "../middlewares/isAdmin.middleware.js"
 
 const prisma = new PrismaClient()
 
@@ -10,7 +12,7 @@ router.get("/", async (req, res) => {
     res.status(200).json([products])
 })
 
-router.post("/", async (req, res) => {
+router.post("/", jwtMiddleware, isAdmin, async (req, res) => {
     const { name, photo, description, price, categoryId, brandId } = req.body
 
     if (!name || !photo || !description || !price || !categoryId || !brandId) {
