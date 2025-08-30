@@ -15,6 +15,29 @@ const invalidMessage: Message = { message: "Invalid email or password" };
 export default class UserService {
   constructor(private model: UserModel) {}
 
+  async create(user: User): Promise<ServiceResponse<Message>> {
+    if (
+      !user.email ||
+      !user.password ||
+      !user.name ||
+      !user.cpf ||
+      !user.phone ||
+      !user.address
+    ) {
+      return { status: 400, data: emptyFieldsMessage };
+    }
+
+    if (!utils.isValidEmail(user.email) || user.password.length < 6) {
+      return { status: 401, data: invalidMessage };
+    }
+
+    user.password = bcrypt.hashSync(user.password, 8);
+
+    this.model.create(user);
+
+    return { status: 200, data: { message: "User Created Successfully" } };
+  }
+
   async login(user: Login): Promise<ServiceResponse<Message | Token>> {
     if (!user.email || !user.password) {
       return { status: 400, data: emptyFieldsMessage };
@@ -41,28 +64,5 @@ export default class UserService {
     const token = auth.createToken({ email, id, role });
 
     return { status: 200, data: { token } };
-  }
-
-  async create(user: User): Promise<ServiceResponse<Message>> {
-    if (
-      !user.email ||
-      !user.password ||
-      !user.name ||
-      !user.cpf ||
-      !user.phone ||
-      !user.address
-    ) {
-      return { status: 400, data: emptyFieldsMessage };
-    }
-
-    if (!utils.isValidEmail(user.email) || user.password.length < 6) {
-      return { status: 401, data: invalidMessage };
-    }
-
-    user.password = bcrypt.hashSync(user.password, 8);
-
-    this.model.create(user);
-
-    return { status: 200, data: { message: "User Created Successfully" } };
   }
 }
