@@ -14,8 +14,11 @@ const model = new ProductModel();
 const service = new ProductService(model);
 const controller = new ProductController(service);
 
-router.post("/", (req, res) => controller.create(req, res));
+router.post("/", jwtMiddleware, isAdmin, (req, res) =>
+  controller.create(req, res)
+);
 router.get("/:id", (req, res) => controller.find(req, res));
+router.get("/", (req, res) => controller.findAll(req, res));
 router.patch("/:id", (req, res) => controller.update(req, res));
 router.delete("/:id", (req, res) => controller.delete(req, res));
 

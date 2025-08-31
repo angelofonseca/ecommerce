@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import UserService from "../services/UserService.js";
-import User from "../Interfaces/User.js";
+import { User } from "../generated/prisma/index.js";
 import Login from "../Interfaces/Login";
 
 export default class UserController {

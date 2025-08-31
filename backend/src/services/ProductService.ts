@@ -21,6 +21,11 @@ export default class ProductService {
     return { status: 200, data: product };
   }
 
+  async findAll(): Promise<ServiceResponse<Product[]>> {
+    const products = await this.model.findAll();
+    return { status: 200, data: products };
+  }
+
   async update(
     id: number,
     product: Partial<Product>

@@ -12,6 +12,10 @@ export default class ProductModel implements IProduct {
     return await this.prisma.product.findUnique({ where: { id } });
   }
 
+  async findAll(): Promise<Product[]> {
+    return await this.prisma.product.findMany();
+  }
+
   async update(id: number, data: Partial<Product>): Promise<void> {
     await this.prisma.product.update({ where: { id }, data });
   }

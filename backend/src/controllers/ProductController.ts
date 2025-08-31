@@ -15,6 +15,11 @@ export default class ProductController {
     res.status(status).json(data);
   }
 
+  async findAll(req: Request, res: Response) {
+    const { data, status } = await this.service.findAll();
+    res.status(status).json(data);
+  }
+
   async update(req: Request, res: Response) {
     const { data, status } = await this.service.update(
       Number(req.params.id),

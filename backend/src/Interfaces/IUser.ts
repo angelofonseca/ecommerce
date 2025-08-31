@@ -1,6 +1,6 @@
-import User from "./User.js";
+import { User } from "../generated/prisma";
 
 export default interface IUser {
   find(email: string): Promise<User | null>;
-  create(user: User): void;
+  create(user: User): Promise<void>;
 }
