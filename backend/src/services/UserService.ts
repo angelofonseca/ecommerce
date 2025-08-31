@@ -7,11 +7,14 @@ import ServiceResponse from "../Interfaces/ServiceResponse";
 import { User } from "../generated/prisma";
 import { validateLogin, validateUser } from "../validations/validations.js";
 import CRUDModel from "../models/CRUDModel.js";
+import CRUDService from "./CRUDService.js";
 
 const invalidMessage: Message = { message: "Invalid email or password" };
 
-export default class UserService {
-  constructor(private model: CRUDModel<User>) {}
+export default class UserService extends CRUDService<User> {
+  constructor(protected service: CRUDModel<User>) {
+    super(service);
+  }
 
   async create(user: User): Promise<ServiceResponse<Message>> {
     const validation = validateUser(user);
@@ -19,9 +22,8 @@ export default class UserService {
 
     user.password = bcrypt.hashSync(user.password, 8);
 
-    await this.model.create(user);
-
-    return { status: 200, data: { message: "User Created Successfully" } };
+    const result = await super.create(user);
+    return result;
   }
 
   async login(user: Login): Promise<ServiceResponse<Message | Token>> {
@@ -30,7 +32,7 @@ export default class UserService {
 
     const { email, password } = user;
 
-    const foundUser = await this.model.findByEmail(email);
+    const foundUser = await this.service.findByEmail(email);
     if (!foundUser) return { status: 401, data: invalidMessage };
 
     const { password: hash, role, id } = foundUser;

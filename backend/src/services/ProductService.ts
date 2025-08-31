@@ -1,53 +1,45 @@
 import { Product } from "../generated/prisma";
+import CRUDModel from "../models/CRUDModel.js";
+import CRUDService from "./CRUDService.js";
 import Message from "../Interfaces/Message";
 import ServiceResponse from "../Interfaces/ServiceResponse";
-import CRUDModel from "../models/CRUDModel";
 import { validateProduct } from "../validations/validations.js";
 
-const productNotFound = { message: "Product not found" };
-
-export default class ProductService {
-  constructor(private model: CRUDModel<Product>) {}
+export default class ProductService extends CRUDService<Product> {
+  constructor(protected service: CRUDModel<Product>) {
+    super(service);
+  }
 
   async create(product: Product): Promise<ServiceResponse<Message>> {
     const validation = validateProduct(product);
     if (validation) return validation;
 
-    await this.model.create(product);
+    const result = await super.create(product);
 
-    return { status: 201, data: { message: "Product created successfully" } };
+    return result;
   }
 
   async find(id: number): Promise<ServiceResponse<Message | Product>> {
-    const product = await this.model.find(id);
-    if (!product) return { status: 404, data: productNotFound };
+    const result = await super.find(id);
 
-    return { status: 200, data: product };
+    return result;
   }
 
   async findAll(): Promise<ServiceResponse<Product[]>> {
-    const products = await this.model.findAll();
-    return { status: 200, data: products };
+    const result = await super.findAll();
+    return result;
   }
 
   async update(
     id: number,
     product: Partial<Product>
   ): Promise<ServiceResponse<Message>> {
-    const foundProduct = await this.model.find(id);
-    if (!foundProduct) return { status: 404, data: productNotFound };
-
-    await this.model.update(id, product);
-
-    return { status: 200, data: { message: "Product updated successfully" } };
+    const result = await super.update(id, product);
+    return result;
   }
 
   async delete(id: number): Promise<ServiceResponse<Message>> {
-    const foundProduct = await this.model.find(id);
-    if (!foundProduct) return { status: 404, data: productNotFound };
-
-    await this.model.delete(id);
-
-    return { status: 200, data: { message: "Product deleted successfully" } };
+    const result = await super.delete(id);
+    return result;
   }
 }
