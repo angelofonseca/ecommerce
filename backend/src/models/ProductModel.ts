@@ -2,7 +2,7 @@ import { PrismaClient, Product } from "../generated/prisma/client.js";
 import IProduct from "../Interfaces/IProduct.js";
 
 export default class ProductModel implements IProduct {
-  private prisma = new PrismaClient();
+  protected prisma = new PrismaClient();
 
   async create(product: Product): Promise<void> {
     await this.prisma.product.create({ data: product });

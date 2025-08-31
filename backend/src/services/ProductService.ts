@@ -1,10 +1,11 @@
 import { Product } from "../generated/prisma";
 import Message from "../Interfaces/Message";
 import ServiceResponse from "../Interfaces/ServiceResponse";
+import CRUDModel from "../models/CRUDModel";
 import ProductModel from "../models/ProductModel";
 
 export default class ProductService {
-  constructor(private model: ProductModel) {}
+  constructor(private model: CRUDModel<Product>) {}
 
   async create(product: Product): Promise<ServiceResponse<Message>> {
     await this.model.create(product);
