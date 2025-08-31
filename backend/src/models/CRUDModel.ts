@@ -9,6 +9,10 @@ export default class CRUDModel<T> {
     return await this.model.findUnique({ where: { id } });
   }
 
+  async findByEmail(email: string): Promise<T | null> {
+    return await this.model.find({ where: { email } });
+  }
+
   async create(data: T): Promise<void> {
     await this.model.create({ data });
   }

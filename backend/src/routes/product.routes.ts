@@ -1,12 +1,11 @@
 import { Router } from "express";
-import { PrismaClient, Product } from "../generated/prisma/client.js";
+import { Product } from "../generated/prisma/client.js";
 import jwtMiddleware from "../middlewares/auth.middleware.js";
 import isAdmin from "../middlewares/isAdmin.middleware.js";
 import ProductController from "../controllers/ProductController.js";
 import ProductService from "../services/ProductService.js";
 import CRUDModel from "../models/CRUDModel.js";
-
-const prisma = new PrismaClient();
+import prisma from "../database/prismaClient.js";
 
 const router = Router();
 

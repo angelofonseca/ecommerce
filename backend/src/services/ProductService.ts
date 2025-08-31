@@ -2,21 +2,25 @@ import { Product } from "../generated/prisma";
 import Message from "../Interfaces/Message";
 import ServiceResponse from "../Interfaces/ServiceResponse";
 import CRUDModel from "../models/CRUDModel";
+import { validateProduct } from "../validations/validations.js";
+
+const productNotFound = { message: "Product not found" };
 
 export default class ProductService {
   constructor(private model: CRUDModel<Product>) {}
 
   async create(product: Product): Promise<ServiceResponse<Message>> {
+    const validation = validateProduct(product);
+    if (validation) return validation;
+
     await this.model.create(product);
+
     return { status: 201, data: { message: "Product created successfully" } };
   }
 
   async find(id: number): Promise<ServiceResponse<Message | Product>> {
     const product = await this.model.find(id);
-
-    if (!product) {
-      return { status: 404, data: { message: "Product not found" } };
-    }
+    if (!product) return { status: 404, data: productNotFound };
 
     return { status: 200, data: product };
   }
@@ -31,23 +35,19 @@ export default class ProductService {
     product: Partial<Product>
   ): Promise<ServiceResponse<Message>> {
     const foundProduct = await this.model.find(id);
-
-    if (!foundProduct) {
-      return { status: 404, data: { message: "Product not found" } };
-    }
+    if (!foundProduct) return { status: 404, data: productNotFound };
 
     await this.model.update(id, product);
+
     return { status: 200, data: { message: "Product updated successfully" } };
   }
 
   async delete(id: number): Promise<ServiceResponse<Message>> {
     const foundProduct = await this.model.find(id);
-
-    if (!foundProduct) {
-      return { status: 404, data: { message: "Product not found" } };
-    }
+    if (!foundProduct) return { status: 404, data: productNotFound };
 
     await this.model.delete(id);
+
     return { status: 200, data: { message: "Product deleted successfully" } };
   }
 }

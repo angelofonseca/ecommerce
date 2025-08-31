@@ -8,19 +8,16 @@ export default class UserController {
 
   async login(req: Request, res: Response) {
     const { data, status } = await this.service.login(req.body as Login);
-
     res.status(status).json(data);
   }
 
   async create(req: Request, res: Response) {
     const { data, status } = await this.service.create(req.body as User);
-
     res.status(status).json(data);
   }
 
   static getRole(req: Request, res: Response) {
     const { role } = res.locals;
-
     res.status(200).json({ role });
   }
 }
