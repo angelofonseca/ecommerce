@@ -5,6 +5,26 @@ import UserController from "../controllers/UserController.js";
 import CRUDModel from "../models/CRUDModel.js";
 import { User } from "../generated/prisma/index.js";
 import prisma from "../database/prismaClient.js";
+import CRUDRoute from "./CRUDRoutes.js";
+
+// export default class UserRoutes extends CRUDRoute<User> {
+//   constructor() {
+//     super(prisma.user);
+//     this.controller = new UserController(new UserService(new CRUDModel<User>(prisma.user)));
+//   }
+
+//   getRoutes() {
+//     this.router.post("/login", (req, res) => this.controller.login(req, res));
+//     this.router.post("/register", (req, res) =>
+//       this.controller.create(req, res)
+//     );
+//     this.router.get("/role", authMiddleware, (req, res) =>
+//       UserController.getRole(req, res)
+//     );
+
+//     return this.router;
+//   }
+// }
 
 const router = Router();
 

@@ -1,25 +1,24 @@
 import { Router } from "express";
-import { PrismaClient } from "../generated/prisma/client.js";
-
-const prisma = new PrismaClient();
+import { Brand } from "../generated/prisma/client.js";
+import jwtMiddleware from "../middlewares/auth.middleware.js";
+import isAdmin from "../middlewares/isAdmin.middleware.js";
+import CRUDModel from "../models/CRUDModel.js";
+import prisma from "../database/prismaClient.js";
+import CRUDService from "../services/CRUDService.js";
+import CRUDController from "../controllers/CRUDController.js";
 
 const router = Router();
 
-router.get("/", async (req, res) => {
-  const brands = await prisma.brand.findMany();
-  res.status(200).json([brands]);
-});
+const model = new CRUDModel<Brand>(prisma.brand);
+const service = new CRUDService(model);
+const controller = new CRUDController(service);
 
-router.post("/", async (req, res) => {
-  const { name } = req.body;
-
-  if (!name) res.status(400).json({ erro: "Invalid brand" });
-
-  const brand = await prisma.brand.create({
-    data: { name },
-  });
-
-  res.status(201).json(brand);
-});
+router.post("/", jwtMiddleware, isAdmin, (req, res) =>
+  controller.create(req, res)
+);
+router.get("/:id", (req, res) => controller.find(req, res));
+router.get("/", (req, res) => controller.findAll(req, res));
+router.patch("/:id", (req, res) => controller.update(req, res));
+router.delete("/:id", (req, res) => controller.delete(req, res));
 
 export default router;
