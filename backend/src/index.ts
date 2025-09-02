@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import userRoutes from "./routes/user.routes.js";
-import Route from "./routes/CRUDRoutes.js";
+import UserRoutes from "./routes/user.routes.js";
+import CRUDRoutes from "./routes/crud.routes.js";
 import prisma from "./database/prismaClient.js";
 
 const app = express();
@@ -13,10 +13,10 @@ dotenv.config();
 app.use(cors());
 app.use(express.json());
 
-app.use("/product", new Route(prisma.product).getRoutes());
-app.use("/brand", new Route(prisma.brand).getRoutes());
-app.use("/category", new Route(prisma.category).getRoutes());
-app.use("/user", userRoutes);
+app.use("/product", new CRUDRoutes(prisma.product).getRoutes());
+app.use("/brand", new CRUDRoutes(prisma.brand).getRoutes());
+app.use("/category", new CRUDRoutes(prisma.category).getRoutes());
+app.use("/user", new UserRoutes().getRoutes());
 
 app.get("/", (req, res) => {
   res.send("API Working");

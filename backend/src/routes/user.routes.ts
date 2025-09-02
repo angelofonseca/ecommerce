@@ -5,37 +5,27 @@ import UserController from "../controllers/UserController.js";
 import CRUDModel from "../models/CRUDModel.js";
 import { User } from "../generated/prisma/index.js";
 import prisma from "../database/prismaClient.js";
-import CRUDRoute from "./CRUDRoutes.js";
 
-// export default class UserRoutes extends CRUDRoute<User> {
-//   constructor() {
-//     super(prisma.user);
-//     this.controller = new UserController(new UserService(new CRUDModel<User>(prisma.user)));
-//   }
+export default class UserRoutes {
+  private controller: UserController;
+  private service: UserService;
+  private model: CRUDModel<User>;
+  private router = Router();
+  constructor() {
+    this.model = new CRUDModel(prisma.user);
+    this.service = new UserService(this.model);
+    this.controller = new UserController(this.service);
+  }
 
-//   getRoutes() {
-//     this.router.post("/login", (req, res) => this.controller.login(req, res));
-//     this.router.post("/register", (req, res) =>
-//       this.controller.create(req, res)
-//     );
-//     this.router.get("/role", authMiddleware, (req, res) =>
-//       UserController.getRole(req, res)
-//     );
+  getRoutes() {
+    this.router.post("/login", (req, res) => this.controller.login(req, res));
+    this.router.post("/register", (req, res) =>
+      this.controller.create(req, res)
+    );
+    this.router.get("/role", authMiddleware, (req, res) =>
+      UserController.getRole(req, res)
+    );
 
-//     return this.router;
-//   }
-// }
-
-const router = Router();
-
-const model = new CRUDModel<User>(prisma.user);
-const service = new UserService(model);
-const controller = new UserController(service);
-
-router.post("/login", (req, res) => controller.login(req, res));
-router.post("/register", (req, res) => controller.create(req, res));
-router.get("/role", authMiddleware, (req, res) =>
-  UserController.getRole(req, res)
-);
-
-export default router;
+    return this.router;
+  }
+}

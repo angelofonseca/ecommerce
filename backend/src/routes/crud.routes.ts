@@ -10,9 +10,9 @@ export default class CRUDRoute<T> {
   private model: CRUDModel<T>;
   private service: CRUDService<T>;
   protected controller: CRUDController<T>;
-  constructor(model: any) {
+  constructor(model: T) {
     this.router = Router();
-    this.model = new CRUDModel<any>(model);
+    this.model = new CRUDModel<T>(model);
     this.service = new CRUDService(this.model);
     this.controller = new CRUDController(this.service);
   }
