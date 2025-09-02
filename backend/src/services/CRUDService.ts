@@ -24,7 +24,7 @@ export default class CRUDService<T> {
     return { status: 201, data: { message: "Created successfully" } };
   }
 
-  // Método usando find para validar o id
+  // Método usando find para validar o id (Verificar qual é o método mais eficiente)
 
   async update(
     id: number,
