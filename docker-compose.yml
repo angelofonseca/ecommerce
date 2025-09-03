@@ -23,6 +23,7 @@ services:
       DATABASE_URL: "mysql://root:8vT!pQ2@rXzLw9sA@db:3306/ecommerce"
     volumes:
       - ./backend:/app
+      - /app/node_modules
     command: ["npm", "run", "dev"]
 
   # frontend:
