@@ -9,7 +9,7 @@ export type ProductsListProps = {
 
 export type AddToCartProps = {
   product: Product;
-  classCard: string;
+  classCard?: string;
 };
 
 export type ProductCardProps = {
@@ -31,17 +31,6 @@ export type Product = {
   updatedAt: string;
   categoryId: string;
   brandId: string;
-};
-
-export type Shipping = {
-  store_pick_up: boolean;
-  free_shipping: boolean;
-  logistic_type: null;
-  mode: Mode;
-  tags: any[];
-  benefits: null;
-  promise: null;
-  shipping_score: number;
 };
 
 export enum Mode {

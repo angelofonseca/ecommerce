@@ -20,7 +20,7 @@ export default class CRUDService<T> {
   }
 
   async create(data: T): Promise<ServiceResponse<Message>> {
-    await this.service.create(data);
+    const info = await this.service.create(data);
     return { status: 201, data: { message: "Created successfully" } };
   }
 

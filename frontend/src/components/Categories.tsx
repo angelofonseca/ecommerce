@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { getCategories, getProductsFromCategory } from '../services/api';
-import { Category } from '../Types';
-import { useProductContext } from '../context/ProductContext';
+import React, { useEffect, useState } from "react";
+import { getCategories, getProductsFromCategory } from "../services/api";
+import { Category } from "../Types";
+import { useProductContext } from "../context/ProductContext";
 
 export default function Categories() {
   const { setProducts, setIsSearched, setIsLoading } = useProductContext();
   const [categories, setCategories] = useState<Category[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -31,20 +31,20 @@ export default function Categories() {
       <ul>
         {categories.map((category) => {
           return (
-            <li key={ category.id }>
+            <li key={category.id}>
               <input
                 type="radio"
-                id={ `categoria-${category.id}` }
+                id={`categoria-${category.id}`}
                 name="category"
-                value={ category.name }
-                onClick={ () => handleCategory(category.id) }
+                value={category.name}
+                onClick={() => handleCategory(category.id)}
                 className="hidden"
               />
               <label
-                htmlFor={ `categoria-${category.id}` }
-                className={ `cursor-pointer hover:opacity-30 ${
-                  selectedCategory === category.id ? 'font-bold' : ''
-                }` }
+                htmlFor={`categoria-${category.id}`}
+                className={`cursor-pointer hover:opacity-30 ${
+                  selectedCategory === category.id ? "font-bold" : ""
+                }`}
               >
                 {category.name}
               </label>

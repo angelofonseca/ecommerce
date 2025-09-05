@@ -1,7 +1,8 @@
+/* eslint-disable react-refresh/only-export-components */
 // CartContext.tsx
-import React, { createContext, useContext, useState } from 'react';
-import { Product, ProductContextType } from '../Types';
-import { initialProduct } from '../helpers/initialProduct';
+import React, { createContext, useContext, useState } from "react";
+import { Product, ProductContextType } from "../Types";
+import { initialProduct } from "../helpers/initialProduct";
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
 
@@ -13,7 +14,7 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
 
   const saveProduct = (item: Product) => {
     setProduct(item);
-    localStorage.setItem('product', JSON.stringify(item));
+    localStorage.setItem("product", JSON.stringify(item));
   };
 
   const value = {
@@ -25,19 +26,18 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
     isSearched,
     setIsSearched,
     isLoading,
-    setIsLoading };
+    setIsLoading,
+  };
 
   return (
-    <ProductContext.Provider value={ value }>
-      {children}
-    </ProductContext.Provider>
+    <ProductContext.Provider value={value}>{children}</ProductContext.Provider>
   );
 }
 
 export const useProductContext = () => {
   const context = useContext(ProductContext);
   if (context === undefined) {
-    throw new Error('useCart must be used within a ProductProvider');
+    throw new Error("useCart must be used within a ProductProvider");
   }
   return context;
 };

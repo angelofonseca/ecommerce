@@ -1,24 +1,18 @@
-// import { Router } from "express";
-// import { Product } from "../generated/prisma/client.js";
-// import jwtMiddleware from "../middlewares/auth.middleware.js";
-// import isAdmin from "../middlewares/isAdmin.middleware.js";
-// import ProductController from "../controllers/ProductController.js";
-// import ProductService from "../services/ProductService.js";
-// import CRUDModel from "../models/CRUDModel.js";
-// import prisma from "../database/prismaClient.js";
+import { Router } from "express";
+import prisma from "../database/prismaClient.js";
+import ProductService from "../services/ProductService.js";
+import ProductController from "../controllers/CRUDController.js";
+import { Product } from "../generated/prisma";
 
-// const router = Router();
+import CRUDRoute from "./crud.routes"; // ajuste o caminho se necessário
+import CRUDModel from "../models/CRUDModel.js";
 
-// const model = new CRUDModel<Product>(prisma.product);
-// const service = new ProductService(model);
-// const controller = new ProductController(service);
-
-// router.post("/", jwtMiddleware, isAdmin, (req, res) =>
-//   controller.create(req, res)
-// );
-// router.get("/:id", (req, res) => controller.find(req, res));
-// router.get("/", (req, res) => controller.findAll(req, res));
-// router.patch("/:id", (req, res) => controller.update(req, res));
-// router.delete("/:id", (req, res) => controller.delete(req, res));
-
-// export default router;
+export default class ProductRoute extends CRUDRoute<Product> {
+  constructor() {
+    // Instancia o ProductService com o model do produto
+    const productService = new ProductService(new CRUDModel(prisma.product));
+    super(prisma.product); // inicializa o CRUDRoute
+    // Substitui o controller pelo específico de produto
+    this.controller = new ProductController(productService);
+  }
+}

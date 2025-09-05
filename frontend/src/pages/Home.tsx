@@ -3,8 +3,7 @@ import { useProductContext } from '../context/ProductContext';
 import Categories from '../components/Categories';
 import ProductsList from '../components/ProductsList';
 import Loading from '../components/Loading';
-import { getProductsFromCategory, getProductsFromCategoryAndQuery, getProducts} from '../services/api';
-import getRandomCategoryId from '../helpers/categoryRandomize';
+import {getProducts} from '../services/api';
 
 function Home() {
   const { isLoading, isSearched, setProducts, setIsLoading } = useProductContext();
@@ -29,7 +28,7 @@ function Home() {
             <Categories />
           </div>
         </aside>
-        <main className="flex-1 overflow-y-auto p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <main className="">
           {isLoading ? <Loading /> : <ProductsList />}
         </main>
       </div>

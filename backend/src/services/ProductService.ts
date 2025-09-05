@@ -1,45 +1,31 @@
-// import { Product } from "../generated/prisma";
-// import CRUDModel from "../models/CRUDModel.js";
-// import CRUDService from "./CRUDService.js";
-// import Message from "../Interfaces/Message";
-// import ServiceResponse from "../Interfaces/ServiceResponse";
-// import { validateProduct } from "../validations/validations.js";
+import { Product } from "../generated/prisma";
+import CRUDModel from "../models/CRUDModel.js";
+import CRUDService from "./CRUDService.js";
+import Message from "../Interfaces/Message";
+import ServiceResponse from "../Interfaces/ServiceResponse";
+import { validateProduct } from "../validations/validations.js";
+import prisma from "../database/prismaClient.js";
 
-// export default class ProductService extends CRUDService<Product> {
-//   constructor(protected service: CRUDModel<Product>) {
-//     super(service);
-//   }
+type ProductWithQuantity = Product & { quantity: number };
 
-//   async create(product: Product): Promise<ServiceResponse<Message>> {
-//     const validation = validateProduct(product);
-//     if (validation) return validation;
+export default class ProductService extends CRUDService<Product> {
+    private stockModel = new CRUDModel(prisma.stock);
+    constructor(protected service: CRUDModel<Product>) {
+        super(service);
+    }
 
-//     const result = await super.create(product);
+    async create(product: ProductWithQuantity): Promise<ServiceResponse<Message>> {
+        const validation = validateProduct(product);
+        if (validation) return validation;
 
-//     return result;
-//   }
+        const { quantity, ...productData } = product;
 
-//   async find(id: number): Promise<ServiceResponse<Message | Product>> {
-//     const result = await super.find(id);
+        const result = await super.create(productData);
 
-//     return result;
-//   }
+        const createdProduct = await this.service.findByName(product.name);
 
-//   async findAll(): Promise<ServiceResponse<Product[]>> {
-//     const result = await super.findAll();
-//     return result;
-//   }
+        if (createdProduct) await this.stockModel.update(createdProduct.id, quantity)
 
-//   async update(
-//     id: number,
-//     product: Partial<Product>
-//   ): Promise<ServiceResponse<Message>> {
-//     const result = await super.update(id, product);
-//     return result;
-//   }
-
-//   async delete(id: number): Promise<ServiceResponse<Message>> {
-//     const result = await super.delete(id);
-//     return result;
-//   }
-// }
+        return result;
+    }
+}

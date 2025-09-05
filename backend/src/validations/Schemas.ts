@@ -22,4 +22,5 @@ export const ProductSchema = z.object({
   price: z.number().positive(),
   categoryId: z.number().int().positive(),
   brandId: z.number().int().positive(),
+  quantity: z.number().int()
 });

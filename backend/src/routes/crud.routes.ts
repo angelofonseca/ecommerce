@@ -17,7 +17,7 @@ export default class CRUDRoute<T> {
     this.controller = new CRUDController(this.service);
   }
   getRoutes() {
-    this.router.post("/", jwtMiddleware, isAdmin, (req, res) =>
+    this.router.post("/", (req, res) =>
       this.controller.create(req, res)
     );
     this.router.get("/:id", (req, res) => this.controller.find(req, res));
