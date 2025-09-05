@@ -1,18 +1,15 @@
-import { Router } from "express";
+import { Product } from "../generated/prisma";
 import prisma from "../database/prismaClient.js";
 import ProductService from "../services/ProductService.js";
-import ProductController from "../controllers/CRUDController.js";
-import { Product } from "../generated/prisma";
-
-import CRUDRoute from "./crud.routes"; // ajuste o caminho se necessário
+import CRUDRoutes from "./crud.routes.js";
 import CRUDModel from "../models/CRUDModel.js";
+import CRUDController from "../controllers/CRUDController.js";
 
-export default class ProductRoute extends CRUDRoute<Product> {
+export default class ProductRoute extends CRUDRoutes<Product> {
   constructor() {
-    // Instancia o ProductService com o model do produto
-    const productService = new ProductService(new CRUDModel(prisma.product));
-    super(prisma.product); // inicializa o CRUDRoute
-    // Substitui o controller pelo específico de produto
-    this.controller = new ProductController(productService);
+    const model = new CRUDModel<Product>(prisma.product);
+    const service = new ProductService(model);
+    const controller = new CRUDController(service);
+    super(model, service, controller);
   }
 }

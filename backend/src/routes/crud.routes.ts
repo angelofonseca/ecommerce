@@ -10,16 +10,18 @@ export default class CRUDRoute<T> {
   private model: CRUDModel<T>;
   private service: CRUDService<T>;
   protected controller: CRUDController<T>;
-  constructor(model: T) {
+  constructor(
+    model: CRUDModel<T>,
+    service: CRUDService<T> = new CRUDService<T>(model),
+    controller: CRUDController<T> = new CRUDController<T>(service)
+  ) {
     this.router = Router();
-    this.model = new CRUDModel<T>(model);
-    this.service = new CRUDService(this.model);
-    this.controller = new CRUDController(this.service);
+    this.model = model;
+    this.service = service;
+    this.controller = controller;
   }
   getRoutes() {
-    this.router.post("/", (req, res) =>
-      this.controller.create(req, res)
-    );
+    this.router.post("/", (req, res) => this.controller.create(req, res));
     this.router.get("/:id", (req, res) => this.controller.find(req, res));
     this.router.get("/", (req, res) => this.controller.findAll(req, res));
     this.router.patch("/:id", (req, res) => this.controller.update(req, res));
