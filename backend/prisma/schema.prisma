@@ -5,9 +5,9 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
-  output   = "../src/generated/prisma"
+  output        = "../src/generated/prisma"
 }
 
 datasource db {
@@ -19,12 +19,16 @@ model Brand {
   id      Int       @id @default(autoincrement())
   name    String
   product Product[]
+
+  @@map("brand")
 }
 
 model Category {
   id      Int       @id @default(autoincrement())
   name    String
   product Product[]
+
+  @@map("category")
 }
 
 model Product {
@@ -37,10 +41,13 @@ model Product {
   updatedAt   DateTime @updatedAt
   categoryId  Int
   brandId     Int
+  freeShipping Boolean  @default(false)
   category    Category @relation(fields: [categoryId], references: [id])
   brand       Brand    @relation(fields: [brandId], references: [id])
   orders      Order[]
   stock       Stock?
+
+  @@map("product")
 }
 
 model User {
@@ -55,6 +62,8 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   sale      Sale[]
+
+  @@map("user")
 }
 
 model Sale {
@@ -65,6 +74,8 @@ model Sale {
   value     Float
   user      User     @relation(fields: [userId], references: [id])
   order     Order[]
+
+  @@map("sale")
 }
 
 model Order {
@@ -75,6 +86,8 @@ model Order {
   priceUnit Float
   sale      Sale    @relation(fields: [saleId], references: [id])
   product   Product @relation(fields: [productId], references: [id])
+
+  @@map("order")
 }
 
 model Stock {
@@ -83,6 +96,8 @@ model Stock {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   product   Product  @relation(fields: [productId], references: [id])
+
+  @@map("stock")
 }
 
 enum Role {

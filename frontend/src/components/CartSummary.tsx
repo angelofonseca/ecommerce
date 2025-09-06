@@ -12,11 +12,11 @@ function CartSummary() {
     <div className="w-full max-w-4xl">
       <h1 className="text-2xl font-bold mb-6 text-center" style={ { margin: '20px 0px' } }>Carrinho</h1>
       <div className="w-full max-w-4xl">
-        {Object.values(cart).map(({ title, price, id, thumbnail, quantity, available_quantity: inStock }) => (
+        {Object.values(cart).map(({ name, price, id, photo, quantity, stock: { quantity: inStock } }) => (
           <div key={ id } className="flex items-center mb-4 border-b pb-4">
-            <img src={ thumbnail } alt={ thumbnail } className="w-20 h-20 object-cover mr-4" />
+            <img src={ photo } alt={ photo } className="w-20 h-20 object-cover mr-4" />
             <div className="flex-grow">
-              <p className="font-medium mb-2">{title}</p>
+              <p className="font-medium mb-2">{name}</p>
               <div className="flex justify-between items-center">
                 <p className="font-medium">
                   R$
@@ -26,12 +26,12 @@ function CartSummary() {
                   (un.)
                 </p>
                 <div className="flex items-center gap-2">
-                  <Button variant="secondary" onClick={ () => decrementQuantity(id) }>-</Button>
+                  <Button variant="secondary" onClick={ () => decrementQuantity(String(id)) }>-</Button>
                   <p className="font-medium">{quantity}</p>
                   <Button
                     disabled={ quantity === inStock }
                     variant="secondary"
-                    onClick={ () => incrementQuantity(id) }
+                    onClick={ () => incrementQuantity(String(id)) }
                   >
                     +
                   </Button>
@@ -43,7 +43,7 @@ function CartSummary() {
                 </p>
               </div>
             </div>
-            <Button variant="destructive" onClick={ () => removeProduct(id) } className="ml-4">Remover</Button>
+            <Button variant="destructive" onClick={ () => removeProduct(String(id)) } className="ml-4">Remover</Button>
           </div>
         ))}
       </div>

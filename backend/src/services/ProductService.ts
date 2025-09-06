@@ -28,4 +28,11 @@ export default class ProductService extends CRUDService<Product> {
 
         return result;
     }
+
+    async findAll(): Promise<ServiceResponse<Product[]>> {
+        const products = await this.service.findAll({
+            include: { category: true, brand: true, stock: true }
+        });
+        return { status: 200, data: products}
+    }
 }

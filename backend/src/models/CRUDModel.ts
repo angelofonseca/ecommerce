@@ -27,8 +27,10 @@ export default class CRUDModel<T> {
     await this.model.update({ where: { id }, data });
   }
 
-  async findAll(): Promise<T[]> {
-    return await this.model.findMany();
+  async findAll(p0?: {
+    include: { category: boolean; brand: boolean; stock: boolean };
+  }): Promise<T[]> {
+    return await this.model.findMany({ ...p0 });
   }
 
   async delete(id: number): Promise<void> {

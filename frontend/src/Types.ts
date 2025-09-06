@@ -3,6 +3,11 @@ export type Category = {
   name: string;
 };
 
+export type Brand = {
+  id: number;
+  name: string;
+};
+
 export type ProductsListProps = {
   showAddToCart?: boolean;
 };
@@ -21,6 +26,14 @@ export type CartType = {
   [id: string]: Product;
 };
 
+export type Stock = {
+  productId: number;
+  quantity: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+
 export type Product = {
   id: string;
   name: string;
@@ -29,10 +42,14 @@ export type Product = {
   price: number;
   createdAt: string;
   updatedAt: string;
-  categoryId: string;
-  brandId: string;
+  categoryId: number;
+  brandId: number;
+  quantity: number;
+  freeShipping?: boolean;
+  category?: Category;
+  brand?: Brand;
+  stock: Stock;
 };
-
 export enum Mode {
   NotSpecified = 'not_specified',
 }

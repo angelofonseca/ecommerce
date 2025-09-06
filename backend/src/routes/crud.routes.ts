@@ -7,8 +7,6 @@ import isAdmin from "../middlewares/isAdmin.middleware.js";
 
 export default class CRUDRoute<T> {
   protected router: Router;
-  private model: CRUDModel<T>;
-  private service: CRUDService<T>;
   protected controller: CRUDController<T>;
   constructor(
     model: CRUDModel<T>,
@@ -16,8 +14,6 @@ export default class CRUDRoute<T> {
     controller: CRUDController<T> = new CRUDController<T>(service)
   ) {
     this.router = Router();
-    this.model = model;
-    this.service = service;
     this.controller = controller;
   }
   getRoutes() {

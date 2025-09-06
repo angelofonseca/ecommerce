@@ -18,27 +18,27 @@ export default function CartCheckout() {
       </CardHeader>
       <CardContent>
         <ScrollArea className="h-[600px] w-full rounded-md border p-4">
-          {Object.values(cart).map((product: Product & { quantity: number }) => (
+          {Object.values(cart).map((product: Product ) => (
             <div key={ product.id } className="flex justify-between items-center mb-4">
               <div className="flex items-center">
                 <img
-                  src={ product.thumbnail }
+                  src={ product.photo }
                   alt=""
                   width="48"
                   height="48"
                   className="mr-3 rounded-md object-cover"
                 />
                 <div>
-                  <p className="font-medium">{product.title}</p>
+                  <p className="font-medium">{product.name}</p>
                   <p className="text-sm text-gray-500">
                     Quantidade:
                     {' '}
-                    {product.quantity}
+                    {product.stock?.quantity || 0}
                   </p>
                 </div>
                 <p className="text-sm">
                   R$&nbsp;
-                  {formatPrice((product.price * product.quantity))}
+                  {formatPrice((product.price * (product.stock?.quantity || 0)))}
                 </p>
               </div>
             </div>

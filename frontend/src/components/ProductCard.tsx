@@ -14,11 +14,12 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
+import { MdLocalShipping } from "react-icons/md";
 
 function ProductCard({ product, isDetailedView = true }: ProductCardProps) {
   const [, setComments] = useState<Comment[]>([]);
   const { saveProduct } = useProductContext();
-  const { id, name: title, price, photo } = product;
+  const { id, name: title, price, photo, freeShipping } = product;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -55,6 +56,12 @@ function ProductCard({ product, isDetailedView = true }: ProductCardProps) {
             <CardDescription className="text-lg font-bold">
               R$ {formatPrice(price)}
             </CardDescription>
+            {freeShipping && (
+              <div className="text-white text-xs rounded-full bg-green-700 px-2 py-1 flex items-center">
+                <MdLocalShipping className="mr-1" />
+                <span>Frete Grátis</span>
+              </div>
+            )}
           </div>
           <CardDescription className="text-sm text-gray-500">
             ou 10x de R$ {formatPrice(installmentPrice)}
