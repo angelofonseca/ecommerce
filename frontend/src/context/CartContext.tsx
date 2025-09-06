@@ -1,5 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
-// CartContext.tsx
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { CartContextType, CartType } from "../Types";
 

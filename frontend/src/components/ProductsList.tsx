@@ -3,6 +3,7 @@ import { useProductContext } from "../context/ProductContext";
 
 function ProductsList() {
   const { products, isSearched } = useProductContext();
+
   if (products.length === 0 && isSearched) {
     return <h2>Nenhum produto foi encontrado</h2>;
   }

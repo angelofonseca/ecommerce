@@ -35,8 +35,8 @@ function ProductCard({ product, isDetailedView = true }: ProductCardProps) {
   const installmentPrice = price / 10;
 
   return (
-    <Card id={id} className="flex flex-col h-full">
-      <CardHeader className="relative pt-[75%]">
+    <Card id={id}>
+      <CardHeader>
         <button
           onClick={handleClick}
           className="absolute top-0 left-0 w-full h-full p-0 border-0 bg-transparent cursor-pointer"

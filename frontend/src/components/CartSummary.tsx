@@ -56,7 +56,7 @@ function CartSummary() {
             {`Total: R$ ${formatPrice(totalPrice)}`}
           </p>
           <NavLink to="/checkout">
-            <Button variant="gradient">Comprar</Button>
+            <Button variant="link">Comprar</Button>
           </NavLink>
         </div>
       </div>

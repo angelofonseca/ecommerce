@@ -108,7 +108,7 @@ export default function RatingAndComment({ productId }: { productId: string }) {
         </label>
 
         <Button
-          variant="gradient"
+          variant="link"
           type="submit"
           style={{ display: "block", marginLeft: "45%", marginTop: "16px" }}
         >
