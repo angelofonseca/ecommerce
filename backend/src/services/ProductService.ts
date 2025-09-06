@@ -26,7 +26,7 @@ export default class ProductService extends CRUDService<Product> {
         
         if (createdProduct) {
             const productId = createdProduct.id;
-            await this.stockModel.update({ productId }, { quantity });
+            await this.stockModel.create({ productId, quantity });
         }
 
 
