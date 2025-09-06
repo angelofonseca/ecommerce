@@ -14,7 +14,7 @@ export default class CRUDModel<T> {
   }
 
   async findByName(name: string): Promise<T | null> {
-    return this.model.findUnique({
+    return this.model.findFirst({
       where: { name },
     });
   }
@@ -23,17 +23,17 @@ export default class CRUDModel<T> {
     await this.model.create({ data });
   }
 
-  async update(id: number, data: Partial<T>): Promise<void> {
-    await this.model.update({ where: { id }, data });
+  async update(where: Partial<T>, data: Partial<T>): Promise<void> {
+    await this.model.update({ where, data });
   }
 
-  async findAll(p0?: {
+  async findAll(param?: {
     include: { category: boolean; brand: boolean; stock: boolean };
   }): Promise<T[]> {
-    return await this.model.findMany({ ...p0 });
+    return await this.model.findMany({ ...param });
   }
 
-  async delete(id: number): Promise<void> {
+  async deleteById(id: number): Promise<void> {
     await this.model.delete({ where: { id } });
   }
 }

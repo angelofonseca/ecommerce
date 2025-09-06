@@ -23,8 +23,12 @@ export default class ProductService extends CRUDService<Product> {
         const result = await super.create(productData);
 
         const createdProduct = await this.service.findByName(product.name);
+        
+        if (createdProduct) {
+            const productId = createdProduct.id;
+            await this.stockModel.update({ productId }, { quantity });
+        }
 
-        if (createdProduct) await this.stockModel.update(createdProduct.id, quantity)
 
         return result;
     }

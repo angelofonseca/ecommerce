@@ -31,9 +31,9 @@ export default class CRUDController<T> {
     res.status(status).json(data);
   }
 
-  async delete(req: Request, res: Response) {
+  async deleteById(req: Request, res: Response) {
     const id = Number(req.params.id);
-    const { data, status } = await this.controller.delete(id);
+    const { data, status } = await this.controller.deleteById(id);
     res.status(status).json(data);
   }
 }

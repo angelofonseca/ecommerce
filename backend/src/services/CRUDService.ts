@@ -40,9 +40,9 @@ export default class CRUDService<T> {
 
   // Método usando try/catch para validar o id
 
-  async delete(id: number): Promise<ServiceResponse<Message>> {
+  async deleteById(id: number): Promise<ServiceResponse<Message>> {
     try {
-      await this.service.delete(id);
+      await this.service.deleteById(id);
       return { status: 200, data: { message: "Deleted successfully" } };
     } catch (error) {
       return { status: 404, data: { message: "Not Found" } };

@@ -1,26 +1,26 @@
-import { PrismaClient, Product } from "../generated/prisma/client.js";
-import IProduct from "../Interfaces/IProduct.js";
+// import { PrismaClient, Product } from "../generated/prisma/client.js";
+// import IProduct from "../Interfaces/IProduct.js";
 
-export default class ProductModel implements IProduct {
-  protected prisma = new PrismaClient();
+// export default class ProductModel implements IProduct {
+//   protected prisma = new PrismaClient();
 
-  async create(product: Product): Promise<void> {
-    await this.prisma.product.create({ data: product });
-  }
+//   async create(product: Product): Promise<void> {
+//     await this.prisma.product.create({ data: product });
+//   }
 
-  async find(id: number): Promise<Product | null> {
-    return await this.prisma.product.findUnique({ where: { id } });
-  }
+//   async find(id: number): Promise<Product | null> {
+//     return await this.prisma.product.findUnique({ where: { id } });
+//   }
 
-  async findAll(): Promise<Product[]> {
-    return await this.prisma.product.findMany();
-  }
+//   async findAll(): Promise<Product[]> {
+//     return await this.prisma.product.findMany();
+//   }
 
-  async update(id: number, data: Partial<Product>): Promise<void> {
-    await this.prisma.product.update({ where: { id }, data });
-  }
+//   async update(id: number, data: Partial<Product>): Promise<void> {
+//     await this.prisma.product.update({ where: { id }, data });
+//   }
 
-  async delete(id: number): Promise<void> {
-    await this.prisma.product.delete({ where: { id } });
-  }
-}
+//   async delete(id: number): Promise<void> {
+//     await this.prisma.product.delete({ where: { id } });
+//   }
+// }

@@ -15,7 +15,7 @@ export const LoginSchema = z.object({
 });
 
 export const ProductSchema = z.object({
-  id: z.number().int().positive(),
+  id: z.number().int().positive().optional(),
   name: z.string().min(2),
   photo: z.string().optional().nullable(),
   description: z.string().optional().nullable(),

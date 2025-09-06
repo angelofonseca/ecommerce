@@ -21,7 +21,7 @@ export default class CRUDRoute<T> {
     this.router.get("/:id", (req, res) => this.controller.find(req, res));
     this.router.get("/", (req, res) => this.controller.findAll(req, res));
     this.router.patch("/:id", (req, res) => this.controller.update(req, res));
-    this.router.delete("/:id", (req, res) => this.controller.delete(req, res));
+    this.router.delete("/:id", (req, res) => this.controller.deleteById(req, res));
 
     return this.router;
   }
