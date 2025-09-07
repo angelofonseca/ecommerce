@@ -1,3 +1,5 @@
+import { User } from "@/Types";
+
 export async function getCategories() {
   const URL = "http://localhost:3001/category";
   const response = await fetch(URL);
@@ -30,12 +32,7 @@ export async function getProductsFromCategory(categoryId: string) {
   return data;
 }
 
-export async function getProductById() {
-  // Esta implementação específica não é avaliada, mas pode ajudar você 🙂
-  // Atenção: essa função não deverá ser chamada na tela do carrinho de compras.
-}
-
-export async function registerUser(user) {
+export async function registerUser(user: User) {
   const response = await fetch("http://localhost:3001/user/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },

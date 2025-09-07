@@ -83,3 +83,12 @@ export type CartContextType = {
   totalPrice: number;
   setTotalPrice: React.Dispatch<React.SetStateAction<number>>;
 };
+
+export type User = {
+  name: string;
+  email: string;
+  password: string;
+  cpf: string;
+  phone?: string;
+  address?: string;
+}
