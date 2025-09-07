@@ -3,7 +3,6 @@
 import { NavLink, useNavigate } from "react-router-dom"
 import SearchBar from "./SearchBar"
 import CartIcon from "./CartIcon/CartIcon"
-// import logo from "../../frontend/src/AM.png"
 
 function Header() {
   const navigate = useNavigate()
@@ -14,7 +13,7 @@ function Header() {
           <div className="flex items-center gap-4">
             <img
               className="h-12 w-auto cursor-pointer transition-all duration-300 hover:scale-110 hover:drop-shadow-lg"
-              src={"/placeholder.svg"}
+              src={"/logo.png"}
               alt="logo"
               onClick={() => navigate("/")}
             />

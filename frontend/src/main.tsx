@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom/client"
-import "../app/globals.css"
+import "./index.css"
 import { BrowserRouter } from "react-router-dom"
 import App from "./App"
 import { CartProvider } from "./context/CartContext"
