@@ -1,11 +1,11 @@
-import ReactDOM from 'react-dom/client';
-import './output.css';
-import { BrowserRouter } from 'react-router-dom';
-import App from './App';
-import { CartProvider } from './context/CartContext';
-import { ProductProvider } from './context/ProductContext';
+import ReactDOM from "react-dom/client"
+import "../app/globals.css"
+import { BrowserRouter } from "react-router-dom"
+import App from "./App"
+import { CartProvider } from "./context/CartContext"
+import { ProductProvider } from "./context/ProductContext"
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 root.render(
   <BrowserRouter>
     <ProductProvider>
@@ -14,4 +14,4 @@ root.render(
       </CartProvider>
     </ProductProvider>
   </BrowserRouter>,
-);
+)

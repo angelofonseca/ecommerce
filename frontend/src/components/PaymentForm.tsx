@@ -115,26 +115,26 @@ function PaymentForm() {
             <Label>Método de Pagamento</Label>
             <RadioGroup
               name="payment"
-              onValueChange={(value) =>
+              onValueChange={(value: string) =>
                 setForm((prev) => ({ ...prev, payment: value }))
               }
             >
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="boleto" id="ticket" />
+                <RadioGroupItem value="boleto" />
                 <Label htmlFor="ticket">Boleto Bancário</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="cartao" id="cartao" />
+                <RadioGroupItem value="cartao" />
                 <Label htmlFor="cartao">Cartão de Crédito</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="pix" id="pix" />
+                <RadioGroupItem value="pix" />
                 <Label htmlFor="pix">PIX</Label>
               </div>
             </RadioGroup>
           </div>
 
-          <Button variant="gradient" type="submit" className="w-full">
+          <Button variant="default" type="submit" className="w-full">
             Confirmar
           </Button>
         </form>

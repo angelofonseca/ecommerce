@@ -18,7 +18,7 @@ export default function CartCheckout() {
       </CardHeader>
       <CardContent>
         <ScrollArea className="h-[600px] w-full rounded-md border p-4">
-          {Object.values(cart).map((product: Product ) => (
+          {(Object.values(cart) as Product[]).map((product) => (
             <div key={ product.id } className="flex justify-between items-center mb-4">
               <div className="flex items-center">
                 <img
