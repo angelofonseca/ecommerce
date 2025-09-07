@@ -17,7 +17,7 @@ function SearchBar() {
     event.preventDefault()
     if (window.location.pathname !== "/") navigate("/")
     setIsLoading(true)
-    const { results } = await getProductsFromQuery(query)
+    const results = await getProductsFromQuery(query)
     setIsLoading(false)
     setProducts(results)
     setIsSearched(true)

@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, Request, Response } from "express";
 import CRUDModel from "../models/CRUDModel.js";
 import CRUDService from "../services/CRUDService.js";
 import CRUDController from "../controllers/CRUDController.js";
@@ -17,11 +17,11 @@ export default class CRUDRoute<T> {
     this.controller = controller;
   }
   getRoutes() {
-    this.router.post("/", (req, res) => this.controller.create(req, res));
-    this.router.get("/:id", (req, res) => this.controller.find(req, res));
-    this.router.get("/", (req, res) => this.controller.findAll(req, res));
-    this.router.patch("/:id", (req, res) => this.controller.update(req, res));
-    this.router.delete("/:id", (req, res) => this.controller.deleteById(req, res));
+    this.router.post("/", (req: Request, res: Response) => this.controller.create(req, res));
+    this.router.get("/:id", (req: Request, res: Response) => this.controller.find(req, res));
+    this.router.get("/", (req: Request, res: Response) => this.controller.findAll(req, res));
+    this.router.patch("/:id", (req: Request, res: Response) => this.controller.update(req, res));
+    this.router.delete("/:id", (req: Request, res: Response) => this.controller.deleteById(req, res));
 
     return this.router;
   }

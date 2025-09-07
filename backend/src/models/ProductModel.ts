@@ -1,26 +1,26 @@
-// import { PrismaClient, Product } from "../generated/prisma/client.js";
-// import IProduct from "../Interfaces/IProduct.js";
+import { Product } from "../generated/prisma";
+import CRUDModel from "./CRUDModel.js";
 
-// export default class ProductModel implements IProduct {
-//   protected prisma = new PrismaClient();
+export default class ProductModel extends CRUDModel<Product> {
+  constructor(model: any) {
+    super(model);
+  }
 
-//   async create(product: Product): Promise<void> {
-//     await this.prisma.product.create({ data: product });
-//   }
+  async findAllByCategoryId(param?: {
+    include: { category: boolean; brand: boolean; stock: boolean };
+    where: { categoryId: number };
+  }): Promise<Product[]> {
+    return await this.model.findMany({ ...param });
+  }
 
-//   async find(id: number): Promise<Product | null> {
-//     return await this.prisma.product.findUnique({ where: { id } });
-//   }
-
-//   async findAll(): Promise<Product[]> {
-//     return await this.prisma.product.findMany();
-//   }
-
-//   async update(id: number, data: Partial<Product>): Promise<void> {
-//     await this.prisma.product.update({ where: { id }, data });
-//   }
-
-//   async delete(id: number): Promise<void> {
-//     await this.prisma.product.delete({ where: { id } });
-//   }
-// }
+async findAllByName(name: string): Promise<Product[]> {
+  return this.model.findMany({
+    include: { category: true, brand: true, stock: true },
+    where: {
+      name: {
+        contains: name,
+      }
+    },
+  });
+}
+}

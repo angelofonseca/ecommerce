@@ -5,12 +5,13 @@ import Message from "../Interfaces/Message";
 import ServiceResponse from "../Interfaces/ServiceResponse";
 import { validateProduct } from "../validations/validations.js";
 import prisma from "../database/prismaClient.js";
+import ProductModel from "../models/ProductModel";
 
 type ProductWithQuantity = Product & { quantity: number };
 
 export default class ProductService extends CRUDService<Product> {
   private stockModel = new CRUDModel(prisma.stock);
-  constructor(protected service: CRUDModel<Product>) {
+  constructor(protected service: ProductModel) {
     super(service);
   }
 
@@ -42,4 +43,18 @@ export default class ProductService extends CRUDService<Product> {
     });
     return { status: 200, data: products };
   }
+
+  async findAllByCategoryId(categoryId: number): Promise<ServiceResponse<Product[]>> {
+    const products = await this.service.findAllByCategoryId({
+      include: { category: true, brand: true, stock: true },
+      where: { categoryId },
+    });
+    return { status: 200, data: products };
+  }
+
+  async findAllByName(name: string): Promise<ServiceResponse<Product[]>> {
+    const result = await this.service.findAllByName(name);
+    return { status: 200, data: result };
+  }
+
 }

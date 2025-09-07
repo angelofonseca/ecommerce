@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { getCategories, getProductsFromCategory } from "../services/api"
 import type { Category } from "../Types"
 import { useProductContext } from "../context/ProductContext"
+import { Label } from "@radix-ui/react-label"
 
 function Categories() {
   const { setProducts, setIsSearched, setIsLoading } = useProductContext()
@@ -22,7 +23,7 @@ function Categories() {
   const handleCategory = async (categoryId: string) => {
     setIsLoading(true)
     setSelectedCategory(categoryId)
-    const { results } = await getProductsFromCategory(categoryId)
+    const results = await getProductsFromCategory(categoryId)
     setProducts(results)
     setIsSearched(true)
     setIsLoading(false)
@@ -43,7 +44,7 @@ function Categories() {
           }}
           className="sr-only"
         />
-        <label
+        <Label
           htmlFor="categoria-all"
           className={`block w-full p-4 rounded-xl cursor-pointer transition-all duration-300 text-sm font-medium border-2 ${
             selectedCategory === ""
@@ -57,7 +58,7 @@ function Categories() {
             ></div>
             <span>Todos os Produtos</span>
           </div>
-        </label>
+        </Label>
       </div>
 
       {categories.map((category) => {
@@ -72,12 +73,12 @@ function Categories() {
               onClick={() => handleCategory(category.id)}
               className="sr-only"
             />
-            <label
+            <Label
               htmlFor={`categoria-${category.id}`}
               className={`block w-full p-4 rounded-xl cursor-pointer transition-all duration-300 text-sm font-medium border-2 ${
                 isSelected
                   ? "bg-gradient-to-r from-primary to-accent text-primary-foreground border-primary shadow-lg transform scale-105"
-                  : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground border-transparent hover:border-border hover:shadow-md"
+                  : "hover:bg-secondary/50 hover:text-foreground hover:border-border hover:shadow-md"
               }`}
             >
               <div className="flex items-center gap-3">
@@ -97,7 +98,7 @@ function Categories() {
                   </div>
                 )}
               </div>
-            </label>
+            </Label>
           </div>
         )
       })}
