@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Comment, ProductCardProps } from "../Types";
+import type { Comment, ProductCardProps } from "../Types";
 import RatingAndComment from "./RatingAndComment";
 import { formatPrice } from "../helpers/formatPrice";
 import { MdLocalShipping } from "react-icons/md";

@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { ScrollArea } from './ui/scroll-area';
-import { Product } from '../Types';
+import type { Product } from '../Types';
 import { useCartContext } from '../context/CartContext';
 import { formatPrice } from '../helpers/formatPrice';
 

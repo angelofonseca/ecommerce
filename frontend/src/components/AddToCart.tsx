@@ -1,4 +1,4 @@
-import { AddToCartProps } from '../Types';
+import type { AddToCartProps } from '../Types';
 import { Button } from './ui/button';
 import useCart from '../hooks/useCart';
 import { useCartContext } from '@/context/CartContext';

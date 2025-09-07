@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getCategories, getProductsFromCategory } from "../services/api";
-import { Category } from "../Types";
+import type { Category } from "../Types";
 import { useProductContext } from "../context/ProductContext";
 
 export default function Categories() {

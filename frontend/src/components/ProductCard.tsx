@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Comment, ProductCardProps } from "../Types";
+import type { Comment, ProductCardProps } from "../Types";
 import RatingAndComment from "./RatingAndComment";
 import { formatPrice } from "../helpers/formatPrice";
 import AddToCart from "./AddToCart";

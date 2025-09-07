@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 // CartContext.tsx
 import React, { createContext, useContext, useState } from "react";
-import { Product, ProductContextType } from "../Types";
+import type { Product, ProductContextType } from "../Types";
 import { initialProduct } from "../helpers/initialProduct";
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);

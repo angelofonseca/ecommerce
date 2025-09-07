@@ -1,4 +1,4 @@
-import { CartType, Product } from '../Types';
+import type { CartType, Product } from '../Types';
 import { useCartContext } from '../context/CartContext';
 
 function useCart() {

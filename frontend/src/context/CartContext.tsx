@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { CartContextType, CartType } from "../Types";
+import type { CartContextType, CartType } from "../Types";
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
@@ -42,6 +42,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useCartContext = () => {
   const context = useContext(CartContext);
   if (context === undefined) {
