@@ -8,12 +8,7 @@ function ProductsList() {
     return <h2>Nenhum produto foi encontrado</h2>;
   }
   return products.map((product) => (
-    <div
-      key={product.id}
-      className="card hover:bg-gray-100 hover:shadow-lg transition-all duration-300"
-    >
-      <ProductCard product={product} isDetailedView={false} />
-    </div>
+    <ProductCard key={product.id} product={product} isDetailedView={false} />
   ));
 }
 
