@@ -15,12 +15,13 @@ function SearchBar() {
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (window.location.pathname !== "/") navigate("/")
     setIsLoading(true)
     const results = await getProductsFromQuery(query)
+    setQuery("")
     setIsLoading(false)
     setProducts(results)
     setIsSearched(true)
+    navigate("/?search=" + query)
   }
 
   return (

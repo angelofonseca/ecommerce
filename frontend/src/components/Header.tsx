@@ -15,7 +15,9 @@ function Header() {
               className="h-12 w-auto cursor-pointer transition-all duration-300 hover:scale-110 hover:drop-shadow-lg"
               src={"/logo.png"}
               alt="logo"
-              onClick={() => navigate("/")}
+              onClick={() => {
+                navigate("/")
+              }}
             />
             <div className="hidden md:block">
               <h1 className="text-xl font-bold">SneakerStore</h1>
@@ -42,10 +44,10 @@ function Header() {
                 Categorias
               </NavLink>
               <NavLink
-                to="/offers"
+                to="/login"
                 className="text-sm font-medium hover:text-accent transition-colors duration-300 hover:scale-105"
               >
-                Ofertas
+                Login
               </NavLink>
             </nav>
 

@@ -1,5 +1,3 @@
-"use client"
-
 import { useEffect } from "react"
 import { useProductContext } from "../context/ProductContext"
 import Categories from "../components/Categories"
