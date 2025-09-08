@@ -6,14 +6,14 @@ import Login from "../Interfaces/Login";
 import ServiceResponse from "../Interfaces/ServiceResponse";
 import { User } from "../generated/prisma";
 import { validateLogin, validateUser } from "../validations/validations.js";
-import CRUDModel from "../models/CRUDModel.js";
+import UserModel from "../models/UserModel.js";
 import CRUDService from "./CRUDService.js";
 
 const invalidMessage: Message = { message: "Invalid email or password" };
 
 export default class UserService extends CRUDService<User> {
-  constructor(protected service: CRUDModel<User>) {
-    super(service);
+  constructor(protected model: UserModel) {
+    super(model);
   }
 
   async create(user: User): Promise<ServiceResponse<Message>> {

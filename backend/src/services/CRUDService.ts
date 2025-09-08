@@ -1,11 +1,10 @@
 import Message from "../Interfaces/Message";
 import ServiceResponse from "../Interfaces/ServiceResponse";
+import CRUDModel from "../models/CRUDModel";
 
 export default class CRUDService<T> {
-  protected service: any;
 
-  constructor(service: any) {
-    this.service = service;
+  constructor(protected service: CRUDModel<T>) {
   }
 
   async find(id: number): Promise<ServiceResponse<Message | T>> {
@@ -26,14 +25,14 @@ export default class CRUDService<T> {
 
   // Método usando find para validar o id (Verificar qual é o método mais eficiente)
 
-  async update(
+  async updateById(
     id: number,
     data: Partial<T>
   ): Promise<ServiceResponse<Message>> {
     const result = await this.service.find(id);
     if (!result) return { status: 404, data: { message: "Not found" } };
 
-    await this.service.update(id, data);
+    await this.service.updateById(id, data);
 
     return { status: 200, data: { message: "Updated successfully" } };
   }

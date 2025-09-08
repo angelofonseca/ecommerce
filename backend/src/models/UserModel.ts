@@ -1,15 +1,27 @@
-// import { PrismaClient } from "../generated/prisma/client.js";
-// import { User } from "../generated/prisma/client.js";
-// import IUser from "../Interfaces/IUser";
+import { PrismaClient } from "@prisma/client";
+import { User } from "../generated/prisma";
+import CRUDModel from "./CRUDModel.js";
 
-// export default class UserModel implements IUser {
-//   private prisma = new PrismaClient();
+export default class UserModel extends CRUDModel<User> {
+    constructor(protected model: PrismaClient['user']) {
+        super(model);
+    }
 
-//   async create(user: User): Promise<void> {
-//     await this.prisma.user.create({ data: user });
-//   }
+    async findAllByCategoryId(param?: {
+        include: { category: boolean; brand: boolean; stock: boolean };
+        where: { categoryId: number };
+    }): Promise<User[]> {
+        return await this.model.findMany({ ...param });
+    }
 
-//   async find(email: string): Promise<User | null> {
-//     return await this.prisma.user.findUnique({ where: { email } });
-//   }
-// }
+    async findAllByName(name: string): Promise<User[]> {
+        return this.model.findMany({
+            include: { category: true, brand: true, stock: true },
+            where: {
+                name: {
+                    contains: name,
+                }
+            },
+        });
+    }
+}

@@ -2,9 +2,12 @@ import { Request, Response } from "express";
 import UserService from "../services/UserService.js";
 import { User } from "../generated/prisma/index.js";
 import Login from "../Interfaces/Login";
+import CRUDController from "./CRUDController.js";
 
-export default class UserController {
-  constructor(private service: UserService) {}
+export default class UserController extends CRUDController<User> {
+  constructor(protected service: UserService) {
+    super(service);
+  }
 
   async login(req: Request, res: Response) {
     const { data, status } = await this.service.login(req.body as Login);

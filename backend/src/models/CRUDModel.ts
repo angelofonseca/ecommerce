@@ -1,9 +1,8 @@
-export default class CRUDModel<T> {
-  protected model: any;
+import { PrismaClient } from "@prisma/client";
 
-  constructor(model: any) {
-    this.model = model;
-  }
+export default class CRUDModel<T> {
+
+  constructor(protected model: PrismaClient[keyof PrismaClient]) { }
 
   async find(id: number): Promise<T | null> {
     return await this.model.findUnique({ where: { id } });
@@ -23,8 +22,8 @@ export default class CRUDModel<T> {
     await this.model.create({ data });
   }
 
-  async update(where: Partial<T>, data: Partial<T>): Promise<void> {
-    await this.model.update({ where, data });
+  async updateById(id: number, data: Partial<T>): Promise<void> {
+    await this.model.update({ where: { id }, data });
   }
 
   async findAll(param?: {
