@@ -1,5 +1,5 @@
 import authMiddleware from "../middlewares/auth.middleware.js";
-import { Product } from "../generated/prisma/index.js";
+import { Product } from "@prisma/client";
 import prisma from "../database/prismaClient.js";
 import CRUDRoutes from "./crud.routes.js";
 import { Request, Response } from "express";

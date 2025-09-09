@@ -1,4 +1,4 @@
-import { Product, User } from "../generated/prisma";
+import { Product, User } from "@prisma/client";
 import Login from "../Interfaces/Login";
 import { LoginSchema, ProductSchema, UserSchema } from "./Schemas.js";
 

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Product } from "../generated/prisma";
+import { Product } from "@prisma/client";
 import CRUDController from "./CRUDController.js";
 import ProductService from "../services/ProductService";
 

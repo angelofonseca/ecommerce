@@ -1,6 +1,6 @@
 import CRUDRoutes from "./crud.routes.js";
 import prisma from "../database/prismaClient.js";
-import { Brand } from "../generated/prisma";
+import { Brand } from "@prisma/client";
 import CRUDModel from "../models/CRUDModel.js";
 import CRUDService from "../services/CRUDService.js";
 import CRUDController from "../controllers/CRUDController.js";

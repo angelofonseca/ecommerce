@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { Product } from "../generated/prisma";
+import { Product } from "@prisma/client";
 import CRUDModel from "./CRUDModel.js";
 
 export default class ProductModel extends CRUDModel<Product> {

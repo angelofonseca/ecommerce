@@ -1,15 +1,12 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
+import { PrismaDelegate } from "../Interfaces/PrismaDelegate";
 
 export default class CRUDModel<T> {
 
-  constructor(protected model: PrismaClient[keyof PrismaClient]) { }
+  constructor(protected model: PrismaDelegate<T>) { }
 
   async find(id: number): Promise<T | null> {
     return await this.model.findUnique({ where: { id } });
-  }
-
-  async findByEmail(email: string): Promise<T | null> {
-    return await this.model.findUnique({ where: { email } });
   }
 
   async findByName(name: string): Promise<T | null> {
@@ -18,12 +15,12 @@ export default class CRUDModel<T> {
     });
   }
 
-  async create(data: T): Promise<void> {
-    await this.model.create({ data });
+  async create(data: T): Promise<T> {
+    return await this.model.create({ data });
   }
 
-  async updateById(id: number, data: Partial<T>): Promise<void> {
-    await this.model.update({ where: { id }, data });
+  async updateById(id: number, data: Partial<T>): Promise<T> {
+    return await this.model.update({ where: { id }, data });
   }
 
   async findAll(param?: {
@@ -32,7 +29,7 @@ export default class CRUDModel<T> {
     return await this.model.findMany({ ...param });
   }
 
-  async deleteById(id: number): Promise<void> {
-    await this.model.delete({ where: { id } });
+  async deleteById(id: number): Promise<T> {
+    return await this.model.delete({ where: { id } });
   }
 }

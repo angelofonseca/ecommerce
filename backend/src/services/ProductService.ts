@@ -1,4 +1,4 @@
-import { Product } from "../generated/prisma";
+import { Product } from "@prisma/client";
 import CRUDService from "./CRUDService.js";
 import Message from "../Interfaces/Message";
 import ServiceResponse from "../Interfaces/ServiceResponse";

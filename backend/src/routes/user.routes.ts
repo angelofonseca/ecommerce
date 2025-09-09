@@ -1,6 +1,6 @@
 import authMiddleware from "../middlewares/auth.middleware.js";
 import UserController from "../controllers/UserController.js";
-import { User } from "../generated/prisma/index.js";
+import { User } from "@prisma/client";
 import prisma from "../database/prismaClient.js";
 import CRUDRoutes from "./crud.routes.js";
 import UserModel from "../models/UserModel.js";

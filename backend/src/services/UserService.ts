@@ -4,7 +4,7 @@ import Message from "../Interfaces/Message";
 import Token from "../Interfaces/Token";
 import Login from "../Interfaces/Login";
 import ServiceResponse from "../Interfaces/ServiceResponse";
-import { User } from "../generated/prisma";
+import { User } from "@prisma/client";
 import { validateLogin, validateUser } from "../validations/validations.js";
 import UserModel from "../models/UserModel.js";
 import CRUDService from "./CRUDService.js";
@@ -32,7 +32,7 @@ export default class UserService extends CRUDService<User> {
 
     const { email, password } = user;
 
-    const foundUser = await this.service.findByEmail(email);
+    const foundUser = await this.model.findByEmail(email);
     if (!foundUser) return { status: 401, data: invalidMessage };
 
     const { password: hash, role, id } = foundUser;
