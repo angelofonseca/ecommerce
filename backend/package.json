@@ -10,7 +10,7 @@
     "docker:up": "docker-compose up -d",
     "db:generate": "docker exec -it ecommerce-backend npx prisma generate",
     "db:migrate": "docker exec -it ecommerce-backend npx prisma migrate dev --name 'init'",
-    "setup": "npm run docker:up && npm run db:generate && npm run db:migrate"
+    "setup": "npm run db:generate && npm run db:migrate"
   },
   "keywords": [],
   "author": "",

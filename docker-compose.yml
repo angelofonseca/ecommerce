@@ -24,18 +24,19 @@ services:
     volumes:
       - ./backend:/app
       - /app/node_modules
-    command: ["npm", "run", "dev"]
+    command: sh -c "npx prisma generate && ./wait-for-it.sh -t 30 db:3306 -- npx prisma migrate dev --name init && npm run dev"
 
-  # frontend:
-  #   build: ./frontend
-  #   restart: always
-  #   depends_on:
-  #     - backend
-  #   ports:
-  #     - "3000:3000"
-  #   volumes:
-  #     - ./frontend:/app
-  #   command: ["npm", "run", "dev"]
+  frontend:
+    build: ./frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: ["npm", "run", "dev"]
 
 volumes:
   db_data:
