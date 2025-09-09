@@ -6,5 +6,6 @@ RUN npm install
 COPY . .
 RUN apk add --no-cache bash
 RUN chmod +x wait-for-it.sh
+RUN npm install -g typescript
 ENV PORT=3001
 EXPOSE 3001
