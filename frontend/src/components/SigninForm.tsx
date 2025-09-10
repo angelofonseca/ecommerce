@@ -19,6 +19,7 @@ export function SigninForm({
     phone: "",
     address: "",
   });
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
@@ -29,13 +30,14 @@ export function SigninForm({
     event.preventDefault();
     const { confirmPassword, ...rest } = form;
     if (confirmPassword !== form.password) {
-      alert("Passwords do not match!");
+      alert("Senhas não coincidem");
       return;
     }
     const data = await registerUser(rest);
-    console.log(data)
+    if (data) {
+      setError("Erro ao cadastrar usuário. CPF ou email já cadastrado.");
+    }
   };
-
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -133,12 +135,10 @@ export function SigninForm({
                 />
               </div>
               <div className="flex flex-col gap-3">
-                <Button
-                  type="submit"
-                  className="w-full"
-                >
+                <Button type="submit" className="w-full">
                   Criar Conta
                 </Button>
+                {error && <div style={{ color: "red" }}>{error}</div>}
               </div>
             </div>
           </form>
