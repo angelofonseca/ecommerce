@@ -4,9 +4,15 @@ export const UserSchema = z.object({
   id: z.number().int().positive().optional(),
   name: z.string().min(2).max(50),
   email: z.email(),
-  cpf: z.string().min(11).max(11),
   password: z.string().min(6).max(30),
   role: z.enum(["USER", "ADMIN"]).default("USER"),
+  cpf: z.string().refine((cpf) => {
+    // Remove tudo que não é número
+    const digits = cpf.replace(/\D/g, "");
+    return digits.length === 11;
+  }, {
+    message: "CPF deve conter 11 dígitos válidos",
+  })
 });
 
 export const LoginSchema = z.object({
