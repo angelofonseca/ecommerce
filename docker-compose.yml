@@ -24,7 +24,6 @@ services:
     volumes:
       - ./backend:/app
       - /app/node_modules
-    command: ["npm", "run", "dev"]
   frontend:
     build: ./frontend
     restart: always

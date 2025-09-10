@@ -1,9 +1,9 @@
 FROM node:20-alpine
 WORKDIR /app
-COPY package*.json tsconfig.json prisma wait-for-it.sh ./
+COPY package*.json prisma ./
 RUN npm install
+RUN npx prisma generate
 COPY . .
-RUN apk add --no-cache bash
-RUN chmod +x wait-for-it.sh
 ENV PORT=3001
 EXPOSE 3001
+CMD [ "npm", "run", "dev" ]
