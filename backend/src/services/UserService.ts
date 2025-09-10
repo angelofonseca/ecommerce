@@ -21,9 +21,11 @@ export default class UserService extends CRUDService<User> {
     if (validation) return validation;
 
     user.password = bcrypt.hashSync(user.password, 8);
-
-    const result = await super.create(user);
-    return result;
+    try {
+      return await super.create(user);
+    } catch (error) {
+      return { status: 400, data: { message: "Email ou CPF já cadastrado" } };
+    }
   }
 
   async login(user: Login): Promise<ServiceResponse<Message | Token>> {

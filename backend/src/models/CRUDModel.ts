@@ -16,11 +16,19 @@ export default class CRUDModel<T> {
   }
 
   async create(data: T): Promise<T> {
-    return await this.model.create({ data });
+    try {
+      return await this.model.create({ data });
+    } catch (error) {
+      throw error;
+    }
   }
 
   async updateById(id: number, data: Partial<T>): Promise<T> {
-    return await this.model.update({ where: { id }, data });
+    try {
+      return await this.model.update({ where: { id }, data });
+    } catch (error) {
+      throw error;
+    }
   }
 
   async findAll(param?: {
