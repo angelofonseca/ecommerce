@@ -3,12 +3,15 @@ import SearchBar from "./SearchBar";
 import CartIcon from "./CartIcon/CartIcon";
 
 import { useEffect, useState } from "react";
+import { useProductContext } from "@/context/ProductContext";
+import { getProducts } from "@/services/api";
 
 function Header() {
   const navigate = useNavigate();
   const [user, setUser] = useState<{ name: string; email: string } | null>(
     null
   );
+  const { setProducts, setIsSearched, setIsLoading } = useProductContext();
 
   useEffect(() => {
     const userData = localStorage.getItem("user");
@@ -24,6 +27,15 @@ function Header() {
     navigate("/");
   };
 
+  const handleHomeClick = async () => {
+    setIsLoading(true);
+    const results = await getProducts();
+    setIsSearched(false);
+    setIsLoading(false);
+    setProducts(results);
+    navigate("/");
+  };
+
   return (
     <header className="bg-gradient-to-r from-primary via-primary to-accent text-primary-foreground shadow-2xl sticky top-0 z-50 border-b border-primary/20 backdrop-blur-lg">
       <nav className="container mx-auto px-4 py-6">
@@ -33,9 +45,7 @@ function Header() {
               className="h-12 w-auto cursor-pointer transition-all duration-300 hover:scale-110 hover:drop-shadow-lg"
               src={"/logo.png"}
               alt="logo"
-              onClick={() => {
-                navigate("/");
-              }}
+              onClick={handleHomeClick}
             />
           </div>
 

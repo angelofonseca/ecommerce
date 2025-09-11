@@ -23,17 +23,21 @@ function DetailedProduct({ product, isDetailedView = true }: ProductCardProps) {
             src={photo || "/placeholder.svg"}
             alt={name}
             onError={(e) => {
-              e.currentTarget.src = "/diverse-products-still-life.png"
+              e.currentTarget.src = "/diverse-products-still-life.png";
             }}
           />
         </div>
       </CardHeader>
 
       <CardContent className="p-6 space-y-4">
-        <h3 className="text-xl font-semibold line-clamp-2 text-foreground">{name}</h3>
+        <h3 className="text-xl font-semibold line-clamp-2 text-foreground">
+          {name}
+        </h3>
 
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-foreground">R$ {formatPrice(price)}</h2>
+          <h2 className="text-2xl font-bold text-foreground">
+            R$ {formatPrice(price)}
+          </h2>
 
           {freeShipping && (
             <div className="flex items-center gap-2 text-green-600 text-sm font-medium bg-green-50 px-3 py-1 rounded-full">
@@ -44,7 +48,9 @@ function DetailedProduct({ product, isDetailedView = true }: ProductCardProps) {
         </div>
 
         {description && (
-          <p className="text-foreground text-sm leading-relaxed">{description}</p>
+          <p className="text-foreground text-sm leading-relaxed">
+            {description}
+          </p>
         )}
 
         {isDetailedView && (
@@ -54,7 +60,7 @@ function DetailedProduct({ product, isDetailedView = true }: ProductCardProps) {
         )}
       </CardContent>
     </Card>
-  )
+  );
 }
 
 export default DetailedProduct;

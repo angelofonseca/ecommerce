@@ -1,34 +1,39 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { getProductsFromQuery } from "../services/api"
-import { Button } from "./ui/button"
-import { Input } from "./ui/input"
-import { useProductContext } from "../context/ProductContext"
+import type React from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { getProductsFromQuery } from "../services/api";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { useProductContext } from "../context/ProductContext";
 
 function SearchBar() {
-  const { setProducts, setIsSearched, setIsLoading } = useProductContext()
-  const [query, setQuery] = useState("")
-  const navigate = useNavigate()
+  const { setProducts, setIsSearched, setIsLoading } = useProductContext();
+  const [query, setQuery] = useState("");
+  const navigate = useNavigate();
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    setIsLoading(true)
-    const results = await getProductsFromQuery(query)
-    setQuery("")
-    setIsLoading(false)
-    setProducts(results)
-    setIsSearched(true)
-    navigate("/?search=" + query)
-  }
+    event.preventDefault();
+    setIsLoading(true);
+    const results = await getProductsFromQuery(query);
+    setQuery("");
+    setIsLoading(false);
+    setProducts(results);
+    setIsSearched(true);
+    navigate("/?search=" + query);
+  };
 
   return (
     <form onSubmit={onSubmit} className="w-full">
       <div className="relative flex items-center bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 overflow-hidden transition-all duration-300 hover:shadow-xl focus-within:shadow-xl focus-within:ring-2 focus-within:ring-accent/50">
         <div className="absolute left-4 z-10">
-          <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg
+            className="w-5 h-5 text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -53,7 +58,12 @@ function SearchBar() {
           className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground font-semibold px-8 py-4 rounded-xl m-1 transition-all duration-300 hover:scale-105 active:scale-95 shadow-md hover:shadow-lg"
         >
           <div className="flex items-center gap-2">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -66,7 +76,7 @@ function SearchBar() {
         </Button>
       </div>
     </form>
-  )
+  );
 }
 
-export default SearchBar
+export default SearchBar;

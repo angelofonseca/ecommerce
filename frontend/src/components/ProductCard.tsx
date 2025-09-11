@@ -1,34 +1,41 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
-import type { Comment, ProductCardProps } from "../Types"
-import RatingAndComment from "./RatingAndComment"
-import { formatPrice } from "../helpers/formatPrice"
-import AddToCart from "./AddToCart"
-import { useProductContext } from "../context/ProductContext"
-import { createURLSlug } from "../helpers/createURLSlug"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card"
-import { MdLocalShipping, MdFavorite, MdFavoriteBorder } from "react-icons/md"
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import type { Comment, ProductCardProps } from "../Types";
+import RatingAndComment from "./RatingAndComment";
+import { formatPrice } from "../helpers/formatPrice";
+import AddToCart from "./AddToCart";
+import { useProductContext } from "../context/ProductContext";
+import { createURLSlug } from "../helpers/createURLSlug";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+import { MdLocalShipping, MdFavorite, MdFavoriteBorder } from "react-icons/md";
 
 function ProductCard({ product, isDetailedView = true }: ProductCardProps) {
-  const [, setComments] = useState<Comment[]>([])
-  const [isFavorite, setIsFavorite] = useState(false)
-  const { saveProduct } = useProductContext()
-  const { id, name: title, price, photo, freeShipping } = product
-  const navigate = useNavigate()
+  const [, setComments] = useState<Comment[]>([]);
+  // const [isFavorite, setIsFavorite] = useState(false);
+  const { saveProduct } = useProductContext();
+  const { id, name: title, price, photo, freeShipping } = product;
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const savedReviews = JSON.parse(localStorage.getItem(id) || "[]")
-    setComments(savedReviews)
-  }, [id])
+    const savedReviews = JSON.parse(localStorage.getItem(id) || "[]");
+    setComments(savedReviews);
+  }, [id]);
 
   const handleClick = () => {
-    saveProduct(product)
-    navigate(`/product/${createURLSlug(title)}`)
-  }
+    saveProduct(product);
+    navigate(`/product/${createURLSlug(title)}`);
+  };
 
-  const installmentPrice = price / 10
+  const installmentPrice = price / 10;
 
   return (
     <Card className="group h-full flex flex-col overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 border-border bg-card/50 backdrop-blur-sm animate-fade-in">
@@ -44,7 +51,7 @@ function ProductCard({ product, isDetailedView = true }: ProductCardProps) {
             src={photo || "/placeholder.svg"}
             alt={title}
             onError={(e) => {
-              e.currentTarget.src = "/diverse-products-still-life.png"
+              e.currentTarget.src = "/diverse-products-still-life.png";
             }}
           />
         </button>
@@ -55,11 +62,11 @@ function ProductCard({ product, isDetailedView = true }: ProductCardProps) {
             <span>Frete Grátis</span>
           </div>
         )}
-
+        {/* 
         <button
           onClick={(e) => {
-            e.stopPropagation()
-            setIsFavorite(!isFavorite)
+            e.stopPropagation();
+            setIsFavorite(!isFavorite);
           }}
           className="absolute top-3 left-3 p-2 rounded-full bg-white/90 backdrop-blur-sm hover:bg-white transition-all duration-300 hover:scale-110 shadow-lg"
         >
@@ -68,7 +75,7 @@ function ProductCard({ product, isDetailedView = true }: ProductCardProps) {
           ) : (
             <MdFavoriteBorder className="w-4 h-4 text-gray-600" />
           )}
-        </button>
+        </button> */}
       </CardHeader>
 
       <CardContent className="p-6 flex-1 flex flex-col gap-4">
@@ -80,10 +87,16 @@ function ProductCard({ product, isDetailedView = true }: ProductCardProps) {
 
         <div className="mt-auto space-y-3">
           <div className="flex items-baseline gap-2">
-            <CardDescription className="text-3xl font-bold text-primary">R$ {formatPrice(price)}</CardDescription>
+            <CardDescription className="text-3xl font-bold text-primary">
+              R$ {formatPrice(price)}
+            </CardDescription>
           </div>
           <CardDescription className="text-sm text-muted-foreground bg-secondary/50 rounded-lg px-3 py-2">
-            ou <span className="font-semibold text-accent">10x de R$ {formatPrice(installmentPrice)}</span> sem juros
+            ou{" "}
+            <span className="font-semibold text-accent">
+              10x de R$ {formatPrice(installmentPrice)}
+            </span>{" "}
+            sem juros
           </CardDescription>
         </div>
       </CardContent>
@@ -93,7 +106,7 @@ function ProductCard({ product, isDetailedView = true }: ProductCardProps) {
         {isDetailedView && <RatingAndComment productId={id} />}
       </CardFooter>
     </Card>
-  )
+  );
 }
 
-export default ProductCard
+export default ProductCard;

@@ -1,33 +1,42 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { getCategories, getProductsFromCategory } from "../services/api"
-import type { Category } from "../Types"
-import { useProductContext } from "../context/ProductContext"
-import { Label } from "@radix-ui/react-label"
+import { useEffect, useState } from "react";
+import { getCategories, getProductsFromCategory } from "../services/api";
+import type { Category } from "../Types";
+import { useProductContext } from "../context/ProductContext";
+import { Label } from "@radix-ui/react-label";
+import { useNavigate } from "react-router-dom";
+import { createURLSlug } from "@/helpers/createURLSlug";
 
 function Categories() {
-  const { setProducts, setIsSearched, setIsLoading } = useProductContext()
-  const [categories, setCategories] = useState<Category[]>([])
-  const [selectedCategory, setSelectedCategory] = useState<string>("")
+  const { setProducts, setIsSearched, setIsLoading } = useProductContext();
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const result = await getCategories()
-      setCategories(result)
-    }
+      const result = await getCategories();
+      setCategories(result);
+    };
+    console.log("render Categories");
+    fetchCategories();
 
-    fetchCategories()
-  }, [])
+    return () => {
+      setSelectedCategory("");
+    };
+  }, []);
 
   const handleCategory = async (categoryId: string) => {
-    setIsLoading(true)
-    setSelectedCategory(categoryId)
-    const results = await getProductsFromCategory(categoryId)
-    setProducts(results)
-    setIsSearched(true)
-    setIsLoading(false)
-  }
+    setIsLoading(true);
+    setSelectedCategory(categoryId);
+    const results = await getProductsFromCategory(categoryId);
+    setProducts(results);
+    const slug = createURLSlug(results[0].category.name);
+    navigate("/?search=" + slug);
+    setIsSearched(true);
+    setIsLoading(false);
+  };
 
   return (
     <div className="space-y-3">
@@ -38,9 +47,8 @@ function Categories() {
           name="category"
           value="all"
           onClick={() => {
-            setSelectedCategory("")
-            setIsSearched(false)
-            window.location.reload()
+            setSelectedCategory("");
+            setIsSearched(false);
           }}
           className="sr-only"
         />
@@ -49,12 +57,16 @@ function Categories() {
           className={`block w-full p-4 rounded-xl cursor-pointer transition-all duration-300 text-sm font-medium border-2 ${
             selectedCategory === ""
               ? "bg-gradient-to-r from-primary to-accent text-primary-foreground border-primary shadow-lg transform scale-105"
-              : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground border-transparent hover:border-border hover:shadow-md"
+              : "hover:bg-secondary/50 hover:text-foreground hover:border-border hover:shadow-md"
           }`}
         >
           <div className="flex items-center gap-3">
             <div
-              className={`w-2 h-2 rounded-full ${selectedCategory === "" ? "bg-primary-foreground" : "bg-muted-foreground"}`}
+              className={`w-2 h-2 rounded-full ${
+                selectedCategory === ""
+                  ? "bg-primary-foreground"
+                  : "bg-muted-foreground"
+              }`}
             ></div>
             <span>Todos os Produtos</span>
           </div>
@@ -62,7 +74,7 @@ function Categories() {
       </div>
 
       {categories.map((category) => {
-        const isSelected = selectedCategory === category.id
+        const isSelected = selectedCategory === category.id;
         return (
           <div key={category.id}>
             <input
@@ -83,12 +95,18 @@ function Categories() {
             >
               <div className="flex items-center gap-3">
                 <div
-                  className={`w-2 h-2 rounded-full ${isSelected ? "bg-primary-foreground" : "bg-muted-foreground"}`}
+                  className={`w-2 h-2 rounded-full ${
+                    isSelected ? "bg-primary-foreground" : "bg-muted-foreground"
+                  }`}
                 ></div>
                 <span className="capitalize">{category.name}</span>
                 {isSelected && (
                   <div className="ml-auto">
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <svg
+                      className="w-4 h-4"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
                       <path
                         fillRule="evenodd"
                         d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
@@ -100,10 +118,10 @@ function Categories() {
               </div>
             </Label>
           </div>
-        )
+        );
       })}
     </div>
-  )
+  );
 }
 
-export default Categories
+export default Categories;

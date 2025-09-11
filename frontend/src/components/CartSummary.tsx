@@ -1,8 +1,9 @@
-import { NavLink } from 'react-router-dom';
-import { useCartContext } from '../context/CartContext';
-import useCart from '../hooks/useCart';
-import { Button } from './ui/button';
-import { formatPrice } from '../helpers/formatPrice';
+import { NavLink } from "react-router-dom";
+import { useCartContext } from "../context/CartContext";
+import useCart from "../hooks/useCart";
+import { Button } from "./ui/button";
+import { formatPrice } from "../helpers/formatPrice";
+import { FaTrash } from "react-icons/fa6";
 
 function CartSummary() {
   const { cart, totalPrice } = useCartContext();
@@ -10,51 +11,70 @@ function CartSummary() {
 
   return (
     <div className="w-full max-w-4xl">
-      <h1 className="text-2xl font-bold mb-6 text-center" style={ { margin: '20px 0px' } }>Carrinho</h1>
+      <h1
+        className="text-2xl font-bold mb-6 text-center"
+        style={{ margin: "20px 0px" }}
+      >
+        Carrinho
+      </h1>
       <div className="w-full max-w-4xl">
-        {Object.values(cart).map(({ name, price, id, photo, quantity, stock: { quantity: inStock } }) => (
-          <div key={ id } className="flex items-center mb-4 border-b pb-4">
-            <img src={ photo } alt={ photo } className="w-20 h-20 object-cover mr-4" />
-            <div className="flex-grow">
-              <p className="font-medium mb-2">{name}</p>
-              <div className="flex justify-between items-center">
-                <p className="font-medium">
-                  R$
-                  {' '}
-                  {formatPrice(price)}
-                  {' '}
-                  (un.)
-                </p>
-                <div className="flex items-center gap-2">
-                  <Button variant="secondary" onClick={ () => decrementQuantity(String(id)) }>-</Button>
-                  <p className="font-medium">{quantity}</p>
-                  <Button
-                    disabled={ quantity === inStock }
-                    variant="secondary"
-                    onClick={ () => incrementQuantity(String(id)) }
-                  >
-                    +
-                  </Button>
+        {Object.values(cart).map(
+          ({
+            name,
+            price,
+            id,
+            photo,
+            quantity,
+            stock: { quantity: inStock },
+          }) => (
+            <div key={id} className="flex items-center mb-4 border-b pb-4">
+              <img
+                src={photo}
+                alt={photo}
+                className="w-20 h-20 object-cover mr-4"
+              />
+              <div className="flex-grow">
+                <p className="font-medium">{name}</p>
+                <div className="flex justify-between items-center">
+                  <p className="font-medium">R$ {formatPrice(price)} (un.)</p>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="secondary"
+                      onClick={() => decrementQuantity(String(id))}
+                    >
+                      -
+                    </Button>
+                    <p className="font-medium">{quantity}</p>
+                    <Button
+                      disabled={quantity === inStock}
+                      variant="secondary"
+                      onClick={() => incrementQuantity(String(id))}
+                    >
+                      +
+                    </Button>
+                  </div>
+                  <p className="font-medium">
+                    R$ {formatPrice(price * quantity)}
+                  </p>
                 </div>
-                <p className="font-medium">
-                  R$
-                  {' '}
-                  {formatPrice(price * quantity)}
-                </p>
               </div>
+              <Button
+                variant="destructive"
+                onClick={() => removeProduct(String(id))}
+                className="ml-4"
+              >
+                <FaTrash />
+              </Button>
             </div>
-            <Button variant="destructive" onClick={ () => removeProduct(String(id)) } className="ml-4">Remover</Button>
-          </div>
-        ))}
+          )
+        )}
       </div>
       <div className="flex justify-between mt-6">
         <NavLink to="/">
           <Button variant="secondary">Conferir Mais Produtos</Button>
         </NavLink>
         <div className="flex items-center gap-4">
-          <p className="font-bold">
-            {`Total: R$ ${formatPrice(totalPrice)}`}
-          </p>
+          <p className="font-bold">{`Total: R$ ${formatPrice(totalPrice)}`}</p>
           <NavLink to="/checkout">
             <Button variant="link">Comprar</Button>
           </NavLink>
