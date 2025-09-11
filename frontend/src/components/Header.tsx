@@ -1,11 +1,29 @@
-"use client"
+import { NavLink, useNavigate } from "react-router-dom";
+import SearchBar from "./SearchBar";
+import CartIcon from "./CartIcon/CartIcon";
 
-import { NavLink, useNavigate } from "react-router-dom"
-import SearchBar from "./SearchBar"
-import CartIcon from "./CartIcon/CartIcon"
+import { useEffect, useState } from "react";
 
 function Header() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [user, setUser] = useState<{ name: string; email: string } | null>(
+    null
+  );
+
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      setUser(JSON.parse(userData));
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setUser(null);
+    navigate("/");
+  };
+
   return (
     <header className="bg-gradient-to-r from-primary via-primary to-accent text-primary-foreground shadow-2xl sticky top-0 z-50 border-b border-primary/20 backdrop-blur-lg">
       <nav className="container mx-auto px-4 py-6">
@@ -16,13 +34,9 @@ function Header() {
               src={"/logo.png"}
               alt="logo"
               onClick={() => {
-                navigate("/")
+                navigate("/");
               }}
             />
-            <div className="hidden md:block">
-              <h1 className="text-xl font-bold">SneakerStore</h1>
-              <p className="text-xs text-primary-foreground/80">Sua paixão por calçados</p>
-            </div>
           </div>
 
           <div className="flex-1 max-w-3xl mx-8">
@@ -43,12 +57,26 @@ function Header() {
               >
                 Categorias
               </NavLink>
-              <NavLink
-                to="/login"
-                className="text-sm font-medium hover:text-accent transition-colors duration-300 hover:scale-105"
-              >
-                Login
-              </NavLink>
+              {user ? (
+                <>
+                  <span className="text-sm font-medium mr-2">
+                    Bem-vindo, {user.name}!
+                  </span>
+                  <button
+                    onClick={handleLogout}
+                    className="text-sm font-medium hover:text-accent transition-colors duration-300 hover:scale-105"
+                  >
+                    Sair
+                  </button>
+                </>
+              ) : (
+                <NavLink
+                  to="/login"
+                  className="text-sm font-medium hover:text-accent transition-colors duration-300 hover:scale-105"
+                >
+                  Login
+                </NavLink>
+              )}
             </nav>
 
             <div className="w-px h-6 bg-primary-foreground/20 hidden md:block"></div>
@@ -65,7 +93,7 @@ function Header() {
         </div>
       </nav>
     </header>
-  )
+  );
 }
 
-export default Header
+export default Header;

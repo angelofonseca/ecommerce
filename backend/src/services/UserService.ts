@@ -37,13 +37,13 @@ export default class UserService extends CRUDService<User> {
     const foundUser = await this.model.findByEmail(email);
     if (!foundUser) return { status: 401, data: invalidMessage };
 
-    const { password: hash, role, id } = foundUser;
+    const { password: hash, role, id, name } = foundUser;
 
     const userPassword = bcrypt.compareSync(password, hash);
     if (!userPassword) return { status: 401, data: invalidMessage };
 
     const token = auth.createToken({ email, id, role });
 
-    return { status: 200, data: { token } };
+    return { status: 200, data: { token, user: { name, email } } };
   }
 }
