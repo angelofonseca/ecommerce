@@ -1,7 +1,9 @@
 import { User } from "@/Types";
 
+const BACKEND_BASEURL = import.meta.env.VITE_REACT_APP_BACKEND_BASEURL;
+
 export async function getCategories() {
-  const URL = "http://localhost:3001/category";
+  const URL = `${BACKEND_BASEURL}/category`;
   const response = await fetch(URL);
   const data = await response.json();
 
@@ -9,7 +11,7 @@ export async function getCategories() {
 }
 
 export async function getProducts() {
-  const URL = "http://localhost:3001/product";
+  const URL = `${BACKEND_BASEURL}/product`;
   const response = await fetch(URL);
   const data = await response.json();
 
@@ -17,7 +19,7 @@ export async function getProducts() {
 }
 
 export async function getProductsFromQuery(query: string) {
-  const URL = `http://localhost:3001/product?name=${query}`;
+  const URL = `${BACKEND_BASEURL}/product?name=${query}`;
   const response = await fetch(URL);
   const data = await response.json();
 
@@ -25,7 +27,7 @@ export async function getProductsFromQuery(query: string) {
 }
 
 export async function getProductsFromCategory(categoryId: string) {
-  const URL = `http://localhost:3001/product/category/${categoryId}`; // category é um id
+  const URL = `${BACKEND_BASEURL}/product/category/${categoryId}`; // category é um id
   const response = await fetch(URL);
   const data = await response.json();
 
@@ -33,7 +35,7 @@ export async function getProductsFromCategory(categoryId: string) {
 }
 
 export async function registerUser(user: User) {
-  const response = await fetch("http://localhost:3001/user/register", {
+  const response = await fetch(`${BACKEND_BASEURL}/user/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(user),
@@ -48,7 +50,7 @@ export async function registerUser(user: User) {
 }
 
 export async function login(user: { email: string; password: string }) {
-  const response = await fetch("http://localhost:3001/user/login", {
+  const response = await fetch(`${BACKEND_BASEURL}/user/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(user),
