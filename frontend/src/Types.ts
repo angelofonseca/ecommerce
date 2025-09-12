@@ -92,3 +92,11 @@ export type User = {
   phone?: string;
   address?: string;
 }
+
+export type Login = {
+  token: string;
+  user: {
+    name: string;
+    email: string;
+  };
+}

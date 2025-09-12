@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { login } from "@/services/api";
+import { useAuthContext } from "@/context/AuthContext";
 
 export function LoginForm({
   className,
@@ -17,6 +18,7 @@ export function LoginForm({
     email: "",
     password: "",
   });
+  const { setUserFromStorage } = useAuthContext();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
@@ -26,14 +28,12 @@ export function LoginForm({
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = await login(form);
-    console.log(data);
-    if (data.token) {
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      navigate("/");
-    } else {
+    if (!data.token) {
       setError("Erro ao fazer login. CPF ou email já cadastrado.");
+      return;
     }
+      setUserFromStorage(data);
+      navigate("/");
   };
 
   return (

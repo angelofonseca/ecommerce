@@ -19,7 +19,6 @@ function Categories() {
       const result = await getCategories();
       setCategories(result);
     };
-    console.log("render Categories");
     fetchCategories();
 
     return () => {
