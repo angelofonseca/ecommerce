@@ -21,6 +21,7 @@ services:
     environment:
       JWT_SECRET: 966f7d97ca798d29c533dc7eb605f24cf006e5747182bd046e9eaeedf42e4c33
       DATABASE_URL: "mysql://root:8vT!pQ2@rXzLw9sA@db:3306/ecommerce"
+      VITE_REACT_APP_BACKEND_BASEURL: "http://localhost:3001"
     volumes:
       - ./backend:/app
       - /app/node_modules

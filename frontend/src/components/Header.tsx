@@ -2,30 +2,18 @@ import { NavLink, useNavigate } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import CartIcon from "./CartIcon/CartIcon";
 
-import { useEffect, useState } from "react";
 import { useProductContext } from "@/context/ProductContext";
 import { getProducts } from "@/services/api";
+import { useAuthContext } from "@/context/AuthContext";
 
 function Header() {
   const navigate = useNavigate();
-  const [user, setUser] = useState<{ name: string; email: string } | null>(
-    null
-  );
+  // const [user, setUser] = useState<{ name: string; email: string } | null>(
+  //   null
+  // );
   const { setProducts, setIsSearched, setIsLoading } = useProductContext();
+  const { user, handleLogout } = useAuthContext();
 
-  useEffect(() => {
-    const userData = localStorage.getItem("user");
-    if (userData) {
-      setUser(JSON.parse(userData));
-    }
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    setUser(null);
-    navigate("/");
-  };
 
   const handleHomeClick = async () => {
     setIsLoading(true);
@@ -70,7 +58,7 @@ function Header() {
               {user ? (
                 <>
                   <span className="text-sm font-medium mr-2">
-                    Bem-vindo, {user.name}!
+                    Bem-vindo, {user.user.name}!
                   </span>
                   <button
                     onClick={handleLogout}
