@@ -2,21 +2,18 @@ import { NavLink, useNavigate } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import CartIcon from "./CartIcon/CartIcon";
 
-import { useProductContext } from "@/context/ProductContext";
-import { getProducts } from "@/services/api";
 import { useAuthContext } from "@/context/AuthContext";
+import { useHomeContext } from "@/context/HomeContext";
 
 function Header() {
   const navigate = useNavigate();
-  const { setProducts, setIsSearched, setIsLoading } = useProductContext();
+  // ...existing code...
   const { login, handleLogout } = useAuthContext();
+  const { setRefreshHome, setSelectedCategory } = useHomeContext();
 
   const handleHomeClick = async () => {
-    setIsLoading(true);
-    const results = await getProducts();
-    setIsSearched(false);
-    setIsLoading(false);
-    setProducts(results);
+    setRefreshHome(true); // Dispara atualização na Home
+    setSelectedCategory(null); // Limpa categoria selecionada
     navigate("/");
   };
 
@@ -39,18 +36,23 @@ function Header() {
 
           <div className="flex items-center gap-4">
             <nav className="hidden md:flex items-center gap-6">
-              <NavLink
-                to="/"
-                className="text-sm font-medium hover:text-accent transition-colors duration-300 hover:scale-105"
+              <button
+                onClick={handleHomeClick}
+                className="text-sm font-medium hover:text-accent transition-colors duration-300 hover:scale-105 bg-transparent border-none cursor-pointer"
               >
                 Início
-              </NavLink>
-              <NavLink
-                to="/categories"
-                className="text-sm font-medium hover:text-accent transition-colors duration-300 hover:scale-105"
+              </button>
+              {/* Exemplo de botão de categoria */}
+              <button
+                onClick={() => {
+                  setSelectedCategory("Tênis");
+                  setRefreshHome(true);
+                  navigate("/");
+                }}
+                className="text-sm font-medium hover:text-accent transition-colors duration-300 hover:scale-105 bg-transparent border-none cursor-pointer"
               >
-                Categorias
-              </NavLink>
+                Tênis
+              </button>
               {login ? (
                 <>
                   <span className="text-sm font-medium mr-2">
