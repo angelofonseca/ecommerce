@@ -25,8 +25,8 @@ function Home() {
       setIsLoading(false);
       setRefreshHome(false); // Reseta flag após atualização
     };
-    console.log("refreshHome");
-    if (refreshHome) {
+    // Executa na primeira renderização ou quando refreshHome for true
+    if (refreshHome || selectedCategory === null) {
       fetchProducts();
     }
   }, [
