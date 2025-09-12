@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import { getCategories, getProductsFromCategory } from "../services/api";
 import type { Category } from "../Types";
@@ -19,7 +17,6 @@ function Categories() {
       const result = await getCategories();
       setCategories(result);
     };
-    console.log("render Categories");
     fetchCategories();
 
     return () => {
