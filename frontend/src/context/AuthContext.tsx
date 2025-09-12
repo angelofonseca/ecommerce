@@ -1,58 +1,53 @@
-import { Login } from "@/Types";
+import { AuthContextType, Login } from "@/Types";
 import React, { useState, useEffect, createContext, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-type AuthContextType = {
-  user: Login | null;
-  setUser: React.Dispatch<React.SetStateAction<Login | null>>;
-  getUser: () => Login | null;
-  setUserFromStorage: (data: Login) => void;
-  handleLogout: () => void;
-};
-
 // Create the context with a default value
 export const AuthContext = createContext<AuthContextType>({
-  user: null,
-  setUser: () => {},
+  login: null,
+  setLogin: () => {},
   getUser: () => null,
-  setUserFromStorage: () => {},
+  setLocalLogin: () => {},
   handleLogout: () => {},
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<Login | null>(null);
+  const [login, setLogin] = useState<Login | null>(null);
   const navigate = useNavigate();
 
   function getUser() {
-    const getUserData = localStorage.getItem("user");
+    const getUserData = localStorage.getItem("login");
     return getUserData ? (JSON.parse(getUserData) as Login) : null;
   }
 
-  function setUserFromStorage(data: Login) {
+  function setLocalLogin(data: Login) {
     if (!data) return;
-    localStorage.setItem("token", data.token);
-    localStorage.setItem("user", JSON.stringify(data.user));
-    setUser(data);
+    localStorage.setItem("login", JSON.stringify(data));
+    setLogin(data);
   }
 
   function handleLogout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    setUser(null);
+    localStorage.removeItem("login");
+    setLogin(null);
     navigate("/");
   }
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const userData = localStorage.getItem("user");
-    if (token && userData) {
-      setUser({ token, user: JSON.parse(userData) });
+    const loginData = localStorage.getItem("login");
+    if (loginData) {
+      setLogin(JSON.parse(loginData) as Login);
     }
   }, []);
 
   return (
     <AuthContext.Provider
-      value={{ user, setUser, getUser, setUserFromStorage, handleLogout }}
+      value={{
+        login,
+        setLogin,
+        getUser,
+        setLocalLogin,
+        handleLogout,
+      }}
     >
       {children}
     </AuthContext.Provider>

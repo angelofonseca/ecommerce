@@ -18,7 +18,7 @@ export function LoginForm({
     email: "",
     password: "",
   });
-  const { setUserFromStorage } = useAuthContext();
+  const { setLocalLogin } = useAuthContext();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
@@ -32,7 +32,7 @@ export function LoginForm({
       setError("Erro ao fazer login. CPF ou email já cadastrado.");
       return;
     }
-    setUserFromStorage(data);
+    setLocalLogin(data);
     navigate("/");
   };
 

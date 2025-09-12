@@ -8,12 +8,8 @@ import { useAuthContext } from "@/context/AuthContext";
 
 function Header() {
   const navigate = useNavigate();
-  // const [user, setUser] = useState<{ name: string; email: string } | null>(
-  //   null
-  // );
   const { setProducts, setIsSearched, setIsLoading } = useProductContext();
-  const { user, handleLogout } = useAuthContext();
-
+  const { login, handleLogout } = useAuthContext();
 
   const handleHomeClick = async () => {
     setIsLoading(true);
@@ -55,10 +51,10 @@ function Header() {
               >
                 Categorias
               </NavLink>
-              {user ? (
+              {login ? (
                 <>
                   <span className="text-sm font-medium mr-2">
-                    Bem-vindo, {user.user.name}!
+                    Bem-vindo, {login.user.name}!
                   </span>
                   <button
                     onClick={handleLogout}

@@ -100,3 +100,11 @@ export type Login = {
     email: string;
   };
 }
+
+export type AuthContextType = {
+  login: Login | null;
+  setLogin: React.Dispatch<React.SetStateAction<Login | null>>;
+  getUser: () => Login | null;
+  setLocalLogin: (data: Login) => void;
+  handleLogout: () => void;
+};
