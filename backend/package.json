@@ -11,7 +11,7 @@
     "docker:down": "docker-compose down -v",
     "db:generate": "npx prisma generate",
     "db:migrate": "npx prisma migrate dev --name 'init'",
-    "db:seed": "node src/prisma/seed.js",
+    "db:seed": "node dist/prisma/seed.js",
     "db:init": "sh -c \"./init.sh\"",
     "db:start": "docker exec -it ecommerce-backend npm run db:init"
   },
