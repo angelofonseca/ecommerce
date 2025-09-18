@@ -6,4 +6,4 @@ RUN npx prisma generate
 COPY . .
 ENV PORT=3001
 EXPOSE 3001
-CMD [ "npm", "run", "db:start" ]
+CMD [ "npm", "run", "dev" ]
