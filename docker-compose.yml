@@ -32,6 +32,8 @@ services:
       - backend
     ports:
       - "3000:3000"
+    environment:
+      VITE_REACT_APP_BACKEND_BASEURL: "https://backend-production-1b6e.up.railway.app"
     volumes:
       - ./frontend:/app
       - /app/node_modules
