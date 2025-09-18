@@ -1,0 +1,11 @@
+[build]
+install = "npm install --workspace=backend"
+build = "npm run build --workspace=backend"
+generate = "npx prisma generate"
+migrate = "npx prisma migrate deploy"
+
+[start]
+cmd = "npm start --workspace=backend"
+
+[env]
+DATABASE_URL = "${{MYSQL_URL}}"
