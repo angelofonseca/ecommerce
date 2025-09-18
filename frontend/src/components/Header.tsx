@@ -42,17 +42,6 @@ function Header() {
               >
                 Início
               </button>
-              {/* Exemplo de botão de categoria */}
-              <button
-                onClick={() => {
-                  setSelectedCategory("Tênis");
-                  setRefreshHome(true);
-                  navigate("/");
-                }}
-                className="text-sm font-medium hover:text-accent transition-colors duration-300 hover:scale-105 bg-transparent border-none cursor-pointer"
-              >
-                Tênis
-              </button>
               {login ? (
                 <>
                   <span className="text-sm font-medium mr-2">
