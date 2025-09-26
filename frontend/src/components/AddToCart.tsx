@@ -1,25 +1,35 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import type { AddToCartProps } from "../Types"
-import { Button } from "./ui/button"
-import useCart from "../hooks/useCart"
-import { useCartContext } from "../context/CartContext"
+import type { AddToCartProps } from "../Types";
+import { Button } from "./ui/button";
+import useCart from "../hooks/useCart";
+import { useCartContext } from "../context/CartContext";
+import { useAuthContext } from "@/context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function AddToCart({ product, classCard }: AddToCartProps) {
-  const { addToCart } = useCart()
-  const { cart } = useCartContext()
+  const { addToCart } = useCart();
+  const { cart } = useCartContext();
+  const { getUser } = useAuthContext();
   const {
     stock: { quantity: inStock },
-  } = product
+  } = product;
+  const navigate = useNavigate();
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    event.preventDefault()
-    addToCart(product)
-  }
+  const handleClick = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+    if (getUser()) {
+      addToCart(product);
+    } else {
+      navigate("/login");
+    }
+  };
 
-  const isOutOfStock = cart[product.id]?.quantity === inStock
+  const isOutOfStock = cart[product.id]?.quantity === inStock;
 
   return (
     <Button
@@ -35,14 +45,29 @@ function AddToCart({ product, classCard }: AddToCartProps) {
       <div className="flex items-center justify-center gap-2">
         {isOutOfStock ? (
           <>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
             <span>Esgotado</span>
           </>
         ) : (
           <>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -55,7 +80,7 @@ function AddToCart({ product, classCard }: AddToCartProps) {
         )}
       </div>
     </Button>
-  )
+  );
 }
 
-export default AddToCart
+export default AddToCart;

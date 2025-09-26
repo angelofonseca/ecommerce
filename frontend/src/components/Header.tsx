@@ -7,7 +7,6 @@ import { useHomeContext } from "@/context/HomeContext";
 
 function Header() {
   const navigate = useNavigate();
-  // ...existing code...
   const { login, handleLogout } = useAuthContext();
   const { setRefreshHome, setSelectedCategory } = useHomeContext();
 
@@ -41,17 +40,6 @@ function Header() {
                 className="text-sm font-medium hover:text-accent transition-colors duration-300 hover:scale-105 bg-transparent border-none cursor-pointer"
               >
                 Início
-              </button>
-              {/* Exemplo de botão de categoria */}
-              <button
-                onClick={() => {
-                  setSelectedCategory("Tênis");
-                  setRefreshHome(true);
-                  navigate("/");
-                }}
-                className="text-sm font-medium hover:text-accent transition-colors duration-300 hover:scale-105 bg-transparent border-none cursor-pointer"
-              >
-                Tênis
               </button>
               {login ? (
                 <>

@@ -3,9 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { login } from "@/services/api";
+import { adminLogin, login } from "@/services/api";
 import { useAuthContext } from "@/context/AuthContext";
 
 export function LoginForm({
@@ -19,6 +19,7 @@ export function LoginForm({
     password: "",
   });
   const { setLocalLogin } = useAuthContext();
+  const location = useLocation();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
@@ -27,9 +28,12 @@ export function LoginForm({
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = await login(form);
+    const data =
+      location.pathname === "/login"
+        ? await login(form)
+        : await adminLogin(form);
     if (!data.token) {
-      setError("Erro ao fazer login. CPF ou email já cadastrado.");
+      setError("E-mail e/ou senha inválido(s).");
       return;
     }
     setLocalLogin(data);

@@ -80,11 +80,7 @@ function Home() {
               <h2 className="text-3xl font-bold text-foreground mb-2">
                 Produtos em Destaque
               </h2>
-              <p className="text-muted-foreground text-lg">
-                Descubra os calçados mais populares da nossa coleção
-              </p>
             </div>
-
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8">
               {isLoading ? (
                 <div className="col-span-full flex justify-center py-20">

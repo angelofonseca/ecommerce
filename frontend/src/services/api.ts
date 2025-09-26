@@ -59,7 +59,22 @@ export async function login(user: { email: string; password: string }) {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Error registering user:", error);
+    console.error("Error:", error);
+    throw error;
+  }
+}
+
+export async function adminLogin(user: { email: string; password: string }) {
+  const response = await fetch(`${BACKEND_BASEURL}/user/admin`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(user),
+  });
+  try {
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
     throw error;
   }
 }

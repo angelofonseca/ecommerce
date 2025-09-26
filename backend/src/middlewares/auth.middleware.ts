@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "../utils/auth.js";
 
-function jwtMiddleware(req: Request, res: Response, next: NextFunction) {
+function authMiddleware(req: Request, res: Response, next: NextFunction) {
   const bearerToken = req.headers.authorization;
 
   if (!bearerToken) {
@@ -20,4 +20,4 @@ function jwtMiddleware(req: Request, res: Response, next: NextFunction) {
   next();
 }
 
-export default jwtMiddleware;
+export default authMiddleware;

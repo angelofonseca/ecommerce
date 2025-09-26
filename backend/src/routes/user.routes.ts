@@ -5,6 +5,7 @@ import prisma from "../database/prismaClient.js";
 import CRUDRoutes from "./crud.routes.js";
 import UserModel from "../models/UserModel.js";
 import UserService from "../services/UserService.js";
+import isAdminMiddleware from "../middlewares/isAdmin.middleware.js";
 
 export default class UserRoutes extends CRUDRoutes<User> {
   constructor() {
@@ -21,6 +22,8 @@ export default class UserRoutes extends CRUDRoutes<User> {
     this.router.get("/role", authMiddleware, (req, res) =>
       UserController.getRole(req, res)
     );
+    this.router.post("/admin", (req, res) => this.controller.login(req, res));
+
 
     return this.router;
   }
