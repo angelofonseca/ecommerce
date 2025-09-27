@@ -193,7 +193,6 @@ async function main() {
 }
 main()
   .catch((e) => {
-    console.log("lol");
     process.exit(1);
   })
   .finally(() => prisma.$disconnect());

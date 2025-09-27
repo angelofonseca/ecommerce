@@ -7,11 +7,17 @@ import Layout from "./components/layout/Layout";
 import Categories from "./components/Categories";
 import Login from "./pages/Login";
 import Signin from "./pages/Signin";
-import AdminLogin from "./pages/AdminLogin";
+import AdminLogin from "./admin/pages/AdminLogin";
+import AdminHome from "./admin/pages/AdminHome";
+import AdminLayout from "./admin/layout/AdminLayout";
 
 function App() {
   return (
     <Routes>
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<AdminHome />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
+      </Route>
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="/cart" element={<Cart />} />
@@ -19,7 +25,6 @@ function App() {
         <Route path="/categories" element={<Categories />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/signin" element={<Signin />} />
       </Route>
     </Routes>

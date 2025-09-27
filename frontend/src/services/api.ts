@@ -1,7 +1,6 @@
 import { User } from "@/Types";
 
 const BACKEND_BASEURL = import.meta.env.VITE_REACT_APP_BACKEND_BASEURL;
-console.log(BACKEND_BASEURL)
 export async function getCategories() {
   const URL = `${BACKEND_BASEURL}/category`;
   const response = await fetch(URL);
