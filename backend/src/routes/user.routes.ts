@@ -22,7 +22,7 @@ export default class UserRoutes extends CRUDRoutes<User> {
     this.router.get("/role", authMiddleware, (req, res) =>
       UserController.getRole(req, res)
     );
-    this.router.post("/admin", (req, res) => this.controller.login(req, res));
+    this.router.post("/admin", (req, res) => this.controller.adminLogin(req, res));
 
 
     return this.router;

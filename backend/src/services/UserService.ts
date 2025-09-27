@@ -46,4 +46,25 @@ export default class UserService extends CRUDService<User> {
 
     return { status: 200, data: { token, user: { name, email } } };
   }
+
+    async adminLogin(user: Login): Promise<ServiceResponse<Message | Token>> {
+    const validation = validateLogin(user);
+    if (validation) return validation;
+
+    const { email, password } = user;
+
+    const foundUser = await this.model.findByEmail(email);
+    if (!foundUser) return { status: 401, data: invalidMessage };
+
+    const { password: hash, role, id, name } = foundUser;
+
+    const userPassword = bcrypt.compareSync(password, hash);
+    if (!userPassword) return { status: 401, data: invalidMessage };
+
+    const token = auth.createToken({ email, id, role });
+    
+    if (role !== 'ADMIN') return { status: 401, data: { message: 'Access denied: Admins only' } };
+
+    return { status: 200, data: { token, user: { name, email } } };
+  }
 }

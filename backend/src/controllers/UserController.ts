@@ -14,6 +14,11 @@ export default class UserController extends CRUDController<User> {
     res.status(status).json(data);
   }
 
+    async adminLogin(req: Request, res: Response) {
+    const { data, status } = await this.service.adminLogin(req.body as Login);
+    res.status(status).json(data);
+  }
+
   async create(req: Request, res: Response) {
     const { data, status } = await this.service.create(req.body as User);
     res.status(status).json(data);
