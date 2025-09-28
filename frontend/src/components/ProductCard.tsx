@@ -16,7 +16,7 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-import { MdLocalShipping, MdFavorite, MdFavoriteBorder } from "react-icons/md";
+import { MdLocalShipping } from "react-icons/md";
 
 function ProductCard({ product, isDetailedView = true }: ProductCardProps) {
   const [, setComments] = useState<Comment[]>([]);
@@ -38,7 +38,7 @@ function ProductCard({ product, isDetailedView = true }: ProductCardProps) {
   const installmentPrice = price / 10;
 
   return (
-    <Card className="group h-full flex flex-col overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 border-border bg-card/50 backdrop-blur-sm animate-fade-in">
+    <Card className="group flex flex-col overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 border-border bg-card/50 backdrop-blur-sm animate-fade-in">
       <CardHeader className="p-0 relative aspect-square overflow-hidden">
         <button
           onClick={handleClick}

@@ -108,3 +108,13 @@ export type AuthContextType = {
   setLocalLogin: (data: Login) => void;
   handleLogout: () => void;
 };
+
+export type ProductData = {
+  name: string;
+  photo: string;
+  description: string;
+  price: string;
+  categoryId: string;
+  brandId: string;
+  quantity: string;
+}

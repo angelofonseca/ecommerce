@@ -15,8 +15,6 @@ function Home() {
       setIsLoading(true);
       let results;
       if (selectedCategory) {
-        // Adapte para buscar produtos por categoria se necessário
-        // Exemplo: await getProductsByCategory(selectedCategory)
         results = await getProducts(); // Troque por sua função de filtro
       } else {
         results = await getProducts();
