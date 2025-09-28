@@ -2,7 +2,7 @@
 
 import type React from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getProductsFromQuery } from "../services/api";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -12,6 +12,7 @@ function SearchBar() {
   const { setProducts, setIsSearched, setIsLoading } = useProductContext();
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -21,7 +22,9 @@ function SearchBar() {
     setIsLoading(false);
     setProducts(results);
     setIsSearched(true);
-    navigate("/?search=" + query);
+    if (location.pathname === "/") {
+      navigate("/?search=" + query);
+    }
   };
 
   return (

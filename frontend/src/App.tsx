@@ -10,7 +10,7 @@ import Signin from "./pages/Signin";
 import AdminLogin from "./admin/pages/AdminLogin";
 import AdminHome from "./admin/pages/AdminHome";
 import AdminLayout from "./admin/layout/AdminLayout";
-import AdminAddProduct from "./admin/pages/AdminAddProduct";
+import AdminProducts from "./admin/pages/AdminProducts";
 import AdminNewProduct from "./admin/pages/AdminNewProduct";
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<AdminHome />} />
         <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin/products" element={<AdminAddProduct />} />
+        <Route path="/admin/products" element={<AdminProducts />} />
         <Route path="/admin/products/add" element={<AdminNewProduct />} />
       </Route>
       <Route path="/" element={<Layout />}>

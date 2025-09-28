@@ -2,7 +2,6 @@ import { ProductData, User } from "@/Types";
 
 const BACKEND_BASEURL = import.meta.env.VITE_REACT_APP_BACKEND_BASEURL;
 
-
 export async function registerNewProduct(product: ProductData) {
   const payload = {
     ...product,
@@ -24,6 +23,17 @@ export async function registerNewProduct(product: ProductData) {
     console.error("Error registering user:", error);
     throw error;
   }
+}
+
+export async function updateProductFreeShipping(id: string, isChecked: boolean) {
+  const URL = `${BACKEND_BASEURL}/product/${id}`;
+  const response = await fetch(URL, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ freeShipping: isChecked }),
+  });
+  const data = await response.json();
+  return data;
 }
 
 export async function getCategories() {
