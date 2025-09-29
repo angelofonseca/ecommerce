@@ -24,4 +24,37 @@ export default class ProductModel extends CRUDModel<Product> {
       },
     });
   }
+
+  async updateById(
+    id: number,
+    data: Partial<Product> & { quantity?: number },
+    param = { include: { category: true, brand: true, stock: true } }
+  ): Promise<Product> {
+    try {
+      // Separa quantity dos demais dados do produto
+      const { quantity, ...productData } = data;
+
+      // Monta o objeto de atualização
+      const updateData: any = { ...productData };
+
+      // Se quantity foi fornecido, adiciona à atualização do stock
+      if (quantity !== undefined) {
+        updateData.stock = {
+          upsert: {
+            create: { quantity },
+            update: { quantity }
+          }
+        };
+      }
+
+      return await this.model.update({
+        where: { id },
+        data: updateData,
+        ...param
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }

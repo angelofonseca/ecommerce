@@ -12,15 +12,17 @@ import AdminHome from "./admin/pages/AdminHome";
 import AdminLayout from "./admin/layout/AdminLayout";
 import AdminProducts from "./admin/pages/AdminProducts";
 import AdminNewProduct from "./admin/pages/AdminNewProduct";
+import AdminProductEdit from "./admin/components/AdminProductEdit";
 
 function App() {
   return (
     <Routes>
+      <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<AdminHome />} />
-        <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/products" element={<AdminProducts />} />
         <Route path="/admin/products/add" element={<AdminNewProduct />} />
+        <Route path="/admin/products/edit/:id" element={<AdminProductEdit />} />
       </Route>
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />

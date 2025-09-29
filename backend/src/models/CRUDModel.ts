@@ -23,9 +23,11 @@ export default class CRUDModel<T> {
     }
   }
 
-  async updateById(id: number, data: Partial<T>): Promise<T> {
+  async updateById(id: number, data: Partial<T>, param?: {
+    include: { category: boolean; brand: boolean; stock: boolean };
+  }): Promise<T> {
     try {
-      return await this.model.update({ where: { id }, data });
+      return await this.model.update({ where: { id }, data, ...param });
     } catch (error) {
       throw error;
     }

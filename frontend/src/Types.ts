@@ -35,7 +35,7 @@ export type Stock = {
 
 
 export type Product = {
-  id: string;
+  id: number;
   name: string;
   photo: string;
   description: string;
@@ -65,6 +65,7 @@ export type CommentsList = {
 
 export type ProductContextType = {
   product: Product;
+  setProduct: React.Dispatch<React.SetStateAction<Product>>;
   saveProduct: (item: Product) => void;
   products: Product[];
   setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
@@ -118,3 +119,14 @@ export type ProductData = {
   brandId: string;
   quantity: string;
 }
+
+export type ProductType = {
+  name: string;
+  photo: string;
+  description: string;
+  price: number;
+  categoryId: number;
+  brandId: number;
+  quantity: number;
+}
+

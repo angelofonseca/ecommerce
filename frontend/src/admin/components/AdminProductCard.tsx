@@ -4,27 +4,34 @@ import { formatPrice } from "@/helpers/formatPrice";
 import { MdLocalShipping } from "react-icons/md";
 import { FaTrash } from "react-icons/fa6";
 import { FaEdit } from "react-icons/fa";
-import { Switch } from "@/components/ui/switch"
+import { Switch } from "@/components/ui/switch";
 import { updateProductFreeShipping } from "@/services/api";
 import { useProductContext } from "@/context/ProductContext";
+import { useNavigate } from "react-router-dom";
 
 function ProductCard({ product }: ProductCardProps) {
   const [, setComments] = useState<Comment[]>([]);
   const { id, name: title, price, photo, freeShipping } = product;
-  const { setProducts } = useProductContext();
+  const { setProducts, saveProduct } = useProductContext();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const savedReviews = JSON.parse(localStorage.getItem(id) || "[]");
+    const savedReviews = JSON.parse(
+      localStorage.getItem(id.toString()) || "[]"
+    );
     setComments(savedReviews);
   }, [id]);
 
-  const handleEdit = () => {};
+  const handleEdit = () => {
+    saveProduct(product);
+    navigate(`/admin/products/edit/${id}`);
+  };
   const handleDelete = () => {};
   const handleFreeShipping = async (id: string, isChecked: boolean) => {
     await updateProductFreeShipping(id, isChecked);
-     setProducts(prevProducts => 
-      prevProducts.map(product => 
-        product.id === id
+    setProducts((prevProducts) =>
+      prevProducts.map((product) =>
+        product.id === Number(id)
           ? { ...product, freeShipping: !freeShipping }
           : product
       )
@@ -36,13 +43,13 @@ function ProductCard({ product }: ProductCardProps) {
       {/* Produto - Imagem */}
       <div className="flex items-center">
         <div className="h-16 w-16 md:h-20 md:w-20 rounded-lg overflow-hidden shadow-sm bg-gray-100 flex-shrink-0">
-          <img 
-            className="w-full h-full object-cover" 
-            src={photo} 
+          <img
+            className="w-full h-full object-cover"
+            src={photo}
             alt={title}
             onError={(e) => {
               const target = e.target as HTMLImageElement;
-              target.src = 'https://via.placeholder.com/80x80?text=No+Image';
+              target.src = "https://via.placeholder.com/80x80?text=No+Image";
             }}
           />
         </div>
@@ -64,7 +71,10 @@ function ProductCard({ product }: ProductCardProps) {
 
       {/* Frete Grátis - Desktop */}
       <div className="hidden md:flex items-center justify-center">
-        <Switch checked={freeShipping} onCheckedChange={(e) => handleFreeShipping(id, e)} />
+        <Switch
+          checked={freeShipping}
+          onCheckedChange={(e) => handleFreeShipping(id, e)}
+        />
       </div>
 
       {/* Ações - Desktop */}
@@ -105,7 +115,7 @@ function ProductCard({ product }: ProductCardProps) {
             onClick={handleEdit}
             className="flex-1 px-3 py-1.5 text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors duration-200 text-sm font-medium"
           >
-            <FaEdit className="w-3 h-3 inline mr-1" />
+            <FaEdit className="w-3 h-3 inline mr-1" onClick={() => {}} />
             Editar
           </button>
           <button

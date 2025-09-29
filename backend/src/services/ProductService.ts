@@ -38,6 +38,16 @@ export default class ProductService extends CRUDService<Product> {
         return result;
     }
 
+    // async updateById(id: number, data: Partial<Product>, include: { category: true, brand: true, stock: true }): Promise<ServiceResponse<Product>> {
+    //     // const validation = validateProduct(data, true);
+    //     // if (validation) return validation;
+
+    //     const updatedProduct = await this.service.updateById(id, data, {
+    //         include: { category: true, brand: true, stock: true },
+    //     });
+    //     return { status: 200, data: updatedProduct };
+    // }
+
     async findAll(): Promise<ServiceResponse<Product[]>> {
         const products = await this.service.findAll({
             include: { category: true, brand: true, stock: true },
