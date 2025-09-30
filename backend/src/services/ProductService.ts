@@ -9,6 +9,17 @@ import StockModel from "../models/StockModel.js";
 
 type ProductWithQuantity = Product & { quantity: number };
 
+type ProductUpdateData = {
+    name?: string;
+    photo?: string;
+    description?: string;
+    price?: number;
+    categoryId?: number;
+    brandId?: number;
+    freeShipping?: boolean;
+    quantity?: number;
+};
+
 export default class ProductService extends CRUDService<Product> {
     private stockModel = new StockModel(prisma.stock);
     constructor(protected service: ProductModel) {
@@ -38,15 +49,37 @@ export default class ProductService extends CRUDService<Product> {
         return result;
     }
 
-    // async updateById(id: number, data: Partial<Product>, include: { category: true, brand: true, stock: true }): Promise<ServiceResponse<Product>> {
-    //     // const validation = validateProduct(data, true);
-    //     // if (validation) return validation;
+    async updateById(
+        id: number,
+        data: ProductUpdateData
+    ): Promise<ServiceResponse<Message>> {
+        try {
+            const { quantity, ...productData } = data;
 
-    //     const updatedProduct = await this.service.updateById(id, data, {
-    //         include: { category: true, brand: true, stock: true },
-    //     });
-    //     return { status: 200, data: updatedProduct };
-    // }
+            const validation = validateProduct(productData as Product);
+            if (validation) return validation;
+
+            const updateData: any = { ...productData };
+
+            // Se quantity foi fornecido, adiciona à atualização do stock
+            if (quantity !== undefined) {
+                updateData.stock = {
+                    upsert: {
+                        create: { quantity },
+                        update: { quantity }
+                    }
+                };
+            }
+
+            await this.service.updateById(id, updateData, {
+                include: { category: true, brand: true, stock: true },
+            });
+
+            return { status: 200, data: { message: "Product updated successfully" } };
+        } catch (error) {
+            throw error;
+        }
+    }
 
     async findAll(): Promise<ServiceResponse<Product[]>> {
         const products = await this.service.findAll({
