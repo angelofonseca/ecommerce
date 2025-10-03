@@ -1,17 +1,27 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { PrismaDelegate } from "../Interfaces/PrismaDelegate";
 
+type IncludeOptions = {
+  category?: boolean;
+  brand?: boolean;
+  stock?: boolean;
+};
+
 export default class CRUDModel<T> {
 
   constructor(protected model: PrismaDelegate<T>) { }
 
-  async find(id: number): Promise<T | null> {
-    return await this.model.findUnique({ where: { id } });
+  async find(id: number, include?: IncludeOptions): Promise<T | null> {
+    return await this.model.findUnique({ 
+      where: { id },
+      ...(include && { include })
+    });
   }
 
-  async findByName(name: string): Promise<T | null> {
+  async findByName(name: string, include?: IncludeOptions): Promise<T | null> {
     return this.model.findFirst({
       where: { name },
+      ...(include && { include })
     });
   }
 
@@ -23,20 +33,22 @@ export default class CRUDModel<T> {
     }
   }
 
-  async updateById(id: number, data: Partial<T>, param?: {
-    include: { category: boolean; brand: boolean; stock: boolean };
-  }): Promise<T> {
+  async updateById(id: number, data: Partial<T>, include?: IncludeOptions): Promise<T> {
     try {
-      return await this.model.update({ where: { id }, data, ...param });
+      return await this.model.update({ 
+        where: { id }, 
+        data,
+        ...(include && { include })
+      });
     } catch (error) {
       throw error;
     }
   }
 
-  async findAll(param?: {
-    include: { category: boolean; brand: boolean; stock: boolean };
-  }): Promise<T[]> {
-    return await this.model.findMany({ ...param });
+  async findAll(include?: IncludeOptions): Promise<T[]> {
+    return await this.model.findMany({ 
+      ...(include && { include })
+    });
   }
 
   async deleteById(id: number): Promise<T> {

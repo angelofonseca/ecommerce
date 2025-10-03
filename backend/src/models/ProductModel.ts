@@ -2,26 +2,32 @@ import { PrismaClient } from "@prisma/client";
 import { Product } from "@prisma/client";
 import CRUDModel from "./CRUDModel.js";
 
+type IncludeOptions = {
+  category?: boolean;
+  brand?: boolean;
+  stock?: boolean;
+};
+
 export default class ProductModel extends CRUDModel<Product> {
   constructor(protected model: PrismaClient['product']) {
     super(model);
   }
 
-  async findAllByCategoryId(param?: {
-    include: { category: boolean; brand: boolean; stock: boolean };
-    where: { categoryId: number };
-  }): Promise<Product[]> {
-    return await this.model.findMany({ ...param });
+  async findAllByCategoryId(categoryId: number, include?: IncludeOptions): Promise<Product[]> {
+    return await this.model.findMany({ 
+      where: { categoryId },
+      ...(include && { include })
+    });
   }
 
-  async findAllByName(name: string): Promise<Product[]> {
+  async findAllByName(name: string, include?: IncludeOptions): Promise<Product[]> {
     return this.model.findMany({
-      include: { category: true, brand: true, stock: true },
       where: {
         name: {
           contains: name,
         }
       },
+      ...(include && { include })
     });
   }
 }

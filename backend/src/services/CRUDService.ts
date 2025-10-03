@@ -2,19 +2,25 @@ import Message from "../Interfaces/Message";
 import ServiceResponse from "../Interfaces/ServiceResponse";
 import CRUDModel from "../models/CRUDModel";
 
+type IncludeOptions = {
+  category?: boolean;
+  brand?: boolean;
+  stock?: boolean;
+};
+
 export default class CRUDService<T> {
 
   constructor(protected service: CRUDModel<T>) {
   }
 
-  async find(id: number): Promise<ServiceResponse<Message | T>> {
-    const result = await this.service.find(id);
+  async find(id: number, include?: IncludeOptions): Promise<ServiceResponse<Message | T>> {
+    const result = await this.service.find(id, include);
     if (!result) return { status: 404, data: { message: "Not found" } };
     return { status: 200, data: result };
   }
 
-  async findAll(): Promise<ServiceResponse<T[]>> {
-    const result = await this.service.findAll();
+  async findAll(include?: IncludeOptions): Promise<ServiceResponse<T[]>> {
+    const result = await this.service.findAll(include);
     return { status: 200, data: result };
   }
 
@@ -27,12 +33,13 @@ export default class CRUDService<T> {
 
   async updateById(
     id: number,
-    data: Partial<T>
+    data: Partial<T>,
+    include?: IncludeOptions
   ): Promise<ServiceResponse<Message>> {
     const result = await this.service.find(id);
     if (!result) return { status: 404, data: { message: "Not found" } };
 
-    await this.service.updateById(id, data);
+    await this.service.updateById(id, data, include);
 
     return { status: 200, data: { message: "Updated successfully" } };
   }

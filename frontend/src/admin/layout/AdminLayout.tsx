@@ -1,23 +1,9 @@
-import { useEffect } from "react";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import AdminHeader from "../components/AdminHeader";
+import { useAdminAuth } from "@/hooks/useAdminAuth";
 
 function AdminLayout() {
-  const navigate = useNavigate();
-  useEffect(() => {
-    function verifyAdminRole(): void {
-      const token = localStorage.getItem("login");
-      if (token) {
-        const payload = JSON.parse(atob(token.split(".")[1]));
-        if (payload.role === "ADMIN") {
-          navigate("/admin");
-          return;
-        }
-      }
-      navigate("/admin/login");
-    }
-    verifyAdminRole();
-  }, []);
+  useAdminAuth();
 
   return (
     <>

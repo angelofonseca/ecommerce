@@ -21,10 +21,21 @@ type ProductUpdateData = {
     quantity?: number;
 };
 
+type IncludeOptions = {
+    category?: boolean;
+    brand?: boolean;
+    stock?: boolean;
+};
+
 export default class ProductService extends CRUDService<Product> {
     private stockModel = new StockModel(prisma.stock);
     constructor(protected service: ProductModel) {
         super(service);
+    }
+
+    // Sobrescrevendo o método find para sempre incluir relações para produtos
+    async find(id: number): Promise<ServiceResponse<Message | Product>> {
+        return super.find(id, { category: true, brand: true, stock: true });
     }
 
     private sanitizeProductData(data: any): any {
@@ -84,7 +95,7 @@ export default class ProductService extends CRUDService<Product> {
             }
 
             await this.service.updateById(id, updateData, {
-                include: { category: true, brand: true, stock: true },
+                category: true, brand: true, stock: true
             });
 
             return { status: 200, data: { message: "Product updated successfully" } };
@@ -95,21 +106,22 @@ export default class ProductService extends CRUDService<Product> {
 
     async findAll(): Promise<ServiceResponse<Product[]>> {
         const products = await this.service.findAll({
-            include: { category: true, brand: true, stock: true },
+            category: true, brand: true, stock: true
         });
         return { status: 200, data: products };
     }
 
     async findAllByCategoryId(categoryId: number): Promise<ServiceResponse<Product[]>> {
-        const products = await this.service.findAllByCategoryId({
-            include: { category: true, brand: true, stock: true },
-            where: { categoryId },
+        const products = await this.service.findAllByCategoryId(categoryId, {
+            category: true, brand: true, stock: true
         });
         return { status: 200, data: products };
     }
 
     async findAllByName(name: string): Promise<ServiceResponse<Product[]>> {
-        const result = await this.service.findAllByName(name);
+        const result = await this.service.findAllByName(name, {
+            category: true, brand: true, stock: true
+        });
         return { status: 200, data: result };
     }
 

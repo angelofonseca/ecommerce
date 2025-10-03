@@ -1,4 +1,3 @@
-import { useProductContext } from "@/context/ProductContext";
 import { initialProduct } from "@/helpers/initialProduct";
 import {
   getBrands,
@@ -8,25 +7,21 @@ import {
 } from "@/services/api";
 import { Category, Product } from "@/Types";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 function AdminProductEdit() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [brands, setBrands] = useState<Category[]>([]);
-  const { product } = useProductContext();
   const [formData, setFormData] = useState<Product>(initialProduct);
   const [updatedFormData, setUpdatedFormData] = useState<Partial<Product>>({});
   const [stockQuantity, setStockQuantity] = useState<number>(0);
   const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProduct = async () => {
-      if (product.id === Number(id)) {
-        setFormData(product);
-      } else {
-        const result = await getProductByID(id as string);
-        setFormData(result);
-      }
+      const result = await getProductByID(id as string);
+      setFormData(result);
     };
     const fetchCategories = async () => {
       const result = await getCategories();
@@ -39,7 +34,7 @@ function AdminProductEdit() {
     fetchCategories();
     fetchBrands();
     fetchProduct();
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     setStockQuantity(formData.stock?.quantity || 0);
@@ -64,27 +59,37 @@ function AdminProductEdit() {
       ...updatedFormData,
       stock: { quantity: stockQuantity },
     };
-    console.log(finalFormData);
-
     try {
-      const result = await updateProduct(formData.id.toString(), finalFormData);
-      console.log(result);
-
-      setFormData(initialProduct);
+      await updateProduct(formData.id.toString(), finalFormData);
       alert("Produto atualizado com sucesso!");
+      handleGoBack();
     } catch (error) {
       console.error("Erro ao atualizar produto:", error);
       alert("Erro ao atualizar produto");
     }
   };
 
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <button
+              onClick={handleGoBack}
+              className="flex items-center gap-2 cursor-pointer text-gray-600 hover:text-gray-800 transition-colors duration-200"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              Voltar
+            </button>
+          </div>
           <h1 className="text-3xl font-bold text-gray-900 text-center">
-            Cadastrar Novo Produto
+            Editar Produto
           </h1>
           <p className="text-gray-600 text-center mt-2">
             Preencha as informações abaixo para adicionar um novo produto
@@ -259,7 +264,7 @@ function AdminProductEdit() {
           <div className="pt-6">
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold py-4 px-6 rounded-lg hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform transition duration-200 hover:scale-[1.02] shadow-lg"
+              className="w-full cursor-pointer bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold py-4 px-6 rounded-lg hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform transition duration-200 hover:scale-[1.02] shadow-lg"
             >
               <span className="flex items-center justify-center gap-2">
                 <svg
