@@ -15,6 +15,8 @@ function AdminProductEdit() {
   const [brands, setBrands] = useState<Category[]>([]);
   const { product } = useProductContext();
   const [formData, setFormData] = useState<Product>(initialProduct);
+  const [updatedFormData, setUpdatedFormData] = useState<Partial<Product>>({});
+  const [stockQuantity, setStockQuantity] = useState<number>(0);
   const { id } = useParams();
 
   useEffect(() => {
@@ -39,6 +41,10 @@ function AdminProductEdit() {
     fetchProduct();
   }, []);
 
+  useEffect(() => {
+    setStockQuantity(formData.stock?.quantity || 0);
+  }, [formData]);
+
   const handleChange = (
     event: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -46,13 +52,22 @@ function AdminProductEdit() {
   ) => {
     const { target } = event;
     setFormData((prevForm) => ({ ...prevForm, [target.name]: target.value }));
+    setUpdatedFormData((prevForm) => ({
+      ...prevForm,
+      [target.name]: target.value,
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const finalFormData = {
+      ...updatedFormData,
+      stock: { quantity: stockQuantity },
+    };
+    console.log(finalFormData);
 
     try {
-      const result = await updateProduct(formData.id.toString(), formData);
+      const result = await updateProduct(formData.id.toString(), finalFormData);
       console.log(result);
 
       setFormData(initialProduct);
@@ -180,8 +195,8 @@ function AdminProductEdit() {
                 type="number"
                 id="quantity"
                 name="quantity"
-                value={formData.stock.quantity}
-                onChange={handleChange}
+                value={stockQuantity}
+                onChange={(e) => setStockQuantity(Number(e.target.value))}
                 min="0"
                 required
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"

@@ -27,10 +27,10 @@ export type CartType = {
 };
 
 export type Stock = {
-  productId: number;
+  productId?: number;
   quantity: number;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 
