@@ -12,7 +12,7 @@ import AdminHome from "./admin/pages/AdminHome";
 import AdminLayout from "./admin/layout/AdminLayout";
 import AdminProducts from "./admin/pages/AdminProducts";
 import AdminNewProduct from "./admin/pages/AdminNewProduct";
-import AdminProductEdit from "./admin/components/AdminProductEdit";
+import AdminEditProduct from "./admin/pages/AdminEditProduct";
 
 function App() {
   return (
@@ -22,7 +22,7 @@ function App() {
         <Route index element={<AdminHome />} />
         <Route path="/admin/products" element={<AdminProducts />} />
         <Route path="/admin/products/add" element={<AdminNewProduct />} />
-        <Route path="/admin/products/edit/:id" element={<AdminProductEdit />} />
+        <Route path="/admin/products/edit/:id" element={<AdminEditProduct />} />
       </Route>
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />

@@ -1,3 +1,4 @@
+import useGoBack from "@/hooks/useGoBack";
 import {
   getBrands,
   getCategories,
@@ -6,16 +7,16 @@ import {
 } from "@/services/api";
 import { Category, ProductEditForm } from "@/Types";
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-function AdminProductEdit() {
+function AdminEditProduct() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [brands, setBrands] = useState<Category[]>([]);
   const [formData, setFormData] = useState<ProductEditForm>({});
   const [updatedFormData, setUpdatedFormData] = useState<ProductEditForm>({});
   const [stockQuantity, setStockQuantity] = useState<number | string>("");
   const { id } = useParams();
-  const navigate = useNavigate();
+  const handleGoBack = useGoBack();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -69,12 +70,8 @@ function AdminProductEdit() {
     }
   };
 
-  const handleGoBack = () => {
-    navigate(-1);
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8">
+    <div className="h-screen flex items-center bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
           <div className="flex items-center justify-between mb-4">
@@ -99,7 +96,7 @@ function AdminProductEdit() {
         {/* Form */}
         <form
           onSubmit={handleSubmit}
-          className="bg-white rounded-xl shadow-lg p-8 space-y-6"
+          className="bg-white rounded-xl shadow-lg p-6 space-y-6"
         >
           {/* Grid layout for better organization */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -294,4 +291,4 @@ function AdminProductEdit() {
   );
 }
 
-export default AdminProductEdit;
+export default AdminEditProduct;
