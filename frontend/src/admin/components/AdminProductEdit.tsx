@@ -1,20 +1,19 @@
-import { initialProduct } from "@/helpers/initialProduct";
 import {
   getBrands,
   getCategories,
   getProductByID,
   updateProduct,
 } from "@/services/api";
-import { Category, Product } from "@/Types";
+import { Category, ProductEditForm } from "@/Types";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 function AdminProductEdit() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [brands, setBrands] = useState<Category[]>([]);
-  const [formData, setFormData] = useState<Product>(initialProduct);
-  const [updatedFormData, setUpdatedFormData] = useState<Partial<Product>>({});
-  const [stockQuantity, setStockQuantity] = useState<number>(0);
+  const [formData, setFormData] = useState<ProductEditForm>({});
+  const [updatedFormData, setUpdatedFormData] = useState<ProductEditForm>({});
+  const [stockQuantity, setStockQuantity] = useState<number | string>("");
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -37,7 +36,7 @@ function AdminProductEdit() {
   }, [id]);
 
   useEffect(() => {
-    setStockQuantity(formData.stock?.quantity || 0);
+    setStockQuantity(formData?.stock?.quantity || 0);
   }, [formData]);
 
   const handleChange = (
@@ -57,10 +56,11 @@ function AdminProductEdit() {
     e.preventDefault();
     const finalFormData = {
       ...updatedFormData,
-      stock: { quantity: stockQuantity },
+      stock: { quantity: stockQuantity as number },
     };
     try {
-      await updateProduct(formData.id.toString(), finalFormData);
+      if (!formData || !formData.id) throw new Error("Form data or ID is missing");
+      await updateProduct(formData?.id.toString(), finalFormData);
       alert("Produto atualizado com sucesso!");
       handleGoBack();
     } catch (error) {
@@ -205,7 +205,6 @@ function AdminProductEdit() {
                 min="0"
                 required
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
-                placeholder="0"
               />
             </div>
 

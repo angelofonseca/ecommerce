@@ -13,9 +13,9 @@ function AddToCart({ product, classCard }: AddToCartProps) {
   const { addToCart } = useCart();
   const { cart } = useCartContext();
   const { getUser } = useAuthContext();
-  const {
-    stock: { quantity: inStock },
-  } = product;
+    const {
+      stock: { quantity: inStock },
+    } = product;
   const navigate = useNavigate();
 
   const handleClick = (
@@ -28,6 +28,7 @@ function AddToCart({ product, classCard }: AddToCartProps) {
       navigate("/login");
     }
   };
+
 
   const isOutOfStock = cart[product.id]?.quantity === inStock;
 

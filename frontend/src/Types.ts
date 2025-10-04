@@ -33,6 +33,20 @@ export type Stock = {
   updatedAt?: string;
 };
 
+export type ProductEditForm = {
+  id?: number;
+  name?: string;
+  photo?: string;
+  description?: string;
+  price?: number;
+  categoryId?: number;
+  brandId?: number;
+  freeShipping?: boolean;
+  stock?: { quantity: number };
+  category?: Category;
+  brand?: Brand;
+}
+
 
 export type Product = {
   id: number;
