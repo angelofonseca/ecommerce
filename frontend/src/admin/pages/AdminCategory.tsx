@@ -2,8 +2,8 @@ import Loading from "@/components/Loading";
 import SearchBar from "@/components/SearchBar";
 import { getCategories } from "@/services/api";
 import { useEffect } from "react";
-import AdminProductList from "../components/AdminProductList";
 import { useShopContext } from "@/context/ShopContext";
+import AdminCategoryList from "../components/AdminCategoryList";
 
 function AdminCategories() {
   const { isLoading, setIsLoading } = useShopContext();
@@ -40,12 +40,8 @@ function AdminCategories() {
           {/* Table Header */}
           <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
             <div className="grid grid-cols-2 md:grid-cols-6 gap-4 text-sm font-semibold text-gray-700 uppercase tracking-wider">
-              <div>Produto</div>
-              <div className="hidden md:block">Nome</div>
-              <div className="hidden md:block">Preço</div>
-              <div className="hidden md:block">Frete Grátis</div>
+                <div className="hidden md:block">Nome</div>
               <div className="hidden md:block">Ações</div>
-              <div className="md:hidden">Detalhes</div>
             </div>
           </div>
 
@@ -56,7 +52,7 @@ function AdminCategories() {
                 <Loading />
               </div>
             ) : (
-              <AdminProductList />
+              <AdminCategoryList />
             )}
           </div>
         </div>
