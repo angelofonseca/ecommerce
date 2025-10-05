@@ -1,10 +1,10 @@
-import AdminProductCard from "./AdminProductCard";
 import { useShopContext } from "@/context/ShopContext";
+import AdminCategoryCard from "./AdminCategoryCard";
 
-function AdminProductList() {
-  const { products, isSearched } = useShopContext();
+function AdminCategoryList() {
+  const { categories, isSearched } = useShopContext();
 
-  if (products.length === 0 && isSearched) {
+  if (categories.length === 0 && isSearched) {
     return (
       <div className="text-center py-12">
         <div className="text-gray-500 text-lg">
@@ -18,7 +18,7 @@ function AdminProductList() {
     );
   }
 
-  if (products.length === 0) {
+  if (categories.length === 0) {
     return (
       <div className="text-center py-12">
         <div className="text-gray-500 text-lg">
@@ -34,11 +34,11 @@ function AdminProductList() {
 
   return (
     <>
-      {products.map((product) => (
-        <AdminProductCard key={product.id} product={product} isDetailedView={false} />
+      {categories.map((category) => (
+        <AdminCategoryCard key={category.id} category={category} />
       ))}
     </>
   );
 }
 
-export default AdminProductList;
+export default AdminCategoryList;

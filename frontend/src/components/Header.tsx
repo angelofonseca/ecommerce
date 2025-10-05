@@ -3,12 +3,12 @@ import SearchBar from "./SearchBar";
 import CartIcon from "./CartIcon/CartIcon";
 
 import { useAuthContext } from "@/context/AuthContext";
-import { useHomeContext } from "@/context/HomeContext";
+import { useShopContext } from "@/context/ShopContext";
 
 function Header() {
   const navigate = useNavigate();
   const { login, handleLogout } = useAuthContext();
-  const { setRefreshHome, setSelectedCategory } = useHomeContext();
+  const { setRefreshHome, setSelectedCategory } = useShopContext();
 
   const handleHomeClick = async () => {
     setRefreshHome(true); // Dispara atualização na Home

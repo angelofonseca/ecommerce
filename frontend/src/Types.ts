@@ -77,16 +77,35 @@ export type CommentsList = {
   [productId: string]: Comment[];
 };
 
-export type ProductContextType = {
-  product: Product;
-  setProduct: React.Dispatch<React.SetStateAction<Product>>;
-  saveProduct: (item: Product) => void;
+export type CategoryContextType = {
+  categories: Category[];
+  setCategories: React.Dispatch<React.SetStateAction<Category[]>>;
+};
+
+export type ShopContextType = {
+  // Estado
   products: Product[];
-  setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
-  isSearched: boolean;
-  setIsSearched: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedProduct: Product | null;
+  categories: Category[];
+  brands: Brand[];
+  selectedCategory: string | null;
+  searchQuery: string;
   isLoading: boolean;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  isSearched: boolean;
+  refreshHome: boolean;
+  
+  // Actions
+  setProducts: (products: Product[]) => void;
+  setSelectedProduct: (product: Product | null) => void;
+  saveProduct: (product: Product) => void;
+  setCategories: (categories: Category[]) => void;
+  setBrands: (brands: Brand[]) => void;
+  setSelectedCategory: (categoryId: string | null) => void;
+  setSearchQuery: (query: string) => void;
+  setIsLoading: (loading: boolean) => void;
+  setIsSearched: (searched: boolean) => void;
+  setRefreshHome: (refresh: boolean) => void;
+  resetSearch: () => void;
 };
 
 export type CartContextType = {

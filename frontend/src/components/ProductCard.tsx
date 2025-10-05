@@ -6,7 +6,7 @@ import type { Comment, ProductCardProps } from "../Types";
 import RatingAndComment from "./RatingAndComment";
 import { formatPrice } from "../helpers/formatPrice";
 import AddToCart from "./AddToCart";
-import { useProductContext } from "../context/ProductContext";
+import { useShopContext } from "../context/ShopContext";
 import { createURLSlug } from "../helpers/createURLSlug";
 import {
   Card,
@@ -21,12 +21,12 @@ import { MdLocalShipping } from "react-icons/md";
 function ProductCard({ product, isDetailedView = true }: ProductCardProps) {
   const [, setComments] = useState<Comment[]>([]);
   // const [isFavorite, setIsFavorite] = useState(false);
-  const { saveProduct } = useProductContext();
+  const { saveProduct } = useShopContext();
   const { id, name: title, price, photo, freeShipping } = product;
   const navigate = useNavigate();
 
   useEffect(() => {
-    const savedReviews = JSON.parse(localStorage.getItem(id) || "[]");
+    const savedReviews = JSON.parse(localStorage.getItem(String(id)) || "[]");
     setComments(savedReviews);
   }, [id]);
 
@@ -103,7 +103,7 @@ function ProductCard({ product, isDetailedView = true }: ProductCardProps) {
 
       <CardFooter className="p-6 pt-0 flex flex-col gap-4">
         <AddToCart product={product} classCard="w-full" />
-        {isDetailedView && <RatingAndComment productId={id} />}
+        {isDetailedView && <RatingAndComment productId={String(id)} />}
       </CardFooter>
     </Card>
   );

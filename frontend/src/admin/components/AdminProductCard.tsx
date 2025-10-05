@@ -6,13 +6,13 @@ import { FaTrash } from "react-icons/fa6";
 import { FaEdit } from "react-icons/fa";
 import { Switch } from "@/components/ui/switch";
 import { deleteProductByID, updateProductFreeShipping } from "@/services/api";
-import { useProductContext } from "@/context/ProductContext";
+import { useShopContext } from "@/context/ShopContext";
 import { useNavigate } from "react-router-dom";
 
 function ProductCard({ product }: ProductCardProps) {
   const [, setComments] = useState<Comment[]>([]);
   const { id, name: title, price, photo, freeShipping } = product;
-  const { setProducts, saveProduct } = useProductContext();
+  const { setProducts, saveProduct, products } = useShopContext();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,6 +29,7 @@ function ProductCard({ product }: ProductCardProps) {
   const handleDelete = async () => {
     try {
       await deleteProductByID(id.toString());
+      setProducts(products.filter((product) => product.id !== id));
       alert("Produto excluído com sucesso!");
     } catch (error) {
       console.error("Error deleting product:", error);
@@ -37,13 +38,12 @@ function ProductCard({ product }: ProductCardProps) {
   };
   const handleFreeShipping = async (id: string, isChecked: boolean) => {
     await updateProductFreeShipping(id, isChecked);
-    setProducts((prevProducts) =>
-      prevProducts.map((product) =>
-        product.id === Number(id)
-          ? { ...product, freeShipping: !freeShipping }
-          : product
-      )
+    const updatedProducts = products.map((product) =>
+      product.id === Number(id)
+        ? { ...product, freeShipping: !isChecked } // Use isChecked instead of !freeShipping
+        : product
     );
+    setProducts(updatedProducts);
   };
 
   return (
@@ -123,7 +123,7 @@ function ProductCard({ product }: ProductCardProps) {
             onClick={handleEdit}
             className="flex-1 px-3 py-1.5 text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors duration-200 text-sm font-medium"
           >
-            <FaEdit className="w-3 h-3 inline mr-1"/>
+            <FaEdit className="w-3 h-3 inline mr-1" />
             Editar
           </button>
           <button

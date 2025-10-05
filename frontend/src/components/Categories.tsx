@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
 import { getCategories } from "../services/api";
 import type { Category } from "../Types";
-import { useProductContext } from "../context/ProductContext";
-import { useHomeContext } from "../context/HomeContext";
+import { useShopContext } from "../context/ShopContext";
 import { Label } from "@radix-ui/react-label";
 import useCategory from "@/hooks/useCategory";
 
 function Categories() {
-  const { setIsSearched } = useProductContext();
-  const { selectedCategory, setSelectedCategory, setRefreshHome } =
-    useHomeContext();
+  const { 
+    setIsSearched, 
+    selectedCategory, 
+    setSelectedCategory, 
+    setRefreshHome 
+  } = useShopContext();
   const [categories, setCategories] = useState<Category[]>([]);
   const handleCategory = useCategory();
 

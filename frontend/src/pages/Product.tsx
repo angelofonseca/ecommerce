@@ -1,18 +1,19 @@
 import { useEffect } from 'react';
 import AddToCart from '../components/AddToCart';
-import { useProductContext } from '../context/ProductContext';
+import { useShopContext } from '../context/ShopContext';
 import DetailedProduct from '../components/DetailedProduct';
 
 function Product() {
-  const { product, saveProduct } = useProductContext();
+  const { selectedProduct: product, saveProduct } = useShopContext();
 
   useEffect(() => {
+    if (!product) return;
     const getProduct = localStorage.getItem('product');
     const item = getProduct ? JSON.parse(getProduct) : null;
     if (item && item.id !== product.id) saveProduct(item);
-  }, [product.id, saveProduct]);
+  }, [saveProduct, product]);
 
-  if (!product || product.id === 'notfound') {
+  if (!product) {
     return <h1>Produto não encontrado</h1>;
   }
 

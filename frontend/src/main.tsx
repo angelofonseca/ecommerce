@@ -3,8 +3,8 @@ import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import { CartProvider } from "./context/CartContext";
-import { ProductProvider } from "./context/ProductContext";
 import { AuthProvider } from "./context/AuthContext";
+import { ShopProvider } from "./context/ShopContext";
 import { HomeProvider } from "./context/HomeContext";
 
 const root = ReactDOM.createRoot(
@@ -13,13 +13,13 @@ const root = ReactDOM.createRoot(
 root.render(
   <BrowserRouter>
     <AuthProvider>
-      <ProductProvider>
-        <CartProvider>
-          <HomeProvider>
+      <ShopProvider>
+        <HomeProvider>
+          <CartProvider>
             <App />
-          </HomeProvider>
-        </CartProvider>
-      </ProductProvider>
+          </CartProvider>
+        </HomeProvider>
+      </ShopProvider>
     </AuthProvider>
   </BrowserRouter>
 );

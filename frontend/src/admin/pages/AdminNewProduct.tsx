@@ -12,7 +12,6 @@ function AdminNewProduct() {
     brandId: "",
     quantity: "",
   });
-  // const { setProducts, setIsSearched, setIsLoading } = useProductContext();
   const [categories, setCategories] = useState<Category[]>([]);
   const [brands, setBrands] = useState<Category[]>([]);
 

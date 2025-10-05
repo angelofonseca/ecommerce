@@ -1,22 +1,22 @@
 import Loading from "@/components/Loading";
 import SearchBar from "@/components/SearchBar";
-import { useShopContext } from "@/context/ShopContext";
-import { getProducts } from "@/services/api";
+import { getCategories } from "@/services/api";
 import { useEffect } from "react";
 import AdminProductList from "../components/AdminProductList";
+import { useShopContext } from "@/context/ShopContext";
 
-function AdminProducts() {
-  const { isLoading, setProducts, setIsLoading } = useShopContext();
-
+function AdminCategories() {
+  const { isLoading, setIsLoading } = useShopContext();
+  const { setCategories } = useShopContext();
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchCategories = async () => {
       setIsLoading(true);
-      const results = await getProducts();
-      setProducts(results);
+      const results = await getCategories();
+      setCategories(results);
       setIsLoading(false);
     };
-    fetchProducts();
-  }, [setIsLoading, setProducts]);
+    fetchCategories();
+  }, [setIsLoading]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
@@ -26,7 +26,7 @@ function AdminProducts() {
           <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center">
             Gerenciar Produtos
           </h1>
-          
+
           {/* Search and Add Button */}
           <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
             <div className="flex-1">
@@ -64,4 +64,4 @@ function AdminProducts() {
     </div>
   );
 }
-export default AdminProducts;
+export default AdminCategories;

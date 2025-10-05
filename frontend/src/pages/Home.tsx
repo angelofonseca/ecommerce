@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { useHomeContext } from "../context/HomeContext";
-import { useProductContext } from "../context/ProductContext";
 import Categories from "../components/Categories";
 import ProductsList from "../components/ProductsList";
 import Loading from "../components/Loading";
 import { getProducts } from "../services/api";
+import { useShopContext } from "@/context/ShopContext";
 
 function Home() {
-  const { isLoading, setProducts, setIsLoading } = useProductContext();
+  const { isLoading, setProducts, setIsLoading } = useShopContext();
   const { refreshHome, selectedCategory, setRefreshHome } = useHomeContext();
 
   useEffect(() => {

@@ -6,10 +6,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getProductsFromQuery } from "../services/api";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { useProductContext } from "../context/ProductContext";
+import { useShopContext } from "../context/ShopContext";
 
 function SearchBar() {
-  const { setProducts, setIsSearched, setIsLoading } = useProductContext();
+  const { setProducts, setIsSearched, setIsLoading } = useShopContext();
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
