@@ -1,14 +1,15 @@
 services:
   db:
-    image: mysql:8
+    image: postgres:15
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: 8vT!pQ2@rXzLw9sA
-      MYSQL_DATABASE: ecommerce
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 8vT!pQ2@rXzLw9sA
+      POSTGRES_DB: ecommerce
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - db_data:/var/lib/mysql
+      - db_data:/var/lib/postgresql/data
 
   backend:
     container_name: ecommerce-backend
@@ -20,7 +21,7 @@ services:
       - "8080:8080"
     environment:
       JWT_SECRET: 966f7d97ca798d29c533dc7eb605f24cf006e5747182bd046e9eaeedf42e4c33
-      DATABASE_URL: "mysql://root:8vT!pQ2@rXzLw9sA@db:3306/ecommerce"
+      DATABASE_URL: "postgresql://postgres:8vT!pQ2@rXzLw9sA@db:5432/ecommerce?schema=public"
     volumes:
       - ./backend:/app
       - /app/node_modules

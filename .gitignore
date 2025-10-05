@@ -3,3 +3,5 @@ node_modules
 backend/prisma/migrations
 backend/src/generated
 backend/dist
+.env.example
+MIGRATION-GUIDE.md
