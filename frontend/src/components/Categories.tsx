@@ -1,18 +1,17 @@
 import { useEffect, useState } from "react";
-import { getCategories, getProductsFromCategory } from "../services/api";
+import { getCategories } from "../services/api";
 import type { Category } from "../Types";
 import { useProductContext } from "../context/ProductContext";
 import { useHomeContext } from "../context/HomeContext";
 import { Label } from "@radix-ui/react-label";
-import { useNavigate } from "react-router-dom";
-import { createURLSlug } from "@/helpers/createURLSlug";
+import useCategory from "@/hooks/useCategory";
 
 function Categories() {
-  const { setProducts, setIsSearched, setIsLoading } = useProductContext();
+  const { setIsSearched } = useProductContext();
   const { selectedCategory, setSelectedCategory, setRefreshHome } =
     useHomeContext();
   const [categories, setCategories] = useState<Category[]>([]);
-  const navigate = useNavigate();
+  const handleCategory = useCategory();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -21,19 +20,6 @@ function Categories() {
     };
     fetchCategories();
   }, []);
-
-  const handleCategory = async (categoryId: string) => {
-    setIsLoading(true);
-    setSelectedCategory(categoryId);
-    const results = await getProductsFromCategory(categoryId);
-    setProducts(results);
-    const slug = results[0]?.category?.name
-      ? createURLSlug(results[0].category.name)
-      : "";
-    navigate("/?search=" + slug);
-    setIsSearched(true);
-    setIsLoading(false);
-  };
 
   return (
     <div className="space-y-3">

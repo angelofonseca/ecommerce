@@ -66,9 +66,9 @@ export default class ProductService extends CRUDService<Product> {
         const createdProduct = await this.service.findByName(product.name);
 
         if (createdProduct) {
-            const productId = createdProduct.id;
+            const { id } = createdProduct;
             const now = new Date();
-            await this.stockModel.create({ productId, quantity, createdAt: now, updatedAt: now });
+            await this.stockModel.create({ id, quantity, createdAt: now, updatedAt: now });
         }
 
         return result;
@@ -123,6 +123,12 @@ export default class ProductService extends CRUDService<Product> {
             category: true, brand: true, stock: true
         });
         return { status: 200, data: result };
+    }
+
+    async deleteById(id: number): Promise<ServiceResponse<Message>> {
+        const productId = id;
+        await this.stockModel.deleteById(productId);
+        return super.deleteById(id);
     }
 
 }

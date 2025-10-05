@@ -90,11 +90,11 @@ model Order {
 }
 
 model Stock {
-  productId Int      @id
+  id        Int      @id @map("productId")
   quantity  Int
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
-  product   Product  @relation(fields: [productId], references: [id])
+  product   Product  @relation(fields: [id], references: [id])
 
   @@map("stock")
 }

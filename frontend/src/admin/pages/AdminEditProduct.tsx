@@ -14,7 +14,7 @@ function AdminEditProduct() {
   const [brands, setBrands] = useState<Category[]>([]);
   const [formData, setFormData] = useState<ProductEditForm>({});
   const [updatedFormData, setUpdatedFormData] = useState<ProductEditForm>({});
-  const [stockQuantity, setStockQuantity] = useState<number | string>("");
+  const [stockQuantity, setStockQuantity] = useState<number>();
   const { id } = useParams();
   const handleGoBack = useGoBack();
 

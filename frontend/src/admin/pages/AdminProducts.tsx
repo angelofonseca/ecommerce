@@ -3,7 +3,6 @@ import SearchBar from "@/components/SearchBar";
 import { useProductContext } from "@/context/ProductContext";
 import { getProducts } from "@/services/api";
 import { useEffect } from "react";
-import { NavLink } from "react-router-dom";
 import AdminProductList from "../components/AdminProductList";
 
 function AdminProducts() {
@@ -33,15 +32,6 @@ function AdminProducts() {
             <div className="flex-1">
               <SearchBar />
             </div>
-            <NavLink
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 flex items-center justify-center px-6 py-3 font-semibold transition duration-200 transform hover:scale-105 shadow-lg min-w-fit"
-              to={"/admin/products/add"}
-            >
-              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-              </svg>
-              Novo Produto
-            </NavLink>
           </div>
         </div>
 

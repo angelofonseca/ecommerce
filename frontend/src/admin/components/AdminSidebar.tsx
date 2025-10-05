@@ -17,6 +17,26 @@ function AdminSidebar() {
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={2}
+            d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2 2v0M3 7l9-6 9 6M13 5h6v1a1 1 0 01-1 1h-4a1 1 0 01-1-1V5z"
+          />
+        </svg>
+      ),
+      label: "Dashboard",
+      path: "/admin",
+      description: "Visão geral"
+    },
+    {
+      icon: (
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
             d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
           />
         </svg>
@@ -42,7 +62,7 @@ function AdminSidebar() {
         </svg>
       ),
       label: "Novo Produto",
-      path: "/admin/products/new",
+      path: "/admin/products/add",
       description: "Cadastrar produto"
     },
     {
@@ -179,6 +199,7 @@ function AdminSidebar() {
               <NavLink
                 key={item.path}
                 to={item.path}
+                end={item.path === "/admin/products" || item.path === "/admin"} // Só ativo na rota exata para Dashboard e Produtos
                 onClick={() => setIsOpen(false)} // Close mobile menu on navigation
                 className={({ isActive }) =>
                   `group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${

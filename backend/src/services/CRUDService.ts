@@ -37,7 +37,7 @@ export default class CRUDService<T> {
     include?: IncludeOptions
   ): Promise<ServiceResponse<Message>> {
     const result = await this.service.find(id);
-    if (!result) return { status: 404, data: { message: "Not found" } };
+    if (!result) return { status: 404, data: { message: "ID not Found" } };
 
     await this.service.updateById(id, data, include);
 
@@ -51,7 +51,7 @@ export default class CRUDService<T> {
       await this.service.deleteById(id);
       return { status: 200, data: { message: "Deleted successfully" } };
     } catch (error) {
-      return { status: 404, data: { message: "Not Found" } };
+      return { status: 404, data: { message: "ID not Found" } };
     }
   }
 }

@@ -5,7 +5,7 @@ import { MdLocalShipping } from "react-icons/md";
 import { FaTrash } from "react-icons/fa6";
 import { FaEdit } from "react-icons/fa";
 import { Switch } from "@/components/ui/switch";
-import { updateProductFreeShipping } from "@/services/api";
+import { deleteProductByID, updateProductFreeShipping } from "@/services/api";
 import { useProductContext } from "@/context/ProductContext";
 import { useNavigate } from "react-router-dom";
 
@@ -26,7 +26,15 @@ function ProductCard({ product }: ProductCardProps) {
     saveProduct(product);
     navigate(`/admin/products/edit/${id}`);
   };
-  const handleDelete = () => {};
+  const handleDelete = async () => {
+    try {
+      await deleteProductByID(id.toString());
+      alert("Produto excluído com sucesso!");
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      alert("Erro ao excluir produto");
+    }
+  };
   const handleFreeShipping = async (id: string, isChecked: boolean) => {
     await updateProductFreeShipping(id, isChecked);
     setProducts((prevProducts) =>
@@ -73,7 +81,7 @@ function ProductCard({ product }: ProductCardProps) {
       <div className="hidden md:flex items-center justify-center">
         <Switch
           checked={freeShipping}
-          onCheckedChange={(e) => handleFreeShipping(id, e)}
+          onCheckedChange={(e) => handleFreeShipping(id.toString(), e)}
         />
       </div>
 
@@ -115,7 +123,7 @@ function ProductCard({ product }: ProductCardProps) {
             onClick={handleEdit}
             className="flex-1 px-3 py-1.5 text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors duration-200 text-sm font-medium"
           >
-            <FaEdit className="w-3 h-3 inline mr-1" onClick={() => {}} />
+            <FaEdit className="w-3 h-3 inline mr-1"/>
             Editar
           </button>
           <button

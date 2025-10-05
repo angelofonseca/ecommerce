@@ -49,6 +49,16 @@ export async function updateProductFreeShipping(id: string, isChecked: boolean) 
   return data;
 }
 
+export async function deleteProductByID(id: string) {
+  const URL = `${BACKEND_BASEURL}/product/${id}`;
+  const response = await fetch(URL, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+  });
+  const data = await response.json();
+  return data;
+}
+
 export async function getCategories() {
   const URL = `${BACKEND_BASEURL}/category`;
   const response = await fetch(URL);
