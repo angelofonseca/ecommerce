@@ -1,12 +1,12 @@
-import { Category } from "@/Types";
+import { Brand } from "@/Types";
 import { Edit2, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 
-function AdminCategoryCard({ category }: { category: Category }) {
+function AdminBrandCard({ brand }: { brand: Brand }) {
   const handleDelete = () => {
-    if (window.confirm(`Tem certeza que deseja excluir a categoria "${category.name}"?`)) {
-      // TODO: Implementar lógica de deletar categoria
-      console.log("Deletando categoria:", category.id);
+    if (window.confirm(`Tem certeza que deseja excluir a marca "${brand.name}"?`)) {
+      // TODO: Implementar lógica de deletar marca
+      console.log("Deletando marca:", brand.id);
     }
   };
 
@@ -15,7 +15,7 @@ function AdminCategoryCard({ category }: { category: Category }) {
       <div className="grid grid-cols-3 gap-4 items-center">
         {/* Nome */}
         <div>
-          <h3 className="text-sm font-medium text-gray-900">{category.name}</h3>
+          <h3 className="text-sm font-medium text-gray-900">{brand.name}</h3>
         </div>
 
         {/* Data de Criação */}
@@ -28,7 +28,7 @@ function AdminCategoryCard({ category }: { category: Category }) {
         {/* Ações */}
         <div className="flex items-center gap-2">
           <Link
-            to={`/admin/categories/edit/${category.id}`}
+            to={`/admin/brands/edit/${brand.id}`}
             className="inline-flex items-center px-3 py-1.5 text-sm bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors duration-200"
           >
             <Edit2 className="w-4 h-4 mr-1" />
@@ -47,4 +47,5 @@ function AdminCategoryCard({ category }: { category: Category }) {
     </div>
   );
 }
-export default AdminCategoryCard;
+
+export default AdminBrandCard;

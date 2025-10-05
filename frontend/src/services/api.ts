@@ -59,6 +59,27 @@ export async function deleteProductByID(id: string) {
   return data;
 }
 
+export async function deleteCategoryByID(id: string) {
+  const URL = `${BACKEND_BASEURL}/category/${id}`;
+  const response = await fetch(URL, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+  });
+  const data = await response.json();
+  return data;
+}
+
+export async function deleteBrandByID(id: string) {
+  const URL = `${BACKEND_BASEURL}/brand/${id}`;
+  const response = await fetch(URL, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+  });
+  const data = await response.json();
+  return data;
+}
+
+
 export async function getCategories() {
   const URL = `${BACKEND_BASEURL}/category`;
   const response = await fetch(URL);

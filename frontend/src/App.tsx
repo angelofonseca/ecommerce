@@ -9,11 +9,12 @@ import Login from "./pages/Login";
 import Signin from "./pages/Signin";
 import AdminLogin from "./admin/pages/AdminLogin";
 import AdminLayout from "./admin/layout/AdminLayout";
-import AdminProducts from "./admin/pages/AdminProducts";
+import AdminProduct from "./admin/pages/AdminProduct";
 import AdminNewProduct from "./admin/pages/AdminNewProduct";
 import AdminEditProduct from "./admin/pages/AdminEditProduct";
-import AdminCategories from "./admin/pages/AdminCategory";
+import AdminCategory from "./admin/pages/AdminCategory";
 import AdminDashboard from "./admin/pages/AdminDashboard";
+import AdminBrand from "./admin/pages/AdminBrand";
 
 function App() {
   return (
@@ -21,10 +22,11 @@ function App() {
       <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<AdminDashboard />} />
-        <Route path="/admin/products" element={<AdminProducts />} />
+        <Route path="/admin/products" element={<AdminProduct />} />
         <Route path="/admin/products/add" element={<AdminNewProduct />} />
         <Route path="/admin/products/edit/:id" element={<AdminEditProduct />} />
-        <Route path="/admin/categories" element={<AdminCategories />} />
+        <Route path="/admin/categories" element={<AdminCategory />} />
+        <Route path="/admin/brands" element={<AdminBrand />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
       </Route>
       <Route path="/" element={<Layout />}>
