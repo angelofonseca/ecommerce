@@ -1,8 +1,10 @@
-import { getBrands, getCategories, registerNewProduct } from "@/services/api";
-import { Category, ProductData } from "@/Types";
-import { useEffect, useState } from "react";
+import { registerNewProduct } from "@/services/api";
+import { ProductData } from "@/Types";
+import { useState } from "react";
+import { useShopContext } from "@/context/ShopContext";
 
 function AdminNewProduct() {
+  const { categories, brands } = useShopContext();
   const [formData, setFormData] = useState<ProductData>({
     name: "",
     photo: "",
@@ -12,21 +14,6 @@ function AdminNewProduct() {
     brandId: "",
     quantity: "",
   });
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [brands, setBrands] = useState<Category[]>([]);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const result = await getCategories();
-      setCategories(result);
-    };
-    const fetchBrands = async () => {
-      const result = await getBrands();
-      setBrands(result);
-    };
-    fetchCategories();
-    fetchBrands();
-  }, []);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { target } = event;

@@ -1,39 +1,24 @@
 import { useEffect } from "react";
-import { useHomeContext } from "../context/HomeContext";
 import Categories from "../components/Categories";
 import ProductsList from "../components/ProductsList";
 import Loading from "../components/Loading";
-import { getProducts } from "../services/api";
 import { useShopContext } from "@/context/ShopContext";
 
 function Home() {
-  const { isLoading, setProducts, setIsLoading } = useShopContext();
-  const { refreshHome, selectedCategory, setRefreshHome } = useHomeContext();
+  const { 
+    isLoading, 
+    refreshHome, 
+    setRefreshHome,
+    refreshProducts
+  } = useShopContext();
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      setIsLoading(true);
-      let results;
-      if (selectedCategory) {
-        results = await getProducts(); // Troque por sua função de filtro
-      } else {
-        results = await getProducts();
-      }
-      setProducts(results);
-      setIsLoading(false);
+    // Executa refresh quando necessário
+    if (refreshHome) {
+      refreshProducts();
       setRefreshHome(false); // Reseta flag após atualização
-    };
-    // Executa na primeira renderização ou quando refreshHome for true
-    if (refreshHome || selectedCategory === null) {
-      fetchProducts();
     }
-  }, [
-    refreshHome,
-    selectedCategory,
-    setIsLoading,
-    setProducts,
-    setRefreshHome,
-  ]);
+  }, [refreshHome, refreshProducts, setRefreshHome]);
 
   return (
     <div className="min-h-screen bg-background">

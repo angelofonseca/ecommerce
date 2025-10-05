@@ -1,40 +1,10 @@
-/* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useState, ReactNode } from "react";
-import { Product, Category, Brand } from "../Types";
+import { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import { Product, Category, Brand, ShopContextType } from "../Types";
+import { getCategories, getBrands, getProducts } from "../services/api";
 
-// Context Type
-interface ShopContextType {
-  // Estado
-  products: Product[];
-  selectedProduct: Product | null;
-  categories: Category[];
-  brands: Brand[];
-  selectedCategory: string | null;
-  searchQuery: string;
-  isLoading: boolean;
-  isSearched: boolean;
-  refreshHome: boolean;
-  
-  // Actions
-  setProducts: (products: Product[]) => void;
-  setSelectedProduct: (product: Product | null) => void;
-  saveProduct: (product: Product) => void;
-  setCategories: (categories: Category[]) => void;
-  setBrands: (brands: Brand[]) => void;
-  setSelectedCategory: (categoryId: string | null) => void;
-  setSearchQuery: (query: string) => void;
-  setIsLoading: (loading: boolean) => void;
-  setIsSearched: (searched: boolean) => void;
-  setRefreshHome: (refresh: boolean) => void;
-  resetSearch: () => void;
-}
-
-// Context
 const ShopContext = createContext<ShopContextType | undefined>(undefined);
 
-// Provider
 export function ShopProvider({ children }: { children: ReactNode }) {
-  // Estados individuais usando useState
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -44,6 +14,37 @@ export function ShopProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSearched, setIsSearched] = useState<boolean>(false);
   const [refreshHome, setRefreshHome] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      if (categories.length > 0 && brands.length > 0 && products.length > 0) return;
+      
+      try {
+        setIsLoading(true);
+        const promises = [];
+        
+        if (categories.length === 0) {
+          promises.push(getCategories().then(setCategories));
+        }
+        
+        if (brands.length === 0) {
+          promises.push(getBrands().then(setBrands));
+        }
+        
+        if (products.length === 0) {
+          promises.push(getProducts().then(setProducts));
+        }
+        
+        await Promise.all(promises);
+      } catch (error) {
+        console.error("Error fetching initial data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchInitialData();
+  }, [categories.length, brands.length, products.length]);
 
   const saveProduct = (product: Product) => {
     setSelectedProduct(product);
@@ -55,6 +56,42 @@ export function ShopProvider({ children }: { children: ReactNode }) {
     setIsSearched(false);
     setSelectedCategory(null);
     setProducts([]);
+  };
+
+  const refreshCategories = async () => {
+    setIsLoading(true);
+    try {
+      const categoriesData = await getCategories();
+      setCategories(categoriesData);
+    } catch (error) {
+      console.error("Error refreshing categories:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const refreshBrands = async () => {
+    setIsLoading(true);
+    try {
+      const brandsData = await getBrands();
+      setBrands(brandsData);
+    } catch (error) {
+      console.error("Error refreshing brands:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const refreshProducts = async () => {
+    setIsLoading(true);
+    try {
+      const productsData = await getProducts();
+      setProducts(productsData);
+    } catch (error) {
+      console.error("Error refreshing products:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const value: ShopContextType = {
@@ -81,6 +118,9 @@ export function ShopProvider({ children }: { children: ReactNode }) {
     setIsSearched,
     setRefreshHome,
     resetSearch,
+    refreshCategories,
+    refreshBrands,
+    refreshProducts,
   };
 
   return (

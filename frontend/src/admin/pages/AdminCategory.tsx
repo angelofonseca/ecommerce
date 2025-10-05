@@ -1,23 +1,11 @@
 import Loading from "@/components/Loading";
 import SearchBar from "@/components/SearchBar";
-import { getCategories } from "@/services/api";
-import { useEffect } from "react";
 import { useShopContext } from "@/context/ShopContext";
 import AdminCategoryList from "../components/AdminCategoryList";
 
 function AdminCategories() {
-  const { isLoading, setIsLoading } = useShopContext();
-  const { setCategories } = useShopContext();
-  useEffect(() => {
-    const fetchCategories = async () => {
-      setIsLoading(true);
-      const results = await getCategories();
-      setCategories(results);
-      setIsLoading(false);
-    };
-    fetchCategories();
-  }, [setIsLoading]);
-
+  const { isLoading } = useShopContext();
+  
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

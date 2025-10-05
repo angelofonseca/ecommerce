@@ -1,27 +1,16 @@
-import { useEffect, useState } from "react";
-import { getCategories } from "../services/api";
-import type { Category } from "../Types";
 import { useShopContext } from "../context/ShopContext";
 import { Label } from "@radix-ui/react-label";
 import useCategory from "@/hooks/useCategory";
 
 function Categories() {
   const { 
+    categories,
     setIsSearched, 
     selectedCategory, 
     setSelectedCategory, 
     setRefreshHome 
   } = useShopContext();
-  const [categories, setCategories] = useState<Category[]>([]);
   const handleCategory = useCategory();
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const result = await getCategories();
-      setCategories(result);
-    };
-    fetchCategories();
-  }, []);
 
   return (
     <div className="space-y-3">

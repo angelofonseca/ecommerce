@@ -82,32 +82,6 @@ export type CategoryContextType = {
   setCategories: React.Dispatch<React.SetStateAction<Category[]>>;
 };
 
-export type ShopContextType = {
-  // Estado
-  products: Product[];
-  selectedProduct: Product | null;
-  categories: Category[];
-  brands: Brand[];
-  selectedCategory: string | null;
-  searchQuery: string;
-  isLoading: boolean;
-  isSearched: boolean;
-  refreshHome: boolean;
-  
-  // Actions
-  setProducts: (products: Product[]) => void;
-  setSelectedProduct: (product: Product | null) => void;
-  saveProduct: (product: Product) => void;
-  setCategories: (categories: Category[]) => void;
-  setBrands: (brands: Brand[]) => void;
-  setSelectedCategory: (categoryId: string | null) => void;
-  setSearchQuery: (query: string) => void;
-  setIsLoading: (loading: boolean) => void;
-  setIsSearched: (searched: boolean) => void;
-  setRefreshHome: (refresh: boolean) => void;
-  resetSearch: () => void;
-};
-
 export type CartContextType = {
   cart: CartType;
   setCart: React.Dispatch<React.SetStateAction<CartType>>;
@@ -163,3 +137,33 @@ export type ProductType = {
   quantity: number;
 }
 
+export type ShopContextType = {
+  // Estado
+  products: Product[];
+  selectedProduct: Product | null;
+  categories: Category[];
+  brands: Brand[];
+  selectedCategory: string | null;
+  searchQuery: string;
+  isLoading: boolean;
+  isSearched: boolean;
+  refreshHome: boolean;
+  
+  // Actions
+  setProducts: (products: Product[]) => void;
+  setSelectedProduct: (product: Product | null) => void;
+  saveProduct: (product: Product) => void;
+  setCategories: (categories: Category[]) => void;
+  setBrands: (brands: Brand[]) => void;
+  setSelectedCategory: (categoryId: string | null) => void;
+  setSearchQuery: (query: string) => void;
+  setIsLoading: (loading: boolean) => void;
+  setIsSearched: (searched: boolean) => void;
+  setRefreshHome: (refresh: boolean) => void;
+  resetSearch: () => void;
+  
+  // Refresh functions
+  refreshCategories: () => Promise<void>;
+  refreshBrands: () => Promise<void>;
+  refreshProducts: () => Promise<void>;
+}

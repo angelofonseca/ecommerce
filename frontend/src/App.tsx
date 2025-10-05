@@ -8,23 +8,24 @@ import Categories from "./components/Categories";
 import Login from "./pages/Login";
 import Signin from "./pages/Signin";
 import AdminLogin from "./admin/pages/AdminLogin";
-import AdminHome from "./admin/pages/AdminHome";
 import AdminLayout from "./admin/layout/AdminLayout";
 import AdminProducts from "./admin/pages/AdminProducts";
 import AdminNewProduct from "./admin/pages/AdminNewProduct";
 import AdminEditProduct from "./admin/pages/AdminEditProduct";
 import AdminCategories from "./admin/pages/AdminCategory";
+import AdminDashboard from "./admin/pages/AdminDashboard";
 
 function App() {
   return (
     <Routes>
       <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/admin" element={<AdminLayout />}>
-        <Route index element={<AdminHome />} />
+        <Route index element={<AdminDashboard />} />
         <Route path="/admin/products" element={<AdminProducts />} />
         <Route path="/admin/products/add" element={<AdminNewProduct />} />
         <Route path="/admin/products/edit/:id" element={<AdminEditProduct />} />
         <Route path="/admin/categories" element={<AdminCategories />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
       </Route>
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />

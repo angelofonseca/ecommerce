@@ -22,7 +22,7 @@ function AdminSidebar() {
         </svg>
       ),
       label: "Dashboard",
-      path: "/admin",
+      path: "/admin/dashboard",
       description: "Visão geral"
     },
     {
@@ -199,7 +199,7 @@ function AdminSidebar() {
               <NavLink
                 key={item.path}
                 to={item.path}
-                end={item.path === "/admin/products" || item.path === "/admin"} // Só ativo na rota exata para Dashboard e Produtos
+                end={item.path === "/admin/products" || item.path === "/admin/dashboard"} // Só ativo na rota exata para Dashboard e Produtos
                 onClick={() => setIsOpen(false)} // Close mobile menu on navigation
                 className={({ isActive }) =>
                   `group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${

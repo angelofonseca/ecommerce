@@ -1,17 +1,12 @@
 import useGoBack from "@/hooks/useGoBack";
-import {
-  getBrands,
-  getCategories,
-  getProductByID,
-  updateProduct,
-} from "@/services/api";
-import { Category, ProductEditForm } from "@/Types";
+import { getProductByID, updateProduct } from "@/services/api";
+import { ProductEditForm } from "@/Types";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useShopContext } from "@/context/ShopContext";
 
 function AdminEditProduct() {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [brands, setBrands] = useState<Category[]>([]);
+  const { categories, brands } = useShopContext();
   const [formData, setFormData] = useState<ProductEditForm>({});
   const [updatedFormData, setUpdatedFormData] = useState<ProductEditForm>({});
   const [stockQuantity, setStockQuantity] = useState<number>();
@@ -23,16 +18,6 @@ function AdminEditProduct() {
       const result = await getProductByID(id as string);
       setFormData(result);
     };
-    const fetchCategories = async () => {
-      const result = await getCategories();
-      setCategories(result);
-    };
-    const fetchBrands = async () => {
-      const result = await getBrands();
-      setBrands(result);
-    };
-    fetchCategories();
-    fetchBrands();
     fetchProduct();
   }, [id]);
 
