@@ -20,6 +20,8 @@ export default class UserService extends CRUDService<User> {
     const validation = validateUser(user);
     if (validation) return validation;
 
+    if (!user.role) user.role = 'CUSTOMER';
+
     user.password = bcrypt.hashSync(user.password, 8);
     try {
       return await super.create(user);

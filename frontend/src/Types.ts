@@ -99,6 +99,7 @@ export type User = {
   cpf: string;
   phone?: string;
   address?: string;
+  role?: "ADMIN" | "CUSTOMER";
 }
 
 export type Login = {
