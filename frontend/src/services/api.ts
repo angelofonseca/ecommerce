@@ -126,13 +126,14 @@ export async function registerUser(user: User) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(user),
   });
-  try {
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error registering user:", error);
-    throw error;
+  
+  const data = await response.json();
+  
+  if (!response.ok) {
+    throw new Error(data.message || "Erro ao cadastrar usuário");
   }
+  
+  return data;
 }
 
 export async function login(user: { email: string; password: string }) {

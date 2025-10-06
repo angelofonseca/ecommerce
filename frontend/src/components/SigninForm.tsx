@@ -33,9 +33,23 @@ export function SigninForm({
       alert("Senhas não coincidem");
       return;
     }
-    const data = await registerUser(rest);
-    if (data) {
-      setError("Erro ao cadastrar usuário. CPF ou email já cadastrado.");
+    
+    try {
+      await registerUser(rest);
+      alert("Usuário cadastrado com sucesso!");
+      setError(null);
+      setForm({
+        name: "",
+        cpf: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        phone: "",
+        address: "",
+      });
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "Erro ao cadastrar usuário. CPF ou email já cadastrado.";
+      setError(errorMessage);
     }
   };
 
