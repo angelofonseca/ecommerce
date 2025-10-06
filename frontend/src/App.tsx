@@ -22,21 +22,21 @@ function App() {
       <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<AdminDashboard />} />
-        <Route path="/admin/products" element={<AdminProduct />} />
-        <Route path="/admin/products/add" element={<AdminNewProduct />} />
-        <Route path="/admin/products/edit/:id" element={<AdminEditProduct />} />
-        <Route path="/admin/categories" element={<AdminCategory />} />
-        <Route path="/admin/brands" element={<AdminBrand />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="products" element={<AdminProduct />} />
+        <Route path="products/add" element={<AdminNewProduct />} />
+        <Route path="products/edit/:id" element={<AdminEditProduct />} />
+        <Route path="categories" element={<AdminCategory />} />
+        <Route path="brands" element={<AdminBrand />} />
+        <Route path="dashboard" element={<AdminDashboard />} />
       </Route>
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/product/*" element={<Product />} />
-        <Route path="/categories" element={<Categories />} />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signin" element={<Signin />} />
+        <Route path="cart" element={<Cart />} />
+        <Route path="product/*" element={<Product />} />
+        <Route path="categories" element={<Categories />} />
+        <Route path="checkout" element={<Checkout />} />
+        <Route path="login" element={<Login />} />
+        <Route path="signin" element={<Signin />} />
       </Route>
     </Routes>
   );
