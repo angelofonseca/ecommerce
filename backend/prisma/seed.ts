@@ -163,10 +163,22 @@ async function main() {
     data: {
       name: "João Silva",
       cpf: "12345678901",
-      email: "joao@example.com",
-      password: "senha123",
+      email: "joao@teste.com",
+      password: "123456",
       role: "CUSTOMER",
       phone: "11999999999",
+      address: "Rua das Flores, 123",
+    },
+  });
+
+  const admin = await prisma.user.create({
+    data: {
+      name: "USUARIO ADMIN",
+      cpf: "11111111111",
+      email: "admin@teste.com",
+      password: "123456",
+      role: "ADMIN",
+      phone: "11999999991",
       address: "Rua das Flores, 123",
     },
   });
