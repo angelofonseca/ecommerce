@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 import { Product, Category, Brand, ShopContextType } from "../Types";
 import { getCategories, getBrands, getProducts } from "../services/api";
 
@@ -17,24 +23,25 @@ export function ShopProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const fetchInitialData = async () => {
-      if (categories.length > 0 && brands.length > 0 && products.length > 0) return;
-      
+      if (categories.length > 0 && brands.length > 0 && products.length > 0)
+        return;
+
       try {
         setIsLoading(true);
         const promises = [];
-        
+
         if (categories.length === 0) {
           promises.push(getCategories().then(setCategories));
         }
-        
+
         if (brands.length === 0) {
           promises.push(getBrands().then(setBrands));
         }
-        
+
         if (products.length === 0) {
           promises.push(getProducts().then(setProducts));
         }
-        
+
         await Promise.all(promises);
       } catch (error) {
         console.error("Error fetching initial data:", error);
@@ -105,7 +112,7 @@ export function ShopProvider({ children }: { children: ReactNode }) {
     isLoading,
     isSearched,
     refreshHome,
-    
+
     // Actions
     setProducts,
     setSelectedProduct,
@@ -123,11 +130,7 @@ export function ShopProvider({ children }: { children: ReactNode }) {
     refreshProducts,
   };
 
-  return (
-    <ShopContext.Provider value={value}>
-      {children}
-    </ShopContext.Provider>
-  );
+  return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>;
 }
 
 // Hook

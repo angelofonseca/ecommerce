@@ -12,8 +12,15 @@ import { useNavigate } from "react-router-dom";
 function ProductCard({ product }: ProductCardProps) {
   const [, setComments] = useState<Comment[]>([]);
   const { id, name: title, price, photo, freeShipping } = product;
+  const [localFreeShipping, setLocalFreeShipping] = useState(
+    product.freeShipping
+  );
   const { setProducts, saveProduct, products } = useShopContext();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setLocalFreeShipping(product.freeShipping);
+  }, [product.freeShipping]);
 
   useEffect(() => {
     const savedReviews = JSON.parse(
@@ -37,13 +44,21 @@ function ProductCard({ product }: ProductCardProps) {
     }
   };
   const handleFreeShipping = async (id: string, isChecked: boolean) => {
-    await updateProductFreeShipping(id, isChecked);
-    const updatedProducts = products.map((product) =>
-      product.id === Number(id)
-        ? { ...product, freeShipping: !isChecked } // Use isChecked instead of !freeShipping
-        : product
-    );
-    setProducts(updatedProducts);
+    try {
+      await updateProductFreeShipping(id, isChecked);
+
+      setLocalFreeShipping(isChecked);
+
+      const updatedProducts = products.map((product) =>
+        product.id === Number(id)
+          ? { ...product, freeShipping: isChecked }
+          : product
+      );
+      setProducts(updatedProducts);
+    } catch (error) {
+      console.error("Error updating free shipping:", error);
+      setLocalFreeShipping(!isChecked);
+    }
   };
 
   return (
@@ -80,7 +95,7 @@ function ProductCard({ product }: ProductCardProps) {
       {/* Frete Grátis - Desktop */}
       <div className="hidden md:flex items-center justify-center">
         <Switch
-          checked={freeShipping}
+          checked={localFreeShipping}
           onCheckedChange={(e) => handleFreeShipping(id.toString(), e)}
         />
       </div>
