@@ -1,4 +1,3 @@
-import { Prisma, PrismaClient } from "@prisma/client";
 import { PrismaDelegate } from "../Interfaces/PrismaDelegate";
 
 type IncludeOptions = {
