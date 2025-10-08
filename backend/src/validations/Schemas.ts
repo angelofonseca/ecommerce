@@ -1,13 +1,11 @@
 import * as z from "zod";
 
-// Constants for validation rules
 const PASSWORD_MIN_LENGTH = 6;
 const PASSWORD_MAX_LENGTH = 30;
 const NAME_MIN_LENGTH = 2;
 const NAME_MAX_LENGTH = 50;
 const CPF_DIGITS_LENGTH = 11;
 
-// Validation messages
 const VALIDATION_MESSAGES = {
   CPF_INVALID: "CPF deve conter 11 dígitos válidos",
   NAME_TOO_SHORT: `Nome deve ter pelo menos ${NAME_MIN_LENGTH} caracteres`,
@@ -19,7 +17,6 @@ const VALIDATION_MESSAGES = {
   QUANTITY_POSITIVE: "Quantidade deve ser um número inteiro positivo"
 } as const;
 
-// Custom CPF validator
 const validateCPF = (cpf: string): boolean => {
   const digits = cpf.replace(/\D/g, "");
   return digits.length === CPF_DIGITS_LENGTH;

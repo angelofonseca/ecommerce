@@ -19,13 +19,11 @@ export default class ProductController extends CRUDController<Product> {
     async findAll(req: Request, res: Response): Promise<void> {
         const { name } = req.query;
         if (name) {
-            // Buscar por nome
             const { data, status } = await this.service.findAllByName(
                 name as string
             );
             res.status(status).json(data);
         }
-        // Buscar todos
         const { data, status } = await this.service.findAll();
         res.status(status).json(data);
     }

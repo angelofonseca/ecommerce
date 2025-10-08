@@ -1,12 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { Product } from "@prisma/client";
 import CRUDModel from "./CRUDModel.js";
-
-type IncludeOptions = {
-  category?: boolean;
-  brand?: boolean;
-  stock?: boolean;
-};
+import IncludeOptions from "../Interfaces/IncludeOptions.js";
 
 export default class ProductModel extends CRUDModel<Product> {
   constructor(protected model: PrismaClient['product']) {

@@ -10,30 +10,12 @@ import StockModel from "../models/StockModel.js";
 type ProductWithStock = Product & { stock: Stock };
 type ProductWithQuantity = Product & { quantity: number };
 
-type ProductUpdateData = {
-    name?: string;
-    photo?: string;
-    description?: string;
-    price?: number;
-    categoryId?: number;
-    brandId?: number;
-    freeShipping?: boolean;
-    quantity?: number;
-};
-
-type IncludeOptions = {
-    category?: boolean;
-    brand?: boolean;
-    stock?: boolean;
-};
-
 export default class ProductService extends CRUDService<Product> {
     private stockModel = new StockModel(prisma.stock);
     constructor(protected service: ProductModel) {
         super(service);
     }
 
-    // Sobrescrevendo o método find para sempre incluir relações para produtos
     async find(id: number): Promise<ServiceResponse<Message | Product>> {
         return super.find(id, { category: true, brand: true, stock: true });
     }
@@ -46,13 +28,10 @@ export default class ProductService extends CRUDService<Product> {
         if (typeof sanitized.quantity === 'string') {
             sanitized.quantity = parseInt(sanitized.quantity, 10);
         }
-        // Adicione outros campos numéricos se necessário
         return sanitized;
     }
 
-    // Validação e criação do produto com quantidade em estoque
-
-    async create(
+   public async create(
         product: ProductWithQuantity
     ): Promise<ServiceResponse<Message>> {
         const sanitizedProduct = this.sanitizeProductData(product);
@@ -63,18 +42,15 @@ export default class ProductService extends CRUDService<Product> {
 
         const result = await super.create(productData);
 
+        // Verificar se o result pode retornar o produto criado para diminuir o codigo.
         const createdProduct = await this.service.findByName(product.name);
 
-        if (createdProduct) {
-            const { id } = createdProduct;
-            const now = new Date();
-            await this.stockModel.create({ id, quantity, createdAt: now, updatedAt: now });
-        }
+        if (createdProduct) this.createStockEntry(createdProduct.id, quantity);
 
         return result;
     }
 
-    async updateById(
+   public async updateById(
         id: number,
         data: Partial<ProductWithStock>
     ): Promise<ServiceResponse<Message>> {
@@ -104,31 +80,35 @@ export default class ProductService extends CRUDService<Product> {
         }
     }
 
-    async findAll(): Promise<ServiceResponse<Product[]>> {
+   public async findAll(): Promise<ServiceResponse<Product[]>> {
         const products = await this.service.findAll({
             category: true, brand: true, stock: true
         });
         return { status: 200, data: products };
     }
 
-    async findAllByCategoryId(categoryId: number): Promise<ServiceResponse<Product[]>> {
+   public async findAllByCategoryId(categoryId: number): Promise<ServiceResponse<Product[]>> {
         const products = await this.service.findAllByCategoryId(categoryId, {
             category: true, brand: true, stock: true
         });
         return { status: 200, data: products };
     }
 
-    async findAllByName(name: string): Promise<ServiceResponse<Product[]>> {
+   public async findAllByName(name: string): Promise<ServiceResponse<Product[]>> {
         const result = await this.service.findAllByName(name, {
             category: true, brand: true, stock: true
         });
         return { status: 200, data: result };
     }
 
-    async deleteById(id: number): Promise<ServiceResponse<Message>> {
+   public async deleteById(id: number): Promise<ServiceResponse<Message>> {
         const productId = id;
         await this.stockModel.deleteById(productId);
         return super.deleteById(id);
     }
 
+   private async createStockEntry(id: number, quantity: number): Promise<void> {
+            const now = new Date();
+            await this.stockModel.create({ id, quantity, createdAt: now, updatedAt: now });
+    }
 }
