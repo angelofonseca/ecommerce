@@ -1,20 +1,24 @@
+import { Product } from "@prisma/client";
 import IncludeOptions from "../Interfaces/IncludeOptions";
 import Message from "../Interfaces/Message";
 import ServiceResponse from "../Interfaces/ServiceResponse";
 import CRUDModel from "../models/CRUDModel";
 
 export default class CRUDService<T> {
+  constructor(protected model: CRUDModel<T>) {}
 
-  constructor(protected model: CRUDModel<T>) {
-  }
-
-  public async find(id: number, include?: IncludeOptions): Promise<ServiceResponse<Message | T>> {
+  public async find(
+    id: number,
+    include?: IncludeOptions
+  ): Promise<ServiceResponse<Message | T>> {
     const result = await this.model.find(id, include);
     if (!result) return { status: 404, data: { message: "Not found" } };
     return { status: 200, data: result };
   }
 
-  public async findAll(include?: IncludeOptions): Promise<ServiceResponse<T[]>> {
+  public async findAll(
+    include?: IncludeOptions
+  ): Promise<ServiceResponse<T[]>> {
     const result = await this.model.findAll(include);
     return { status: 200, data: result };
   }
@@ -55,17 +59,20 @@ export default class CRUDService<T> {
 
   protected async validateCreateData(data: T): Promise<void> {
     if (!data || Object.keys(data as any).length === 0) {
-      throw new Error('Data cannot be empty');
+      throw new Error("Data cannot be empty");
     }
   }
 
   protected async validateUpdateData(data: Partial<T>): Promise<void> {
     if (!data || Object.keys(data as any).length === 0) {
-      throw new Error('Update data cannot be empty');
+      throw new Error("Update data cannot be empty");
     }
   }
 
-  protected async findByName(name: string, include?: IncludeOptions): Promise<T | null> {
+  protected async findByName(
+    name: string,
+    include?: IncludeOptions
+  ): Promise<T | null> {
     return await this.model.findByName(name, include);
   }
 }

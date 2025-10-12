@@ -26,14 +26,12 @@ export async function registerNewProduct(product: ProductData) {
 
 export async function updateProduct(id: string, productData: Partial<Product>) {
   const URL = `${BACKEND_BASEURL}/product/${id}`;
-  console.log(productData)
   const response = await fetch(URL, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ ...productData }),
   });
   const data = await response.json();
-  console.log(data);
   return data;
 }
 

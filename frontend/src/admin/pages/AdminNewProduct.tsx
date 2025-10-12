@@ -2,6 +2,7 @@ import { registerNewProduct } from "@/services/api";
 import { ProductData } from "@/Types";
 import { useState } from "react";
 import { useShopContext } from "@/context/ShopContext";
+import { useNavigate } from "react-router";
 
 function AdminNewProduct() {
   const { categories, brands } = useShopContext();
@@ -14,7 +15,7 @@ function AdminNewProduct() {
     brandId: "",
     quantity: "",
   });
-
+  const navigate = useNavigate();
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { target } = event;
     setFormData((prevForm) => ({ ...prevForm, [target.name]: target.value }));
@@ -37,6 +38,7 @@ function AdminNewProduct() {
         quantity: "",
       });
       alert("Produto cadastrado com sucesso!");
+      navigate(-1);
     } catch (error) {
       console.error("Erro ao cadastrar produto:", error);
       alert("Erro ao cadastrar produto");
@@ -46,7 +48,6 @@ function AdminNewProduct() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
           <h1 className="text-3xl font-bold text-gray-900 text-center">
             Cadastrar Novo Produto
@@ -56,11 +57,8 @@ function AdminNewProduct() {
           </p>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-lg p-8 space-y-6">
-          {/* Grid layout for better organization */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Nome do Produto */}
             <div className="md:col-span-2">
               <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
                 Nome do Produto *
@@ -77,10 +75,9 @@ function AdminNewProduct() {
               />
             </div>
 
-            {/* URL da Foto */}
             <div className="md:col-span-2">
               <label htmlFor="photo" className="block text-sm font-medium text-gray-700 mb-2">
-                URL da Foto *
+                URL da Foto
               </label>
               <input
                 type="url"
@@ -88,16 +85,14 @@ function AdminNewProduct() {
                 name="photo"
                 value={formData.photo}
                 onChange={handleChange}
-                required
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 placeholder-gray-400"
                 placeholder="https://exemplo.com/imagem.jpg"
               />
             </div>
 
-            {/* Descrição */}
             <div className="md:col-span-2">
               <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
-                Descrição *
+                Descrição
               </label>
               <textarea
                 id="description"
@@ -105,7 +100,6 @@ function AdminNewProduct() {
                 value={formData.description}
                 onChange={handleChange}
                 rows={4}
-                required
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 placeholder-gray-400 resize-none"
                 placeholder="Descreva as características principais do produto..."
               />
@@ -200,7 +194,7 @@ function AdminNewProduct() {
           <div className="pt-6">
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold py-4 px-6 rounded-lg hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform transition duration-200 hover:scale-[1.02] shadow-lg"
+              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white cursor-pointer font-semibold py-4 px-6 rounded-lg hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform transition duration-200 hover:scale-[1.02] shadow-lg"
             >
               <span className="flex items-center justify-center gap-2">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
