@@ -20,6 +20,7 @@ export default class ProductModel extends CRUDModel<Product> {
       where: {
         name: {
           contains: name,
+          mode: 'insensitive',
         }
       },
       ...(include && { include })

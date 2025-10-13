@@ -5,7 +5,7 @@ import { useShopContext } from "@/context/ShopContext";
 import { useNavigate } from "react-router";
 
 function AdminNewProduct() {
-  const { categories, brands } = useShopContext();
+  const { categories, brands, refreshProducts } = useShopContext();
   const [formData, setFormData] = useState<ProductData>({
     name: "",
     photo: "",
@@ -26,7 +26,8 @@ function AdminNewProduct() {
     e.preventDefault();
 
     try {
-      await registerNewProduct(formData);
+     const newProduct = await registerNewProduct(formData);
+     console.log(newProduct)
 
       setFormData({
         name: "",
@@ -38,6 +39,7 @@ function AdminNewProduct() {
         quantity: "",
       });
       alert("Produto cadastrado com sucesso!");
+      refreshProducts();
       navigate(-1);
     } catch (error) {
       console.error("Erro ao cadastrar produto:", error);

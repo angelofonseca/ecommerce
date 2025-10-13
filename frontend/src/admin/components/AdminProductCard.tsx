@@ -43,6 +43,7 @@ function ProductCard({ product }: ProductCardProps) {
       alert("Erro ao excluir produto");
     }
   };
+  
   const handleFreeShipping = async (id: string, isChecked: boolean) => {
     try {
       await updateProductFreeShipping(id, isChecked);

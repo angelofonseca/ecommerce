@@ -1,8 +1,13 @@
 import { useShopContext } from "@/context/ShopContext";
+import { useEffect } from "react";
 import { VictoryPie, VictoryTheme } from "victory";
 
 function AdminDashboard() {
-  const { products, categories, brands, isLoading } = useShopContext();
+  const { products, categories, brands, isLoading, refreshProducts } = useShopContext();
+
+  useEffect(() => {
+    refreshProducts();
+  }, []);
 
   const categoryChartData = categories.map((category) => ({
     x: category.name,

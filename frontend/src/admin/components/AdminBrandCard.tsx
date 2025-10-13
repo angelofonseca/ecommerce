@@ -1,13 +1,20 @@
 import { Brand } from "@/Types";
-import { Edit2, Trash2 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 function AdminBrandCard({ brand }: { brand: Brand }) {
+  const navigate = useNavigate();
   const handleDelete = () => {
-    if (window.confirm(`Tem certeza que deseja excluir a marca "${brand.name}"?`)) {
+    if (
+      window.confirm(`Tem certeza que deseja excluir a marca "${brand.name}"?`)
+    ) {
       // TODO: Implementar lógica de deletar marca
       console.log("Deletando marca:", brand.id);
     }
+  };
+
+      const handleEdit = () => {
+    navigate(`/admin/brands/edit/${brand.id}`);
   };
 
   return (
@@ -21,26 +28,25 @@ function AdminBrandCard({ brand }: { brand: Brand }) {
         {/* Data de Criação */}
         <div>
           <span className="text-sm text-gray-500">
-            {new Date().toLocaleDateString('pt-BR')}
+            {new Date().toLocaleDateString("pt-BR")}
           </span>
         </div>
 
         {/* Ações */}
-        <div className="flex items-center gap-2">
-          <Link
-            to={`/admin/brands/edit/${brand.id}`}
-            className="inline-flex items-center px-3 py-1.5 text-sm bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors duration-200"
+        <div className="hidden md:flex items-center gap-3">
+          <button
+            onClick={handleEdit}
+            className="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition-colors duration-200"
+            title="Editar produto"
           >
-            <Edit2 className="w-4 h-4 mr-1" />
-            Editar
-          </Link>
-          
+            <FaEdit className="w-4 h-4" />
+          </button>
           <button
             onClick={handleDelete}
-            className="inline-flex items-center px-3 py-1.5 text-sm bg-red-100 text-red-700 rounded-md hover:bg-red-200 transition-colors duration-200"
+            className="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition-colors duration-200"
+            title="Excluir produto"
           >
-            <Trash2 className="w-4 h-4 mr-1" />
-            Excluir
+            <FaTrash className="w-4 h-4" />
           </button>
         </div>
       </div>

@@ -4,6 +4,7 @@ import { useShopContext } from "@/context/ShopContext";
 function AdminProductList() {
   const { products, isSearched } = useShopContext();
 
+
   if (products.length === 0 && isSearched) {
     return (
       <div className="text-center py-12">

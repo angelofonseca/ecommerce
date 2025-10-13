@@ -1,13 +1,19 @@
 import { Category } from "@/Types";
-import { Edit2, Trash2 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 function AdminCategoryCard({ category }: { category: Category }) {
+  const navigate = useNavigate();
+
   const handleDelete = () => {
     if (window.confirm(`Tem certeza que deseja excluir a categoria "${category.name}"?`)) {
       // TODO: Implementar lógica de deletar categoria
       console.log("Deletando categoria:", category.id);
     }
+  };
+
+    const handleEdit = () => {
+    navigate(`/admin/categories/edit/${category.id}`);
   };
 
   return (
@@ -26,23 +32,22 @@ function AdminCategoryCard({ category }: { category: Category }) {
         </div>
 
         {/* Ações */}
-        <div className="flex items-center gap-2">
-          <Link
-            to={`/admin/categories/edit/${category.id}`}
-            className="inline-flex items-center px-3 py-1.5 text-sm bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors duration-200"
-          >
-            <Edit2 className="w-4 h-4 mr-1" />
-            Editar
-          </Link>
-          
-          <button
-            onClick={handleDelete}
-            className="inline-flex items-center px-3 py-1.5 text-sm bg-red-100 text-red-700 rounded-md hover:bg-red-200 transition-colors duration-200"
-          >
-            <Trash2 className="w-4 h-4 mr-1" />
-            Excluir
-          </button>
-        </div>
+      <div className="hidden md:flex items-center gap-3">
+        <button
+          onClick={handleEdit}
+          className="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition-colors duration-200"
+          title="Editar categoria"
+        >
+          <FaEdit className="w-4 h-4" />
+        </button>
+        <button
+          onClick={handleDelete}
+          className="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition-colors duration-200"
+          title="Excluir categoria"
+        >
+          <FaTrash className="w-4 h-4" />
+        </button>
+      </div>
       </div>
     </div>
   );
