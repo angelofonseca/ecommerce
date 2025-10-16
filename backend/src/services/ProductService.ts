@@ -126,7 +126,7 @@ export default class ProductService extends CRUDService<Product> {
   public async deleteById(id: number): Promise<ServiceResponse<Message>> {
     try {
       await prisma.$transaction(async (tx) => {
-        await tx.stock.deleteMany({ where: { productId: id } });
+        await tx.stock.deleteMany({ where: { id } });
         await tx.product.delete({ where: { id } });
       });
       return { status: 200, data: { message: "Deleted successfully" } };
