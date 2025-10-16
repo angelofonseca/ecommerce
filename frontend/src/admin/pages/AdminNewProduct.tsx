@@ -106,7 +106,6 @@ function AdminNewProduct() {
               />
             </div>
 
-            {}
             <div>
               <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-2">
                 Preço (R$) *
@@ -128,7 +127,6 @@ function AdminNewProduct() {
               </div>
             </div>
 
-            {}
             <div>
               <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 mb-2">
                 Quantidade em Estoque *
@@ -146,7 +144,6 @@ function AdminNewProduct() {
               />
             </div>
 
-            {}
             <div>
               <label htmlFor="categoryId" className="block text-sm font-medium text-gray-700 mb-2">
                 Categoria *
@@ -168,7 +165,6 @@ function AdminNewProduct() {
               </select>
             </div>
 
-            {}
             <div>
               <label htmlFor="brandId" className="block text-sm font-medium text-gray-700 mb-2">
                 Marca *
@@ -191,7 +187,6 @@ function AdminNewProduct() {
             </div>
           </div>
 
-          {}
           <div className="pt-6">
             <button
               type="submit"
@@ -206,7 +201,6 @@ function AdminNewProduct() {
             </button>
           </div>
 
-          {}
           <div className="text-center text-sm text-gray-500">
             <p>* Campos obrigatórios</p>
           </div>

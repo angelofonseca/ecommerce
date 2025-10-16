@@ -78,14 +78,13 @@ function AdminEditProduct() {
           </p>
         </div>
 
-        {}
         <form
           onSubmit={handleSubmit}
           className="bg-white rounded-xl shadow-lg p-6 space-y-6"
         >
-          {}
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {}
+
             <div className="md:col-span-2">
               <label
                 htmlFor="name"
@@ -105,7 +104,6 @@ function AdminEditProduct() {
               />
             </div>
 
-            {}
             <div className="md:col-span-2">
               <label
                 htmlFor="photo"
@@ -125,7 +123,6 @@ function AdminEditProduct() {
               />
             </div>
 
-            {}
             <div className="md:col-span-2">
               <label
                 htmlFor="description"
@@ -145,7 +142,6 @@ function AdminEditProduct() {
               />
             </div>
 
-            {}
             <div>
               <label
                 htmlFor="price"
@@ -170,7 +166,6 @@ function AdminEditProduct() {
               </div>
             </div>
 
-            {}
             <div>
               <label
                 htmlFor="quantity"
@@ -190,7 +185,6 @@ function AdminEditProduct() {
               />
             </div>
 
-            {}
             <div>
               <label
                 htmlFor="categoryId"
@@ -215,7 +209,6 @@ function AdminEditProduct() {
               </select>
             </div>
 
-            {}
             <div>
               <label
                 htmlFor="brandId"
@@ -241,7 +234,6 @@ function AdminEditProduct() {
             </div>
           </div>
 
-          {}
           <div className="pt-6">
             <button
               type="submit"
@@ -266,7 +258,6 @@ function AdminEditProduct() {
             </button>
           </div>
 
-          {}
           <div className="text-center text-sm text-gray-500">
             <p>* Campos obrigatórios</p>
           </div>

@@ -23,7 +23,7 @@ function AdminSidebar() {
       ),
       label: "Dashboard",
       path: "/admin/dashboard",
-      description: "Visão geral"
+      description: "Visão geral",
     },
     {
       icon: (
@@ -43,7 +43,7 @@ function AdminSidebar() {
       ),
       label: "Produtos",
       path: "/admin/products",
-      description: "Gerenciar produtos"
+      description: "Gerenciar produtos",
     },
     {
       icon: (
@@ -63,7 +63,7 @@ function AdminSidebar() {
       ),
       label: "Categorias",
       path: "/admin/categories",
-      description: "Gerenciar categorias"
+      description: "Gerenciar categorias",
     },
     {
       icon: (
@@ -83,13 +83,13 @@ function AdminSidebar() {
       ),
       label: "Marcas",
       path: "/admin/brands",
-      description: "Gerenciar marcas"
-    }
+      description: "Gerenciar marcas",
+    },
   ];
 
   return (
     <>
-      {}
+
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-white rounded-lg shadow-lg border border-gray-200"
@@ -109,7 +109,6 @@ function AdminSidebar() {
         </svg>
       </button>
 
-      {}
       {isOpen && (
         <div
           className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-30"
@@ -117,7 +116,6 @@ function AdminSidebar() {
         />
       )}
 
-      {}
       <aside
         className={`
           fixed lg:static inset-y-0 left-0 z-40 w-80 lg:w-full
@@ -139,7 +137,10 @@ function AdminSidebar() {
               <NavLink
                 key={item.path}
                 to={item.path}
-                end={item.path === "/admin/products" || item.path === "/admin/dashboard"}
+                end={
+                  item.path === "/admin/products" ||
+                  item.path === "/admin/dashboard"
+                }
                 onClick={() => setIsOpen(false)}
                 className={({ isActive }) =>
                   `group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
@@ -190,40 +191,6 @@ function AdminSidebar() {
               </NavLink>
             ))}
           </nav>
-
-          {}
-          <div className="mt-8 pt-6 border-t border-gray-200">
-            <div className="px-4 py-3 bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl border border-blue-100">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center shadow-md">
-                  <svg
-                    className="w-4 h-4 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <div className="text-sm font-medium text-gray-700">
-                    Admin Online
-                  </div>
-                  <div className="text-xs text-gray-500">
-                    Sistema ativo
-                  </div>
-                </div>
-                <div className="ml-auto">
-                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </aside>
     </>

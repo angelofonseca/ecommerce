@@ -8,7 +8,7 @@ function AdminHeader() {
     <header className="bg-white shadow-lg border-b border-gray-200 sticky top-0 z-50 backdrop-blur-lg">
       <nav className="container mx-auto px-4 lg:px-6">
         <div className="flex items-center justify-between h-16">
-          {}
+
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center shadow-md">
@@ -19,39 +19,23 @@ function AdminHeader() {
                 />
               </div>
               <div className="hidden sm:block">
-                <h1 className="text-xl font-bold text-gray-800">
-                  Admin Panel
-                </h1>
+                <h1 className="text-xl font-bold text-gray-800">Admin Panel</h1>
                 <p className="text-xs text-gray-500">
                   Sistema de Gerenciamento
                 </p>
               </div>
             </div>
           </div>
-
-          {}
-          <div className="absolute left-1/2 transform -translate-x-1/2">
-            <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full shadow-lg">
-              <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-              <span className="text-white font-semibold text-sm tracking-wide">
-                ADMINISTRADOR
-              </span>
-            </div>
-          </div>
-
-          {}
           <div className="flex items-center gap-4">
             {login ? (
               <div className="flex items-center gap-4">
-                {}
+
                 <div className="hidden md:flex items-center gap-3">
                   <div className="text-right">
                     <p className="text-sm font-medium text-gray-700">
                       {login.user.name}
                     </p>
-                    <p className="text-xs text-gray-500">
-                      Administrador
-                    </p>
+                    <p className="text-xs text-gray-500">Administrador</p>
                   </div>
                   <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center shadow-md">
                     <span className="text-white text-sm font-semibold">
@@ -60,7 +44,6 @@ function AdminHeader() {
                   </div>
                 </div>
 
-                {}
                 <button
                   onClick={handleLogout}
                   className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200"

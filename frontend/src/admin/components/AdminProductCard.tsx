@@ -64,7 +64,7 @@ function ProductCard({ product }: ProductCardProps) {
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-6 gap-4 p-6 hover:bg-gray-50 transition-colors duration-200">
-      {}
+
       <div className="flex items-center">
         <div className="h-16 w-16 md:h-20 md:w-20 rounded-lg overflow-hidden shadow-sm bg-gray-100 flex-shrink-0">
           <img
@@ -79,21 +79,18 @@ function ProductCard({ product }: ProductCardProps) {
         </div>
       </div>
 
-      {}
       <div className="hidden md:flex items-center">
         <p className="text-sm font-medium text-gray-900 line-clamp-2 leading-tight">
           {title}
         </p>
       </div>
 
-      {}
       <div className="hidden md:flex items-center">
         <span className="text-lg font-bold text-green-600">
           {formatPrice(price)}
         </span>
       </div>
 
-      {}
       <div className="hidden md:flex items-center justify-center">
         <Switch
           checked={localFreeShipping}
@@ -101,7 +98,6 @@ function ProductCard({ product }: ProductCardProps) {
         />
       </div>
 
-      {}
       <div className="hidden md:flex items-center gap-3">
         <button
           onClick={handleEdit}
