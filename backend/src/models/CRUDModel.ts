@@ -3,20 +3,20 @@ import { PrismaDelegate } from "../Interfaces/PrismaDelegate";
 
 export default class CRUDModel<T> {
 
-  constructor(protected model: PrismaDelegate<T>) {}
+  constructor(protected model: PrismaDelegate<T>) { }
 
   public async find(id: number, include?: IncludeOptions): Promise<T | null> {
-    const sanitizedId = this.sanitizeID(id);
+    const sanitizedId = this._sanitizeID(id);
     return await this.model.findUnique({
       where: { id: sanitizedId },
-      ...(include ? { include }: {})
+      ...(include ? { include } : {})
     });
   }
 
   public async findByName(name: string, include?: IncludeOptions): Promise<T | null> {
     return this.model.findFirst({
       where: { name },
-      ...(include ? { include }: {})
+      ...(include ? { include } : {})
     });
   }
 
@@ -30,11 +30,11 @@ export default class CRUDModel<T> {
 
   public async updateById(id: number, data: Partial<T>, include?: IncludeOptions): Promise<T> {
     try {
-      const sanitizedId = this.sanitizeID(id);
+      const sanitizedId = this._sanitizeID(id);
       return await this.model.update({
         where: { id: sanitizedId },
         data,
-        ...(include ? { include }: {})
+        ...(include ? { include } : {})
       });
     } catch (error) {
       throw error;
@@ -43,15 +43,15 @@ export default class CRUDModel<T> {
 
   public async findAll(include?: IncludeOptions): Promise<T[]> {
     return await this.model.findMany({
-      ...(include ? { include }: {})
+      ...(include ? { include } : {})
     });
   }
 
   public async deleteById(id: number, include?: IncludeOptions): Promise<T> {
-    const sanitizedId = this.sanitizeID(id);
+    const sanitizedId = this._sanitizeID(id);
     return await this.model.delete({
       where: { id: sanitizedId },
-      ...(include ? { include }: {})
+      ...(include ? { include } : {})
     });
   }
 
@@ -66,7 +66,7 @@ export default class CRUDModel<T> {
     return Object.keys(includeObj).length > 0 ? includeObj : undefined;
   }
 
-  private sanitizeID(id: any): number {
+  private _sanitizeID(id: any): number {
     if (typeof id === 'string') {
       const parsed = parseInt(id, 10);
       if (isNaN(parsed)) {

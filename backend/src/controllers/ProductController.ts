@@ -8,7 +8,7 @@ export default class ProductController extends CRUDController<Product> {
         super(service);
     }
 
-    async findAllByCategory(req: Request, res: Response) {
+    public async findAllByCategory(req: Request, res: Response) {
         const categoryId = Number(req.params.id);
         const { data, status } = await this.service.findAllByCategoryId(
             categoryId
@@ -16,7 +16,7 @@ export default class ProductController extends CRUDController<Product> {
         res.status(status).json(data);
     }
 
-    async findAll(req: Request, res: Response): Promise<void> {
+    public async findAll(req: Request, res: Response): Promise<void> {
         const { name } = req.query;
         if (name) {
             const { data, status } = await this.service.findAllByName(

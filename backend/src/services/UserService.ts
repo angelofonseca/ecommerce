@@ -24,7 +24,7 @@ export default class UserService extends CRUDService<User> {
     super(model);
   }
 
-  async create(user: User): Promise<ServiceResponse<Message>> {
+  public async create(user: User): Promise<ServiceResponse<Message>> {
     const validation = validateUser(user);
     if (validation) return validation;
 
@@ -32,7 +32,7 @@ export default class UserService extends CRUDService<User> {
       user.role = DEFAULT_USER_ROLE;
     }
 
-    user.password = this.hashPassword(user.password);
+    user.password = this._hashPassword(user.password);
 
     try {
       return await super.create(user);
@@ -44,7 +44,7 @@ export default class UserService extends CRUDService<User> {
     }
   }
 
-  async login(user: Login): Promise<ServiceResponse<Message | Token>> {
+  public async login(user: Login): Promise<ServiceResponse<Message | Token>> {
     const validation = validateLogin(user);
     if (validation) return validation;
 
@@ -60,7 +60,7 @@ export default class UserService extends CRUDService<User> {
 
     const { password: hash, role, id, name } = foundUser;
 
-    const isPasswordValid = this.verifyPassword(password, hash);
+    const isPasswordValid = this._verifyPassword(password, hash);
     if (!isPasswordValid) {
       return {
         status: 401,
@@ -76,7 +76,7 @@ export default class UserService extends CRUDService<User> {
     };
   }
 
-  async adminLogin(user: Login): Promise<ServiceResponse<Message | Token>> {
+  public async adminLogin(user: Login): Promise<ServiceResponse<Message | Token>> {
     const validation = validateLogin(user);
     if (validation) return validation;
 
@@ -92,7 +92,7 @@ export default class UserService extends CRUDService<User> {
 
     const { password: hash, role, id, name } = foundUser;
 
-    const isPasswordValid = this.verifyPassword(password, hash);
+    const isPasswordValid = this._verifyPassword(password, hash);
     if (!isPasswordValid) {
       return {
         status: 401,
@@ -115,11 +115,11 @@ export default class UserService extends CRUDService<User> {
     };
   }
 
-  private hashPassword(password: string): string {
+  private _hashPassword(password: string): string {
     return bcrypt.hashSync(password, BCRYPT_SALT_ROUNDS);
   }
 
-  private verifyPassword(password: string, hash: string): boolean {
+  private _verifyPassword(password: string, hash: string): boolean {
     return bcrypt.compareSync(password, hash);
   }
 }

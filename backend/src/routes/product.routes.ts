@@ -14,7 +14,7 @@ export default class ProductRoutes extends CRUDRoutes<Product> {
     const controller = new ProductController(service);
     super(model, service, controller);
   }
-  getRoutes() {
+  public getRoutes() {
     this.router.get("/", (req: Request, res: Response) => this.controller.findAll(req, res));
     this.router.get("/:id", (req: Request, res: Response) => this.controller.find(req, res));
     this.router.get("/category/:id", (req: Request, res: Response) => this.controller.findAllByCategory(req, res));

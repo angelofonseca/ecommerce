@@ -14,7 +14,7 @@ export default class UserRoutes extends CRUDRoutes<User> {
     const controller = new UserController(service);
     super(model, service, controller);
   }
-  getRoutes() {
+  public getRoutes() {
     this.router.post("/login", (req, res) => this.controller.login(req, res));
     this.router.post("/register", (req, res) =>
       this.controller.create(req, res)

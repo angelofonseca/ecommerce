@@ -9,7 +9,7 @@ export default class CRUDRoutes<T> {
   ) {
     this.router = Router();
   }
-  getRoutes() {
+  public getRoutes() {
     this.router.post("/", (req: Request, res: Response) => this.controller.create(req, res));
     this.router.get("/:id", (req: Request, res: Response) => this.controller.find(req, res));
     this.router.get("/", (req: Request, res: Response) => this.controller.findAll(req, res));

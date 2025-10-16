@@ -14,11 +14,11 @@ export default class ProductService extends CRUDService<Product> {
     super(model);
   }
 
-  async find(id: number): Promise<ServiceResponse<Message | Product>> {
+  public async find(id: number): Promise<ServiceResponse<Message | Product>> {
     return super.find(id, { category: true, brand: true, stock: true });
   }
 
-  private sanitizeProductData(data: any): any {
+  private _sanitizeProductData(data: any): any {
     const sanitized = { ...data };
     if (typeof sanitized.price === "string") {
       sanitized.price = parseFloat(sanitized.price);
@@ -34,7 +34,7 @@ export default class ProductService extends CRUDService<Product> {
   ): Promise<ServiceResponse<Message>> {
     try {
       await prisma.$transaction(async (tx) => {
-        const sanitizedProduct = this.sanitizeProductData(
+        const sanitizedProduct = this._sanitizeProductData(
           product
         ) as ProductWithQuantity;
         const validation = validateProduct(sanitizedProduct);
@@ -42,7 +42,7 @@ export default class ProductService extends CRUDService<Product> {
         const { quantity, ...data } = sanitizedProduct;
         const { id } = await tx.product.create({ data });
 
-        await this.createStockEntry(tx, id, quantity);
+        await this._createStockEntry(tx, id, quantity);
       });
       return {
         status: 201,
@@ -62,7 +62,7 @@ export default class ProductService extends CRUDService<Product> {
     data: Partial<ProductWithStock>
   ): Promise<ServiceResponse<Message>> {
     try {
-      const sanitizedProduct = this.sanitizeProductData(
+      const sanitizedProduct = this._sanitizeProductData(
         data
       ) as Partial<ProductWithStock>;
       const { stock, ...productData } =
@@ -126,7 +126,7 @@ export default class ProductService extends CRUDService<Product> {
   public async deleteById(id: number): Promise<ServiceResponse<Message>> {
     try {
       await prisma.$transaction(async (tx) => {
-        await tx.stock.deleteMany({ where: { id } });
+        await tx.stock.deleteMany({ where: { productId: id } });
         await tx.product.delete({ where: { id } });
       });
       return { status: 200, data: { message: "Deleted successfully" } };
@@ -135,7 +135,7 @@ export default class ProductService extends CRUDService<Product> {
     }
   }
 
-  private async createStockEntry(
+  private async _createStockEntry(
     tx: any,
     id: number,
     quantity: number

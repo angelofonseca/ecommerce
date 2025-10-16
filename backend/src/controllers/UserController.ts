@@ -29,7 +29,7 @@ export default class UserController extends CRUDController<User> {
 
   public async create(req: Request, res: Response): Promise<void> {
     try {
-      this.validateUserCreation(req.body);
+      this._validateUserCreation(req.body);
       const { data, status } = await this.service.create(req.body as User);
       res.status(status).json(data);
     } catch (error) {
@@ -42,7 +42,7 @@ export default class UserController extends CRUDController<User> {
     res.status(200).json({ role });
   }
 
-  private validateUserCreation(userData: any): void {
+  private _validateUserCreation(userData: any): void {
     this.validateRequestBody(userData);
 
     if (!userData.email || !userData.password) {
