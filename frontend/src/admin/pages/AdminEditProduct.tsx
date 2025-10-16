@@ -78,14 +78,14 @@ function AdminEditProduct() {
           </p>
         </div>
 
-        {/* Form */}
+        {}
         <form
           onSubmit={handleSubmit}
           className="bg-white rounded-xl shadow-lg p-6 space-y-6"
         >
-          {/* Grid layout for better organization */}
+          {}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Nome do Produto */}
+            {}
             <div className="md:col-span-2">
               <label
                 htmlFor="name"
@@ -105,7 +105,7 @@ function AdminEditProduct() {
               />
             </div>
 
-            {/* URL da Foto */}
+            {}
             <div className="md:col-span-2">
               <label
                 htmlFor="photo"
@@ -125,7 +125,7 @@ function AdminEditProduct() {
               />
             </div>
 
-            {/* Descrição */}
+            {}
             <div className="md:col-span-2">
               <label
                 htmlFor="description"
@@ -145,7 +145,7 @@ function AdminEditProduct() {
               />
             </div>
 
-            {/* Preço */}
+            {}
             <div>
               <label
                 htmlFor="price"
@@ -170,7 +170,7 @@ function AdminEditProduct() {
               </div>
             </div>
 
-            {/* Quantidade */}
+            {}
             <div>
               <label
                 htmlFor="quantity"
@@ -190,7 +190,7 @@ function AdminEditProduct() {
               />
             </div>
 
-            {/* Categoria */}
+            {}
             <div>
               <label
                 htmlFor="categoryId"
@@ -215,7 +215,7 @@ function AdminEditProduct() {
               </select>
             </div>
 
-            {/* Marca */}
+            {}
             <div>
               <label
                 htmlFor="brandId"
@@ -241,7 +241,7 @@ function AdminEditProduct() {
             </div>
           </div>
 
-          {/* Submit Button */}
+          {}
           <div className="pt-6">
             <button
               type="submit"
@@ -266,7 +266,7 @@ function AdminEditProduct() {
             </button>
           </div>
 
-          {/* Required fields note */}
+          {}
           <div className="text-center text-sm text-gray-500">
             <p>* Campos obrigatórios</p>
           </div>

@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  // Categorias
+
   const category1 = await prisma.category.create({ data: { name: "Tênis" } });
   const category2 = await prisma.category.create({
     data: { name: "Sandálias" },
@@ -24,7 +24,6 @@ async function main() {
   const category9 = await prisma.category.create({ data: { name: "Bonés" } });
   const category10 = await prisma.category.create({ data: { name: "Bolsas" } });
 
-  // Marcas
   const brand1 = await prisma.brand.create({ data: { name: "Nike" } });
   const brand2 = await prisma.brand.create({ data: { name: "Adidas" } });
   const brand3 = await prisma.brand.create({ data: { name: "Puma" } });
@@ -36,7 +35,6 @@ async function main() {
   const brand9 = await prisma.brand.create({ data: { name: "Under Armour" } });
   const brand10 = await prisma.brand.create({ data: { name: "Levi's" } });
 
-  // Produtos
   await prisma.product.create({
     data: {
       name: "Tênis Nike Air",
@@ -158,7 +156,6 @@ async function main() {
     },
   });
 
-  // Usuário
   const user1 = await prisma.user.create({
     data: {
       name: "João Silva",
@@ -183,25 +180,6 @@ async function main() {
     },
   });
 
-  // Venda
-  // const sale1 = await prisma.sale.create({
-  //   data: {
-  //     userId: user1.id,
-  //     status: 'PAGO',
-  //     value: 399.99
-  //   }
-  // });
-
-  // Pedido
-  //   await prisma.order.create({
-  //     data: {
-  //       saleId: sale1.id,
-  //       productId: product1.id,
-  //       quantity: 1,
-  //       priceUnit: 399.99
-  //     }
-  //   });
-  // }
 }
 main()
   .catch((e) => {

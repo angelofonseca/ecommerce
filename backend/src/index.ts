@@ -6,7 +6,6 @@ import ProductRoutes from "./routes/product.routes.js";
 import BrandRoutes from "./routes/brand.routes.js";
 import CategoryRoutes from "./routes/category.routes.js";
 
-// Load environment variables first
 dotenv.config();
 
 const app = express();
@@ -26,18 +25,17 @@ app.use("/brand", brandRoutes.getRoutes());
 app.use("/category", categoryRoutes.getRoutes());
 
 app.get("/health", (req, res) => {
-  res.status(200).json({ 
-    status: "OK", 
+  res.status(200).json({
+    status: "OK",
     message: "API is running",
     timestamp: new Date().toISOString()
   });
 });
 
-// 404 handler - must be last middleware
 app.use((req, res) => {
-  res.status(404).json({ 
+  res.status(404).json({
     error: "Route not found",
-    path: req.originalUrl 
+    path: req.originalUrl
   });
 });
 

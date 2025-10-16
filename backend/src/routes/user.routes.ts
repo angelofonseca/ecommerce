@@ -24,7 +24,6 @@ export default class UserRoutes extends CRUDRoutes<User> {
     );
     this.router.post("/admin", (req, res) => this.controller.adminLogin(req, res));
 
-
     return this.router;
   }
 }

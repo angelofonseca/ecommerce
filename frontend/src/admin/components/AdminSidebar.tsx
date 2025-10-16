@@ -89,7 +89,7 @@ function AdminSidebar() {
 
   return (
     <>
-      {/* Mobile Menu Button */}
+      {}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-white rounded-lg shadow-lg border border-gray-200"
@@ -109,7 +109,7 @@ function AdminSidebar() {
         </svg>
       </button>
 
-      {/* Backdrop for mobile */}
+      {}
       {isOpen && (
         <div
           className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-30"
@@ -117,7 +117,7 @@ function AdminSidebar() {
         />
       )}
 
-      {/* Sidebar */}
+      {}
       <aside
         className={`
           fixed lg:static inset-y-0 left-0 z-40 w-80 lg:w-full
@@ -139,8 +139,8 @@ function AdminSidebar() {
               <NavLink
                 key={item.path}
                 to={item.path}
-                end={item.path === "/admin/products" || item.path === "/admin/dashboard"} // Só ativo na rota exata para Dashboard e Produtos
-                onClick={() => setIsOpen(false)} // Close mobile menu on navigation
+                end={item.path === "/admin/products" || item.path === "/admin/dashboard"}
+                onClick={() => setIsOpen(false)}
                 className={({ isActive }) =>
                   `group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
                     isActive
@@ -191,7 +191,7 @@ function AdminSidebar() {
             ))}
           </nav>
 
-          {/* Footer da sidebar */}
+          {}
           <div className="mt-8 pt-6 border-t border-gray-200">
             <div className="px-4 py-3 bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl border border-blue-100">
               <div className="flex items-center gap-3">

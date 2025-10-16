@@ -21,7 +21,6 @@ function AdminNewProduct() {
     setFormData((prevForm) => ({ ...prevForm, [target.name]: target.value }));
   };
 
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -107,7 +106,7 @@ function AdminNewProduct() {
               />
             </div>
 
-            {/* Preço */}
+            {}
             <div>
               <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-2">
                 Preço (R$) *
@@ -129,7 +128,7 @@ function AdminNewProduct() {
               </div>
             </div>
 
-            {/* Quantidade */}
+            {}
             <div>
               <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 mb-2">
                 Quantidade em Estoque *
@@ -147,7 +146,7 @@ function AdminNewProduct() {
               />
             </div>
 
-            {/* Categoria */}
+            {}
             <div>
               <label htmlFor="categoryId" className="block text-sm font-medium text-gray-700 mb-2">
                 Categoria *
@@ -169,7 +168,7 @@ function AdminNewProduct() {
               </select>
             </div>
 
-            {/* Marca */}
+            {}
             <div>
               <label htmlFor="brandId" className="block text-sm font-medium text-gray-700 mb-2">
                 Marca *
@@ -192,7 +191,7 @@ function AdminNewProduct() {
             </div>
           </div>
 
-          {/* Submit Button */}
+          {}
           <div className="pt-6">
             <button
               type="submit"
@@ -207,7 +206,7 @@ function AdminNewProduct() {
             </button>
           </div>
 
-          {/* Required fields note */}
+          {}
           <div className="text-center text-sm text-gray-500">
             <p>* Campos obrigatórios</p>
           </div>

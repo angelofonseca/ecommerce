@@ -7,7 +7,7 @@ export default class CRUDModel<T> {
 
   public async find(id: number, include?: IncludeOptions): Promise<T | null> {
     const sanitizedId = this.sanitizeID(id);
-    return await this.model.findUnique({ 
+    return await this.model.findUnique({
       where: { id: sanitizedId },
       ...(include ? { include }: {})
     });
@@ -31,8 +31,8 @@ export default class CRUDModel<T> {
   public async updateById(id: number, data: Partial<T>, include?: IncludeOptions): Promise<T> {
     try {
       const sanitizedId = this.sanitizeID(id);
-      return await this.model.update({ 
-        where: { id: sanitizedId }, 
+      return await this.model.update({
+        where: { id: sanitizedId },
         data,
         ...(include ? { include }: {})
       });
@@ -42,27 +42,27 @@ export default class CRUDModel<T> {
   }
 
   public async findAll(include?: IncludeOptions): Promise<T[]> {
-    return await this.model.findMany({ 
+    return await this.model.findMany({
       ...(include ? { include }: {})
     });
   }
 
   public async deleteById(id: number, include?: IncludeOptions): Promise<T> {
     const sanitizedId = this.sanitizeID(id);
-    return await this.model.delete({ 
-      where: { id: sanitizedId }, 
-      ...(include ? { include }: {}) 
+    return await this.model.delete({
+      where: { id: sanitizedId },
+      ...(include ? { include }: {})
     });
   }
 
   protected buildIncludeOptions(include?: IncludeOptions): object | undefined {
     if (!include) return undefined;
-    
+
     const includeObj: any = {};
     if (include.category) includeObj.category = true;
     if (include.brand) includeObj.brand = true;
     if (include.stock) includeObj.stock = true;
-    
+
     return Object.keys(includeObj).length > 0 ? includeObj : undefined;
   }
 
@@ -74,14 +74,14 @@ export default class CRUDModel<T> {
       }
       return parsed;
     }
-    
+
     if (typeof id === 'number') {
       if (id <= 0 || !Number.isInteger(id)) {
         throw new Error('ID must be a positive integer');
       }
       return id;
     }
-    
+
     throw new Error('ID must be a number or numeric string');
   }
 }

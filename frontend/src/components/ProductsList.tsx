@@ -8,7 +8,7 @@ function ProductsList() {
     return <h2>Nenhum produto foi encontrado</h2>;
   }
   return products.map((product) => (
-    <ProductCard key={product.id} product={product} isDetailedView={false} />
+    <ProductCard key={product.id} product={product} />
   ));
 }
 

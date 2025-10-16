@@ -1,23 +1,18 @@
-import { useEffect, useState } from "react";
-import type { Comment, ProductCardProps } from "../Types";
-import RatingAndComment from "./RatingAndComment";
+import type { ProductCardProps } from "../Types";
 import { formatPrice } from "../helpers/formatPrice";
 import { MdLocalShipping } from "react-icons/md";
 import { Card, CardContent, CardHeader } from "./ui/card";
 
-function DetailedProduct({ product, isDetailedView = true }: ProductCardProps) {
-  const [, setComments] = useState<Comment[]>([]);
+function DetailedProduct({ product }: ProductCardProps) {
   const { id, name, photo, price, freeShipping, description } = product;
-
-  useEffect(() => {
-    const savedReviews = JSON.parse(localStorage.getItem(id) || "[]");
-    setComments(savedReviews);
-  }, [id]);
 
   return (
     <Card className="overflow-hidden">
       <CardHeader className="p-0 flex justify-center items-center">
-        <div className="w-48 h-48 overflow-hidden bg-muted rounded-xl">
+        <div
+          id={`product-image-${id}`}
+          className="w-48 h-48 overflow-hidden bg-muted rounded-xl"
+        >
           <img
             className="w-full h-full object-cover"
             src={photo || "/placeholder.svg"}
@@ -51,12 +46,6 @@ function DetailedProduct({ product, isDetailedView = true }: ProductCardProps) {
           <p className="text-foreground text-sm leading-relaxed">
             {description}
           </p>
-        )}
-
-        {isDetailedView && (
-          <div className="pt-4 border-t">
-            <RatingAndComment productId={id} />
-          </div>
         )}
       </CardContent>
     </Card>

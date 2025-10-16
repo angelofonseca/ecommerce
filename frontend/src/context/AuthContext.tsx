@@ -2,7 +2,6 @@ import { AuthContextType, Login } from "@/Types";
 import React, { useState, useEffect, createContext, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-// Create the context with a default value
 export const AuthContext = createContext<AuthContextType>({
   login: null,
   setLogin: () => {},

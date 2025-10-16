@@ -6,7 +6,6 @@ export default class CRUDController<T> {
   constructor(protected service: CRUDService<T>) {
   }
 
-  // PUBLIC - Routes endpoints que serão chamados pelo Express
   public async create(req: Request, res: Response): Promise<void> {
     try {
       const info = req.body;
@@ -67,7 +66,7 @@ export default class CRUDController<T> {
 
   protected handleError(res: Response, error: any, message: string): void {
     console.error(`${message}:`, error);
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Internal server error',
       error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });

@@ -44,11 +44,11 @@ export default class UserController extends CRUDController<User> {
 
   private validateUserCreation(userData: any): void {
     this.validateRequestBody(userData);
-    
+
     if (!userData.email || !userData.password) {
       throw new Error('Email and password are required');
     }
-    
+
     if (!userData.cpf) {
       throw new Error('CPF is required');
     }

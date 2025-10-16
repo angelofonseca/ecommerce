@@ -11,8 +11,8 @@ function Header() {
   const { setRefreshHome, setSelectedCategory } = useShopContext();
 
   const handleHomeClick = async () => {
-    setRefreshHome(true); // Dispara atualização na Home
-    setSelectedCategory(null); // Limpa categoria selecionada
+    setRefreshHome(true);
+    setSelectedCategory(null);
     navigate("/");
   };
 

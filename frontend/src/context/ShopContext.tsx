@@ -102,7 +102,7 @@ export function ShopProvider({ children }: { children: ReactNode }) {
   };
 
   const value: ShopContextType = {
-    // Estado
+
     products,
     selectedProduct,
     categories,
@@ -113,7 +113,6 @@ export function ShopProvider({ children }: { children: ReactNode }) {
     isSearched,
     refreshHome,
 
-    // Actions
     setProducts,
     setSelectedProduct,
     saveProduct,
@@ -133,7 +132,6 @@ export function ShopProvider({ children }: { children: ReactNode }) {
   return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>;
 }
 
-// Hook
 export const useShopContext = () => {
   const context = useContext(ShopContext);
   if (context === undefined) {

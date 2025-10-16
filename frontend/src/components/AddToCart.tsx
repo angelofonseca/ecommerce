@@ -29,7 +29,6 @@ function AddToCart({ product, classCard }: AddToCartProps) {
     }
   };
 
-
   const isOutOfStock = cart[product.id]?.quantity === inStock;
 
   return (

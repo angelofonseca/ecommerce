@@ -35,7 +35,6 @@ export async function updateProduct(id: string, productData: Partial<Product>) {
   return data;
 }
 
-
 export async function updateProductFreeShipping(id: string, isChecked: boolean) {
   const URL = `${BACKEND_BASEURL}/product/${id}`;
   const response = await fetch(URL, {
@@ -77,7 +76,6 @@ export async function deleteBrandByID(id: string) {
   return data;
 }
 
-
 export async function getCategories() {
   const URL = `${BACKEND_BASEURL}/category`;
   const response = await fetch(URL);
@@ -111,7 +109,7 @@ export async function getProductsFromQuery(query: string) {
 }
 
 export async function getProductsFromCategory(categoryId: string) {
-  const URL = `${BACKEND_BASEURL}/product/category/${categoryId}`; // category é um id
+  const URL = `${BACKEND_BASEURL}/product/category/${categoryId}`;
   const response = await fetch(URL);
   const data = await response.json();
 
@@ -124,13 +122,13 @@ export async function registerUser(user: User) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(user),
   });
-  
+
   const data = await response.json();
-  
+
   if (!response.ok) {
     throw new Error(data.message || "Erro ao cadastrar usuário");
   }
-  
+
   return data;
 }
 

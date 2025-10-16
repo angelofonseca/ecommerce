@@ -33,7 +33,7 @@ export function SigninForm({
       alert("Senhas não coincidem");
       return;
     }
-    
+
     try {
       await registerUser(rest);
       alert("Usuário cadastrado com sucesso!");

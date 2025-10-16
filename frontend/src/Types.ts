@@ -19,7 +19,6 @@ export type AddToCartProps = {
 
 export type ProductCardProps = {
   product: Product;
-  isDetailedView?: boolean;
 };
 
 export type CartType = {
@@ -46,7 +45,6 @@ export type ProductEditForm = {
   category?: Category;
   brand?: Brand;
 }
-
 
 export type Product = {
   id: number;
@@ -139,7 +137,7 @@ export type ProductType = {
 }
 
 export type ShopContextType = {
-  // Estado
+
   products: Product[];
   selectedProduct: Product | null;
   categories: Category[];
@@ -149,8 +147,7 @@ export type ShopContextType = {
   isLoading: boolean;
   isSearched: boolean;
   refreshHome: boolean;
-  
-  // Actions
+
   setProducts: (products: Product[]) => void;
   setSelectedProduct: (product: Product | null) => void;
   saveProduct: (product: Product) => void;
@@ -162,8 +159,7 @@ export type ShopContextType = {
   setIsSearched: (searched: boolean) => void;
   setRefreshHome: (refresh: boolean) => void;
   resetSearch: () => void;
-  
-  // Refresh functions
+
   refreshCategories: () => Promise<void>;
   refreshBrands: () => Promise<void>;
   refreshProducts: () => Promise<void>;

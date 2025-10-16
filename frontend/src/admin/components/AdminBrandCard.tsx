@@ -8,7 +8,7 @@ function AdminBrandCard({ brand }: { brand: Brand }) {
     if (
       window.confirm(`Tem certeza que deseja excluir a marca "${brand.name}"?`)
     ) {
-      // TODO: Implementar lógica de deletar marca
+
       console.log("Deletando marca:", brand.id);
     }
   };
@@ -20,19 +20,19 @@ function AdminBrandCard({ brand }: { brand: Brand }) {
   return (
     <div className="px-6 py-4 hover:bg-gray-50 transition-colors duration-150">
       <div className="grid grid-cols-3 gap-4 items-center">
-        {/* Nome */}
+        {}
         <div>
           <h3 className="text-sm font-medium text-gray-900">{brand.name}</h3>
         </div>
 
-        {/* Data de Criação */}
+        {}
         <div>
           <span className="text-sm text-gray-500">
             {new Date().toLocaleDateString("pt-BR")}
           </span>
         </div>
 
-        {/* Ações */}
+        {}
         <div className="hidden md:flex items-center gap-3">
           <button
             onClick={handleEdit}

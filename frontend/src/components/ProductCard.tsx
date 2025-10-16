@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Comment, ProductCardProps } from "../Types";
-import RatingAndComment from "./RatingAndComment";
 import { formatPrice } from "../helpers/formatPrice";
 import AddToCart from "./AddToCart";
 import { useShopContext } from "../context/ShopContext";
@@ -18,9 +17,9 @@ import {
 } from "./ui/card";
 import { MdLocalShipping } from "react-icons/md";
 
-function ProductCard({ product, isDetailedView = true }: ProductCardProps) {
+function ProductCard({ product }: ProductCardProps) {
   const [, setComments] = useState<Comment[]>([]);
-  // const [isFavorite, setIsFavorite] = useState(false);
+
   const { saveProduct } = useShopContext();
   const { id, name: title, price, photo, freeShipping } = product;
   const navigate = useNavigate();
@@ -62,20 +61,6 @@ function ProductCard({ product, isDetailedView = true }: ProductCardProps) {
             <span>Frete Grátis</span>
           </div>
         )}
-        {/* 
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsFavorite(!isFavorite);
-          }}
-          className="absolute top-3 left-3 p-2 rounded-full bg-white/90 backdrop-blur-sm hover:bg-white transition-all duration-300 hover:scale-110 shadow-lg"
-        >
-          {isFavorite ? (
-            <MdFavorite className="w-4 h-4 text-red-500" />
-          ) : (
-            <MdFavoriteBorder className="w-4 h-4 text-gray-600" />
-          )}
-        </button> */}
       </CardHeader>
 
       <CardContent className="p-6 flex-1 flex flex-col gap-4">
@@ -103,7 +88,6 @@ function ProductCard({ product, isDetailedView = true }: ProductCardProps) {
 
       <CardFooter className="p-6 pt-0 flex flex-col gap-4">
         <AddToCart product={product} classCard="w-full" />
-        {isDetailedView && <RatingAndComment productId={String(id)} />}
       </CardFooter>
     </Card>
   );

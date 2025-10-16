@@ -5,18 +5,14 @@ import Loading from "../components/Loading";
 import { useShopContext } from "@/context/ShopContext";
 
 function Home() {
-  const { 
-    isLoading, 
-    refreshHome, 
-    setRefreshHome,
-    refreshProducts
-  } = useShopContext();
+  const { isLoading, refreshHome, setRefreshHome, refreshProducts } =
+    useShopContext();
 
   useEffect(() => {
-    // Executa refresh quando necessário
+
     if (refreshHome) {
       refreshProducts();
-      setRefreshHome(false); // Reseta flag após atualização
+      setRefreshHome(false);
     }
   }, [refreshHome, refreshProducts, setRefreshHome]);
 
@@ -30,18 +26,6 @@ function Home() {
               Descubra o produto <span className="text-primary">Ideal</span>{" "}
               para você!
             </h1>
-            <p className="text-xl lg:text-2xl mb-8 max-w-3xl mx-auto text-pretty text-gray-500">
-              Explore nossa coleção exclusiva de produtos selecionados para
-              atender todas as suas necessidades com qualidade e estilo.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <button className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl">
-                Explorar Coleção
-              </button>
-              <button className="bg-accent hover:bg-accent/90 text-accent-foreground px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl">
-                Ofertas Especiais
-              </button>
-            </div>
           </div>
         </div>
       </section>

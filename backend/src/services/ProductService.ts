@@ -28,7 +28,7 @@ export default class ProductService extends CRUDService<Product> {
     }
     return sanitized;
   }
-  
+
   public async create(
     product: ProductWithQuantity
   ): Promise<ServiceResponse<Message>> {

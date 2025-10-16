@@ -8,7 +8,7 @@ import { Textarea } from "./ui/textarea";
 export default function RatingAndComment({ productId }: { productId: string }) {
   const [email, setEmail] = useState("");
   const [text, setText] = useState("");
-  const [rating, setRating] = useState(0); // Estado para controlar a nota
+  const [rating, setRating] = useState(0);
   const [error, setError] = useState("");
   const [reviews, setReviews] = useState<
     { email: string; text: string; rating: number }[]
@@ -88,7 +88,7 @@ export default function RatingAndComment({ productId }: { productId: string }) {
                   index <= rating ? "text-yellow-400" : "text-gray-300"
                 } transition-colors`}
                 style={{
-                  fill: index <= rating ? "#fbbf24" : "#d1d5db", // Muda o interior
+                  fill: index <= rating ? "#fbbf24" : "#d1d5db",
                 }}
               />
             </label>

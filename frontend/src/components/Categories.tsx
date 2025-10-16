@@ -3,12 +3,12 @@ import { Label } from "@radix-ui/react-label";
 import useCategory from "@/hooks/useCategory";
 
 function Categories() {
-  const { 
+  const {
     categories,
-    setIsSearched, 
-    selectedCategory, 
-    setSelectedCategory, 
-    setRefreshHome 
+    setIsSearched,
+    selectedCategory,
+    setSelectedCategory,
+    setRefreshHome
   } = useShopContext();
   const handleCategory = useCategory();
 

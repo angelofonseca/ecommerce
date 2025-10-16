@@ -9,7 +9,7 @@ export default class ProductModel extends CRUDModel<Product> {
   }
 
   async findAllByCategoryId(categoryId: number, include?: IncludeOptions): Promise<Product[]> {
-    return await this.model.findMany({ 
+    return await this.model.findMany({
       where: { categoryId },
       ...(include && { include })
     });
