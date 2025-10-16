@@ -3,7 +3,8 @@ import { useEffect } from "react";
 import { VictoryPie, VictoryTheme } from "victory";
 
 function AdminDashboard() {
-  const { products, categories, brands, isLoading, refreshProducts } = useShopContext();
+  const { products, categories, brands, isLoading, refreshProducts } =
+    useShopContext();
 
   useEffect(() => {
     refreshProducts();
@@ -24,11 +25,11 @@ function AdminDashboard() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
+      <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
 
       <div className="mb-4 p-3 bg-gray-100 rounded">
         <p>
-          Categories: {categories.length} | Products: {products.length}
+          Categorias: {categories.length} | Produtos: {products.length}
         </p>
       </div>
 
