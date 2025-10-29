@@ -5,4 +5,3 @@ backend/src/generated
 backend/dist
 .env.example
 MIGRATION-GUIDE.md
-docker-compose.yml
