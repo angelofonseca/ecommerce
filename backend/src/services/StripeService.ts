@@ -9,9 +9,7 @@ if (!STRIPE_SECRET_KEY) {
   throw new Error('STRIPE_SECRET_KEY is not defined in environment variables');
 }
 
-const stripe = new Stripe(STRIPE_SECRET_KEY, {
-  apiVersion: '2025-09-30.clover',
-});
+const stripe = new Stripe(STRIPE_SECRET_KEY);
 
 interface CartItem {
   productId: number;

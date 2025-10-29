@@ -2,9 +2,7 @@ import { Request, Response } from 'express';
 import Stripe from 'stripe';
 import SaleService from '../services/SaleService.js';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-09-30.clover',
-});
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 class WebhookController {
   private saleService: SaleService;

@@ -3,9 +3,7 @@ import Stripe from 'stripe';
 import prisma from '../database/prismaClient.js';
 import StockModel from '../models/StockModel.js';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-09-30.clover',
-});
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 interface CartItem {
   productId: number;

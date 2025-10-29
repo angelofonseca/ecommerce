@@ -9,6 +9,9 @@ import { Loader2 } from 'lucide-react';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe, Stripe } from '@stripe/stripe-js';
 
+// Usar a variável de ambiente ou fallback para localhost
+const API_BASE_URL = import.meta.env.VITE_REACT_APP_BACKEND_BASEURL || 'http://localhost:8080';
+
 export default function Checkout() {
   const { totalPrice, cart } = useCartContext();
   const [shippingAddress, setShippingAddress] = useState('');
@@ -21,7 +24,7 @@ export default function Checkout() {
     // Buscar a chave pública do Stripe
     const fetchStripeKey = async () => {
       try {
-        const response = await fetch('https://ecommerce-backend-wata.vercel.app/config');
+        const response = await fetch(`${API_BASE_URL}/config`);
         const data = await response.json();
         console.log(data)
         if (data.stripePublishableKey) {
@@ -55,7 +58,7 @@ export default function Checkout() {
         priceUnit: item.price,
       }));
 
-      const response = await fetch('https://ecommerce-backend-wata.vercel.app/payment/create-intent', {
+      const response = await fetch(`${API_BASE_URL}/payment/create-intent`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
