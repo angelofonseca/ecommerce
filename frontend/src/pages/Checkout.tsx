@@ -55,7 +55,7 @@ export default function Checkout() {
         priceUnit: item.price,
       }));
 
-      const response = await fetch('http://localhost:8080/payment/create-intent', {
+      const response = await fetch('https://ecommerce-backend-wata.vercel.app/payment/create-intent', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
