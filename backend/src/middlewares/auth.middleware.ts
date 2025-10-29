@@ -12,8 +12,8 @@ function authMiddleware(req: Request, res: Response, next: NextFunction) {
     const token = bearerToken.split(" ")[1];
     const decoded = jwt.verifyToken(token);
     if (typeof decoded === "string") throw new Error("token is a string");
-    const { role } = decoded;
-    res.locals = { role };
+    const { role, email, id } = decoded;
+    res.locals = { role, email, userId: id };
   } catch (error) {
     return res.status(401).json({ message: "Token must be a valid token" });
   }

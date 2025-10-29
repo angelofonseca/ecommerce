@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import Cart from "./pages/Cart";
 import Product from "./pages/Product";
 import Checkout from "./pages/Checkout";
+import CheckoutSuccess from "./pages/CheckoutSuccess";
 import Layout from "./components/layout/Layout";
 import Categories from "./components/Categories";
 import Login from "./pages/Login";
@@ -35,6 +36,7 @@ function App() {
         <Route path="product/*" element={<Product />} />
         <Route path="categories" element={<Categories />} />
         <Route path="checkout" element={<Checkout />} />
+        <Route path="checkout/success" element={<CheckoutSuccess />} />
         <Route path="login" element={<Login />} />
         <Route path="signin" element={<Signin />} />
       </Route>

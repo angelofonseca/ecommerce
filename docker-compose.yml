@@ -22,6 +22,10 @@ services:
     environment:
       JWT_SECRET: 966f7d97ca798d29c533dc7eb605f24cf006e5747182bd046e9eaeedf42e4c33
       DATABASE_URL: "postgresql://postgres:8vT!pQ2@rXzLw9sA@db:5432/ecommerce?schema=public"
+      STRIPE_SECRET_KEY: "sk_test_51SNQ5HKEkOlugkFFJm0G0pBhBmuLt4RmdXBUDrfgJi9yrKp4ziHEiNywaMZWABuYQ0rzInGPNacGlnJki6UtyZZf00uefLir2g"
+      STRIPE_PUBLISHABLE_KEY: "pk_test_51SNQ5HKEkOlugkFFAHXtbzbpHHdb4TBotwomR8WtvIFAPgScQYvexG9CLatGD9gBRuuv4Ld6q79a7R7x61hx9WIn00h275OTcC"
+      STRIPE_WEBHOOK_SECRET: "whsec_7o23BXhmkIUwH1ouIpNHqDTDXPHBKxiR"
+      FRONTEND_URL: "http://localhost:3000"
     volumes:
       - ./backend:/app
       - /app/node_modules
