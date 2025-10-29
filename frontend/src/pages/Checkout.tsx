@@ -21,7 +21,7 @@ export default function Checkout() {
     // Buscar a chave pública do Stripe
     const fetchStripeKey = async () => {
       try {
-        const response = await fetch('http://localhost:8080/config');
+        const response = await fetch('https://ecommerce-backend-wata.vercel.app/config');
         const data = await response.json();
         console.log(data)
         if (data.stripePublishableKey) {
