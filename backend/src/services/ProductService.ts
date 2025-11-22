@@ -123,6 +123,53 @@ export default class ProductService extends CRUDService<Product> {
     return { status: 200, data: result };
   }
 
+  public async findAllByCategoryName(
+    categoryName: string
+  ): Promise<ServiceResponse<Product[]>> {
+    const result = await this.model.findAllByCategoryName(categoryName, {
+      category: true,
+      brand: true,
+      stock: true,
+    });
+    return { status: 200, data: result };
+  }
+
+  public async findAllByBrandName(
+    brandName: string
+  ): Promise<ServiceResponse<Product[]>> {
+    const result = await this.model.findAllByBrandName(brandName, {
+      category: true,
+      brand: true,
+      stock: true,
+    });
+    return { status: 200, data: result };
+  }
+
+  public async findAllByFreeShipping(
+    freeShipping: boolean
+  ): Promise<ServiceResponse<Product[]>> {
+    const result = await this.model.findAllByFreeShipping(freeShipping, {
+      category: true,
+      brand: true,
+      stock: true,
+    });
+    return { status: 200, data: result };
+  }
+
+  public async findWithFilters(filters: {
+    name?: string;
+    categoryName?: string;
+    brandName?: string;
+    freeShipping?: boolean;
+  }): Promise<ServiceResponse<Product[]>> {
+    const result = await this.model.findWithFilters(filters, {
+      category: true,
+      brand: true,
+      stock: true,
+    });
+    return { status: 200, data: result };
+  }
+
   public async deleteById(id: number): Promise<ServiceResponse<Message>> {
     try {
       await prisma.$transaction(async (tx) => {

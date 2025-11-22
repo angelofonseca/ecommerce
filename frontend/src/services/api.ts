@@ -108,6 +108,27 @@ export async function getProductsFromQuery(query: string) {
   return data;
 }
 
+export async function getProductsWithFilters(filters: {
+  name?: string;
+  categoryName?: string;
+  brandName?: string;
+  freeShipping?: boolean;
+}) {
+  const url = new URL(`${BACKEND_BASEURL}/product`);
+  
+  if (filters.name) url.searchParams.append('name', filters.name);
+  if (filters.categoryName) url.searchParams.append('categoryName', filters.categoryName);
+  if (filters.brandName) url.searchParams.append('brandName', filters.brandName);
+  if (filters.freeShipping !== undefined) {
+    url.searchParams.append('freeShipping', filters.freeShipping.toString());
+  }
+
+  const response = await fetch(url.toString());
+  const data = await response.json();
+
+  return data;
+}
+
 export async function getProductsFromCategory(categoryId: string) {
   const URL = `${BACKEND_BASEURL}/product/category/${categoryId}`;
   const response = await fetch(URL);

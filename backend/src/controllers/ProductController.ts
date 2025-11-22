@@ -17,13 +17,24 @@ export default class ProductController extends CRUDController<Product> {
     }
 
     public async findAll(req: Request, res: Response): Promise<void> {
-        const { name } = req.query;
-        if (name) {
-            const { data, status } = await this.service.findAllByName(
-                name as string
-            );
+        const { name, categoryName, brandName, freeShipping } = req.query;
+        
+        // Se houver qualquer filtro, usar findWithFilters
+        if (name || categoryName || brandName || freeShipping !== undefined) {
+            const filters: any = {};
+            if (name) filters.name = name as string;
+            if (categoryName) filters.categoryName = categoryName as string;
+            if (brandName) filters.brandName = brandName as string;
+            if (freeShipping !== undefined) {
+                filters.freeShipping = freeShipping === 'true' || freeShipping === '1';
+            }
+            
+            const { data, status } = await this.service.findWithFilters(filters);
             res.status(status).json(data);
+            return;
         }
+        
+        // Sem filtros, retornar todos
         const { data, status } = await this.service.findAll();
         res.status(status).json(data);
     }
