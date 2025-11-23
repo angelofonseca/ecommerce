@@ -294,6 +294,51 @@ class CheckoutController {
   }
 
   /**
+   * DELETE /sales/:id
+   * Deletar uma venda (apenas PENDING ou CANCELLED)
+   */
+  async deleteSale(req: Request, res: Response): Promise<void> {
+    try {
+      const saleId = parseInt(req.params.id);
+
+      if (isNaN(saleId)) {
+        res.status(400).json({
+          error: 'saleId inválido',
+        });
+        return;
+      }
+
+      const result = await this.saleService.deleteSale(saleId);
+
+      res.status(200).json({
+        success: true,
+        message: result.message,
+      });
+    } catch (error: any) {
+      console.error('❌ Erro ao deletar venda:', error.message);
+      
+      if (error.message.includes('não encontrada')) {
+        res.status(404).json({
+          error: error.message,
+        });
+        return;
+      }
+
+      if (error.message.includes('Não é possível deletar')) {
+        res.status(400).json({
+          error: error.message,
+        });
+        return;
+      }
+
+      res.status(500).json({
+        error: 'Erro ao deletar venda',
+        details: error.message,
+      });
+    }
+  }
+
+  /**
    * GET /orders/:id
    * Buscar detalhes de uma order específica
    */

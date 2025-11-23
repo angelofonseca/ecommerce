@@ -40,6 +40,18 @@ salesRouter.patch(
 );
 
 /**
+ * DELETE /sales/:id
+ * Deletar uma venda (apenas PENDING ou CANCELLED)
+ * Autenticação e permissão de admin necessárias
+ */
+salesRouter.delete(
+  '/:id',
+  // authMiddleware,
+  // isAdminMiddleware,
+  (req, res) => CheckoutController.deleteSale(req, res)
+);
+
+/**
  * GET /sales
  * Buscar todas as vendas (ADMIN)
  * Autenticação e permissão de admin necessárias

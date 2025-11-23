@@ -432,4 +432,37 @@ export default class SaleService {
       throw error;
     }
   }
+
+  /**
+   * Deletar venda
+   * Apenas permitido se estiver PENDING ou CANCELLED
+   */
+  async deleteSale(saleId: number) {
+    try {
+      const sale = await this.saleModel.findById(saleId);
+
+      if (!sale) {
+        throw new Error('Venda não encontrada');
+      }
+
+      // Verificar se pode deletar
+      if (sale.status === 'PAID' || sale.status === 'PROCESSING') {
+        throw new Error(
+          `Não é possível deletar venda com status ${sale.status}. Cancele a venda primeiro.`
+        );
+      }
+
+      // Se estava PAID e foi cancelada/reembolsada, o estoque já foi restaurado
+      // Apenas deleta a venda e orders (cascade)
+      await prisma.sale.delete({
+        where: { id: saleId },
+      });
+
+      console.log(`✅ Venda ${saleId} deletada com sucesso`);
+      return { success: true, message: 'Venda deletada com sucesso' };
+    } catch (error) {
+      console.error('Erro ao deletar venda:', error);
+      throw error;
+    }
+  }
 }

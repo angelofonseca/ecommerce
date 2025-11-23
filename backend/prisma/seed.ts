@@ -1128,7 +1128,398 @@ async function main() {
     },
   });
 
-  console.log(`✅ ${6} vendas criadas com orders!`);
+  // ============================================
+  // VENDAS DE OUTUBRO
+  // ============================================
+  
+  // VENDA 7 - João (PAID) - Outubro
+  const sale7 = await prisma.sale.create({
+    data: {
+      userId: user1.id,
+      status: "PAID",
+      paymentMethod: "CREDIT_CARD",
+      totalValue: 889.96,
+      shippingAddress: "Rua das Flores, 123, São Paulo - SP",
+      stripeCheckoutId: "cs_test_mock_7",
+      stripePaymentId: "pi_mock_7",
+      paidAt: new Date("2025-10-25T15:30:00"),
+      createdAt: new Date("2025-10-25T15:25:00"),
+      orders: {
+        create: [
+          {
+            productId: product6.id,
+            quantity: 1,
+            priceUnit: 549.99,
+            subtotal: 549.99,
+          },
+          {
+            productId: product19.id,
+            quantity: 2,
+            priceUnit: 99.99,
+            subtotal: 199.98,
+          },
+          {
+            productId: product41.id,
+            quantity: 1,
+            priceUnit: 119.99,
+            subtotal: 119.99,
+          },
+        ],
+      },
+    },
+  });
+
+  // VENDA 8 - Maria (PAID) - Outubro
+  const sale8 = await prisma.sale.create({
+    data: {
+      userId: user2.id,
+      status: "PAID",
+      paymentMethod: "CREDIT_CARD",
+      totalValue: 1099.97,
+      shippingAddress: "Av. Paulista, 1000, São Paulo - SP",
+      stripeCheckoutId: "cs_test_mock_8",
+      stripePaymentId: "pi_mock_8",
+      paidAt: new Date("2025-10-20T11:00:00"),
+      createdAt: new Date("2025-10-20T10:55:00"),
+      orders: {
+        create: [
+          {
+            productId: product5.id,
+            quantity: 1,
+            priceUnit: 699.99,
+            subtotal: 699.99,
+          },
+          {
+            productId: product30.id,
+            quantity: 1,
+            priceUnit: 249.99,
+            subtotal: 249.99,
+          },
+          {
+            productId: product47.id,
+            quantity: 2,
+            priceUnit: 79.99,
+            subtotal: 159.98,
+          },
+        ],
+      },
+    },
+  });
+
+  // VENDA 9 - Pedro (PAID) - Outubro
+  const sale9 = await prisma.sale.create({
+    data: {
+      userId: user3.id,
+      status: "PAID",
+      paymentMethod: "CREDIT_CARD",
+      totalValue: 579.97,
+      shippingAddress: "Rua Oscar Freire, 500, São Paulo - SP",
+      stripeCheckoutId: "cs_test_mock_9",
+      stripePaymentId: "pi_mock_9",
+      paidAt: new Date("2025-10-15T14:20:00"),
+      createdAt: new Date("2025-10-15T14:15:00"),
+      orders: {
+        create: [
+          {
+            productId: product14.id,
+            quantity: 1,
+            priceUnit: 319.99,
+            subtotal: 319.99,
+          },
+          {
+            productId: product37.id,
+            quantity: 1,
+            priceUnit: 149.99,
+            subtotal: 149.99,
+          },
+          {
+            productId: product50.id,
+            quantity: 1,
+            priceUnit: 89.99,
+            subtotal: 89.99,
+          },
+        ],
+      },
+    },
+  });
+
+  // VENDA 10 - João (PAID) - Outubro
+  const sale10 = await prisma.sale.create({
+    data: {
+      userId: user1.id,
+      status: "PAID",
+      paymentMethod: "CREDIT_CARD",
+      totalValue: 419.96,
+      shippingAddress: "Rua das Flores, 123, São Paulo - SP",
+      stripeCheckoutId: "cs_test_mock_10",
+      stripePaymentId: "pi_mock_10",
+      paidAt: new Date("2025-10-10T09:45:00"),
+      createdAt: new Date("2025-10-10T09:40:00"),
+      orders: {
+        create: [
+          {
+            productId: product17.id,
+            quantity: 3,
+            priceUnit: 79.99,
+            subtotal: 239.97,
+          },
+          {
+            productId: product42.id,
+            quantity: 1,
+            priceUnit: 99.99,
+            subtotal: 99.99,
+          },
+          {
+            productId: product57.id,
+            quantity: 1,
+            priceUnit: 79.99,
+            subtotal: 79.99,
+          },
+        ],
+      },
+    },
+  });
+
+  // VENDA 11 - Maria (REFUNDED) - Outubro
+  const sale11 = await prisma.sale.create({
+    data: {
+      userId: user2.id,
+      status: "REFUNDED",
+      paymentMethod: "CREDIT_CARD",
+      totalValue: 649.98,
+      shippingAddress: "Av. Paulista, 1000, São Paulo - SP",
+      stripeCheckoutId: "cs_test_mock_11",
+      stripePaymentId: "pi_mock_11",
+      paidAt: new Date("2025-10-05T16:30:00"),
+      createdAt: new Date("2025-10-05T16:25:00"),
+      orders: {
+        create: [
+          {
+            productId: product12.id,
+            quantity: 1,
+            priceUnit: 299.99,
+            subtotal: 299.99,
+          },
+          {
+            productId: product34.id,
+            quantity: 1,
+            priceUnit: 349.99,
+            subtotal: 349.99,
+          },
+        ],
+      },
+    },
+  });
+
+  // ============================================
+  // VENDAS DE SETEMBRO
+  // ============================================
+
+  // VENDA 12 - Pedro (PAID) - Setembro
+  const sale12 = await prisma.sale.create({
+    data: {
+      userId: user3.id,
+      status: "PAID",
+      paymentMethod: "CREDIT_CARD",
+      totalValue: 1249.96,
+      shippingAddress: "Rua Oscar Freire, 500, São Paulo - SP",
+      stripeCheckoutId: "cs_test_mock_12",
+      stripePaymentId: "pi_mock_12",
+      paidAt: new Date("2025-09-28T13:15:00"),
+      createdAt: new Date("2025-09-28T13:10:00"),
+      orders: {
+        create: [
+          {
+            productId: product2.id,
+            quantity: 1,
+            priceUnit: 599.99,
+            subtotal: 599.99,
+          },
+          {
+            productId: product53.id,
+            quantity: 1,
+            priceUnit: 449.99,
+            subtotal: 449.99,
+          },
+          {
+            productId: product26.id,
+            quantity: 1,
+            priceUnit: 159.99,
+            subtotal: 159.99,
+          },
+        ],
+      },
+    },
+  });
+
+  // VENDA 13 - João (PAID) - Setembro
+  const sale13 = await prisma.sale.create({
+    data: {
+      userId: user1.id,
+      status: "PAID",
+      paymentMethod: "CREDIT_CARD",
+      totalValue: 849.96,
+      shippingAddress: "Rua das Flores, 123, São Paulo - SP",
+      stripeCheckoutId: "cs_test_mock_13",
+      stripePaymentId: "pi_mock_13",
+      paidAt: new Date("2025-09-22T10:30:00"),
+      createdAt: new Date("2025-09-22T10:25:00"),
+      orders: {
+        create: [
+          {
+            productId: product15.id,
+            quantity: 1,
+            priceUnit: 459.99,
+            subtotal: 459.99,
+          },
+          {
+            productId: product54.id,
+            quantity: 1,
+            priceUnit: 389.99,
+            subtotal: 389.99,
+          },
+        ],
+      },
+    },
+  });
+
+  // VENDA 14 - Maria (PAID) - Setembro
+  const sale14 = await prisma.sale.create({
+    data: {
+      userId: user2.id,
+      status: "PAID",
+      paymentMethod: "CREDIT_CARD",
+      totalValue: 379.95,
+      shippingAddress: "Av. Paulista, 1000, São Paulo - SP",
+      stripeCheckoutId: "cs_test_mock_14",
+      stripePaymentId: "pi_mock_14",
+      paidAt: new Date("2025-09-18T15:45:00"),
+      createdAt: new Date("2025-09-18T15:40:00"),
+      orders: {
+        create: [
+          {
+            productId: product4.id,
+            quantity: 1,
+            priceUnit: 279.99,
+            subtotal: 279.99,
+          },
+          {
+            productId: product40.id,
+            quantity: 1,
+            priceUnit: 129.99,
+            subtotal: 129.99,
+          },
+        ],
+      },
+    },
+  });
+
+  // VENDA 15 - Pedro (PAID) - Setembro
+  const sale15 = await prisma.sale.create({
+    data: {
+      userId: user3.id,
+      status: "PAID",
+      paymentMethod: "CREDIT_CARD",
+      totalValue: 579.96,
+      shippingAddress: "Rua Oscar Freire, 500, São Paulo - SP",
+      stripeCheckoutId: "cs_test_mock_15",
+      stripePaymentId: "pi_mock_15",
+      paidAt: new Date("2025-09-12T11:20:00"),
+      createdAt: new Date("2025-09-12T11:15:00"),
+      orders: {
+        create: [
+          {
+            productId: product22.id,
+            quantity: 1,
+            priceUnit: 329.99,
+            subtotal: 329.99,
+          },
+          {
+            productId: product36.id,
+            quantity: 1,
+            priceUnit: 189.99,
+            subtotal: 189.99,
+          },
+          {
+            productId: product51.id,
+            quantity: 1,
+            priceUnit: 79.99,
+            subtotal: 79.99,
+          },
+        ],
+      },
+    },
+  });
+
+  // VENDA 16 - João (PAID) - Setembro
+  const sale16 = await prisma.sale.create({
+    data: {
+      userId: user1.id,
+      status: "PAID",
+      paymentMethod: "CREDIT_CARD",
+      totalValue: 299.97,
+      shippingAddress: "Rua das Flores, 123, São Paulo - SP",
+      stripeCheckoutId: "cs_test_mock_16",
+      stripePaymentId: "pi_mock_16",
+      paidAt: new Date("2025-09-08T14:00:00"),
+      createdAt: new Date("2025-09-08T13:55:00"),
+      orders: {
+        create: [
+          {
+            productId: product18.id,
+            quantity: 2,
+            priceUnit: 69.99,
+            subtotal: 139.98,
+          },
+          {
+            productId: product58.id,
+            quantity: 1,
+            priceUnit: 69.99,
+            subtotal: 69.99,
+          },
+          {
+            productId: product16.id,
+            quantity: 1,
+            priceUnit: 89.99,
+            subtotal: 89.99,
+          },
+        ],
+      },
+    },
+  });
+
+  // VENDA 17 - Maria (PAID) - Setembro
+  const sale17 = await prisma.sale.create({
+    data: {
+      userId: user2.id,
+      status: "PAID",
+      paymentMethod: "CREDIT_CARD",
+      totalValue: 729.97,
+      shippingAddress: "Av. Paulista, 1000, São Paulo - SP",
+      stripeCheckoutId: "cs_test_mock_17",
+      stripePaymentId: "pi_mock_17",
+      paidAt: new Date("2025-09-03T09:30:00"),
+      createdAt: new Date("2025-09-03T09:25:00"),
+      orders: {
+        create: [
+          {
+            productId: product8.id,
+            quantity: 1,
+            priceUnit: 379.99,
+            subtotal: 379.99,
+          },
+          {
+            productId: product35.id,
+            quantity: 1,
+            priceUnit: 279.99,
+            subtotal: 279.99,
+          },
+        ],
+      },
+    },
+  });
+
+  console.log(`✅ ${17} vendas criadas com orders!`);
 
   console.log("\n🎉 Seed concluído com sucesso!");
   console.log(`📊 Resumo:`);
@@ -1136,8 +1527,12 @@ async function main() {
   console.log(`   - ${15} Marcas`);
   console.log(`   - ${66} Produtos`);
   console.log(`   - ${4} Usuários (3 clientes + 1 admin)`);
-  console.log(`   - ${6} Vendas`);
-  console.log(`   - ${15} Orders`);
+  console.log(`   - ${17} Vendas`);
+  console.log(`   - ${45} Orders`);
+  console.log(`\n📅 Distribuição de vendas por mês:`);
+  console.log(`   - Novembro 2025: 6 vendas`);
+  console.log(`   - Outubro 2025: 6 vendas`);
+  console.log(`   - Setembro 2025: 5 vendas`);
 }
 
 main()
