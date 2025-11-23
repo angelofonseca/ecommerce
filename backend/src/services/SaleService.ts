@@ -376,4 +376,60 @@ export default class SaleService {
   async getAllSales() {
     return await this.saleModel.findAll();
   }
+
+  /**
+   * Atualiza status de uma venda
+   */
+  async updateSaleStatus(
+    saleId: number,
+    status: 'PENDING' | 'PROCESSING' | 'PAID' | 'CANCELLED' | 'REFUNDED'
+  ) {
+    try {
+      const sale = await this.saleModel.findById(saleId);
+
+      if (!sale) {
+        throw new Error('Venda não encontrada');
+      }
+
+      // Se mudar para CANCELLED ou REFUNDED e estava PAID, restaurar estoque
+      if (
+        (status === 'CANCELLED' || status === 'REFUNDED') &&
+        sale.status === 'PAID'
+      ) {
+        await prisma.$transaction(async (tx) => {
+          // Atualiza status
+          await tx.sale.update({
+            where: { id: saleId },
+            data: { 
+              status,
+              ...(status === 'REFUNDED' ? { refundedAt: new Date() } : {})
+            },
+          });
+
+          // Restaura estoque
+          for (const order of sale.orders) {
+            await tx.stock.update({
+              where: { id: order.productId },
+              data: {
+                quantity: {
+                  increment: order.quantity,
+                },
+              },
+            });
+          }
+        });
+
+        console.log(`✅ Venda ${saleId} atualizada para ${status} e estoque restaurado`);
+      } else {
+        // Apenas atualiza o status
+        await this.saleModel.updateStatus(saleId, status);
+        console.log(`✅ Venda ${saleId} atualizada para ${status}`);
+      }
+
+      return await this.saleModel.findById(saleId);
+    } catch (error) {
+      console.error('Erro ao atualizar status da venda:', error);
+      throw error;
+    }
+  }
 }

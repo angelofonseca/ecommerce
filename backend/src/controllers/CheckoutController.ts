@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import SaleService from '../services/SaleService.js';
+import OrderService from '../services/OrderService.js';
 
 interface CartItem {
   productId: number;
@@ -10,9 +11,11 @@ interface CartItem {
 
 class CheckoutController {
   private saleService: SaleService;
+  private orderService: OrderService;
 
   constructor() {
     this.saleService = new SaleService();
+    this.orderService = new OrderService();
   }
 
   /**
@@ -236,6 +239,209 @@ class CheckoutController {
       console.error('❌ Erro ao buscar vendas:', error.message);
       res.status(500).json({
         error: 'Erro ao buscar vendas',
+        details: error.message,
+      });
+    }
+  }
+
+  /**
+   * PATCH /sales/:id/status
+   * Atualizar status de uma venda
+   */
+  async updateSaleStatus(req: Request, res: Response): Promise<void> {
+    try {
+      const saleId = parseInt(req.params.id);
+      const { status } = req.body;
+
+      if (isNaN(saleId)) {
+        res.status(400).json({
+          error: 'saleId inválido',
+        });
+        return;
+      }
+
+      // Validar status
+      const validStatuses = ['PENDING', 'PROCESSING', 'PAID', 'CANCELLED', 'REFUNDED'];
+      if (!status || !validStatuses.includes(status)) {
+        res.status(400).json({
+          error: 'Status inválido. Use: PENDING, PROCESSING, PAID, CANCELLED ou REFUNDED',
+        });
+        return;
+      }
+
+      const updatedSale = await this.saleService.updateSaleStatus(saleId, status);
+
+      res.status(200).json({
+        success: true,
+        message: `Status da venda atualizado para ${status}`,
+        data: updatedSale,
+      });
+    } catch (error: any) {
+      console.error('❌ Erro ao atualizar status da venda:', error.message);
+      
+      if (error.message.includes('não encontrada')) {
+        res.status(404).json({
+          error: error.message,
+        });
+        return;
+      }
+
+      res.status(500).json({
+        error: 'Erro ao atualizar status da venda',
+        details: error.message,
+      });
+    }
+  }
+
+  /**
+   * GET /orders/:id
+   * Buscar detalhes de uma order específica
+   */
+  async getOrderById(req: Request, res: Response): Promise<void> {
+    try {
+      const orderId = parseInt(req.params.id);
+
+      if (isNaN(orderId)) {
+        res.status(400).json({
+          error: 'orderId inválido',
+        });
+        return;
+      }
+
+      const { data, status } = await this.orderService.findById(orderId);
+
+      res.status(status).json({
+        success: status === 200,
+        data,
+      });
+    } catch (error: any) {
+      console.error('❌ Erro ao buscar order:', error.message);
+      res.status(500).json({
+        error: 'Erro ao buscar order',
+        details: error.message,
+      });
+    }
+  }
+
+  /**
+   * GET /orders/sale/:saleId
+   * Buscar todas as orders de uma venda
+   */
+  async getOrdersBySale(req: Request, res: Response): Promise<void> {
+    try {
+      const saleId = parseInt(req.params.saleId);
+
+      if (isNaN(saleId)) {
+        res.status(400).json({
+          error: 'saleId inválido',
+        });
+        return;
+      }
+
+      const { data, status } = await this.orderService.findBySaleId(saleId);
+
+      res.status(status).json({
+        success: true,
+        data,
+      });
+    } catch (error: any) {
+      console.error('❌ Erro ao buscar orders:', error.message);
+      res.status(500).json({
+        error: 'Erro ao buscar orders',
+        details: error.message,
+      });
+    }
+  }
+
+  /**
+   * PUT /orders/:id
+   * Atualizar uma order (quantity ou priceUnit)
+   * Apenas permitido se a venda estiver PENDING
+   */
+  async updateOrder(req: Request, res: Response): Promise<void> {
+    try {
+      const orderId = parseInt(req.params.id);
+      const { quantity, priceUnit } = req.body;
+
+      if (isNaN(orderId)) {
+        res.status(400).json({
+          error: 'orderId inválido',
+        });
+        return;
+      }
+
+      if (quantity === undefined && priceUnit === undefined) {
+        res.status(400).json({
+          error: 'Forneça quantity ou priceUnit para atualizar',
+        });
+        return;
+      }
+
+      const { data, status } = await this.orderService.updateById(orderId, {
+        quantity,
+        priceUnit,
+      });
+
+      res.status(status).json({
+        success: status === 200,
+        data,
+      });
+    } catch (error: any) {
+      console.error('❌ Erro ao atualizar order:', error.message);
+      res.status(500).json({
+        error: 'Erro ao atualizar order',
+        details: error.message,
+      });
+    }
+  }
+
+  /**
+   * DELETE /orders/:id
+   * Deletar uma order
+   * Apenas permitido se a venda estiver PENDING
+   */
+  async deleteOrder(req: Request, res: Response): Promise<void> {
+    try {
+      const orderId = parseInt(req.params.id);
+
+      if (isNaN(orderId)) {
+        res.status(400).json({
+          error: 'orderId inválido',
+        });
+        return;
+      }
+
+      const { data, status } = await this.orderService.deleteById(orderId);
+
+      res.status(status).json({
+        success: status === 200,
+        data,
+      });
+    } catch (error: any) {
+      console.error('❌ Erro ao deletar order:', error.message);
+      res.status(500).json({
+        error: 'Erro ao deletar order',
+        details: error.message,
+      });
+    }
+  }
+
+  /**
+   * GET /orders (admin only)
+   * Buscar todas as orders
+   */
+  async getAllOrders(req: Request, res: Response): Promise<void> {
+    try {
+      const { data, status } = await this.orderService.findAll();
+
+      res.status(status).json({
+        success: true,
+        data,
+      });
+    } catch (error: any) {
+      console.error('❌ Erro ao buscar orders:', error.message);
+      res.status(500).json({
+        error: 'Erro ao buscar orders',
         details: error.message,
       });
     }
