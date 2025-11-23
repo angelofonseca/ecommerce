@@ -33,26 +33,32 @@ export default class ProductService extends CRUDService<Product> {
     product: ProductWithQuantity
   ): Promise<ServiceResponse<Message>> {
     try {
-      await prisma.$transaction(async (tx) => {
+      const new_product = await prisma.$transaction(async (tx) => {
         const sanitizedProduct = this._sanitizeProductData(
           product
         ) as ProductWithQuantity;
         const validation = validateProduct(sanitizedProduct);
         if (validation) throw new Error(validation.data.error[0].message);
         const { quantity, ...data } = sanitizedProduct;
-        const { id } = await tx.product.create({ data });
+        const result = await tx.product.create({ data });
 
-        await this._createStockEntry(tx, id, quantity);
+        await this._createStockEntry(tx, result.id, quantity);
+
+        return result;
       });
       return {
         status: 201,
-        data: { message: "Product created successfully" },
+        data: { 
+          result: new_product,
+          message: "Product created successfully" },
       };
     } catch (error) {
       console.error("Error creating product:", error);
       return {
         status: 500,
-        data: { message: "Failed to create product" },
+        data: { 
+          message: "Failed to create product",
+         },
       };
     }
   }
