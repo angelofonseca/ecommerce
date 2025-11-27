@@ -12,7 +12,7 @@ const salesRouter = Router();
  */
 salesRouter.get(
   '/user/:userId',
-  // authMiddleware,
+  authMiddleware,
   (req, res) => CheckoutController.getUserSales(req, res)
 );
 
@@ -23,7 +23,7 @@ salesRouter.get(
  */
 salesRouter.get(
   '/:id',
-  // authMiddleware,
+  authMiddleware,
   (req, res) => CheckoutController.getSaleById(req, res)
 );
 
@@ -34,8 +34,8 @@ salesRouter.get(
  */
 salesRouter.patch(
   '/:id/status',
-  // authMiddleware,
-  // isAdminMiddleware,
+  authMiddleware,
+  isAdminMiddleware,
   (req, res) => CheckoutController.updateSaleStatus(req, res)
 );
 
@@ -46,8 +46,8 @@ salesRouter.patch(
  */
 salesRouter.delete(
   '/:id',
-  // authMiddleware,
-  // isAdminMiddleware,
+  authMiddleware,
+  isAdminMiddleware,
   (req, res) => CheckoutController.deleteSale(req, res)
 );
 
@@ -58,8 +58,8 @@ salesRouter.delete(
  */
 salesRouter.get(
   '/',
-  // authMiddleware,
-  // isAdminMiddleware,
+  authMiddleware,
+  isAdminMiddleware,
   (req, res) => CheckoutController.getAllSales(req, res)
 );
 

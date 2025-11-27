@@ -115,7 +115,7 @@ export async function getProductsWithFilters(filters: {
   freeShipping?: boolean;
 }) {
   const url = new URL(`${BACKEND_BASEURL}/product`);
-  
+
   if (filters.name) url.searchParams.append('name', filters.name);
   if (filters.categoryName) url.searchParams.append('categoryName', filters.categoryName);
   if (filters.brandName) url.searchParams.append('brandName', filters.brandName);
@@ -187,6 +187,38 @@ export async function getProductByID(id: string) {
   const URL = `${BACKEND_BASEURL}/product/${id}`;
   const response = await fetch(URL);
   const data = await response.json();
+
+  return data;
+}
+
+export async function requestPasswordReset(email: string) {
+  const response = await fetch(`${BACKEND_BASEURL}/user/forgot-password`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Erro ao solicitar recuperação de senha");
+  }
+
+  return data;
+}
+
+export async function resetPassword(email: string, code: string, newPassword: string) {
+  const response = await fetch(`${BACKEND_BASEURL}/user/reset-password`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, code, newPassword }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Erro ao resetar senha");
+  }
 
   return data;
 }

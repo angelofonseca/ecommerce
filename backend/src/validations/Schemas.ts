@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-const PASSWORD_MIN_LENGTH = 6;
+const PASSWORD_MIN_LENGTH = 8;
 const PASSWORD_MAX_LENGTH = 30;
 const NAME_MIN_LENGTH = 2;
 const NAME_MAX_LENGTH = 50;
@@ -12,6 +12,7 @@ const VALIDATION_MESSAGES = {
   NAME_TOO_LONG: `Nome deve ter no máximo ${NAME_MAX_LENGTH} caracteres`,
   PASSWORD_TOO_SHORT: `Senha deve ter pelo menos ${PASSWORD_MIN_LENGTH} caracteres`,
   PASSWORD_TOO_LONG: `Senha deve ter no máximo ${PASSWORD_MAX_LENGTH} caracteres`,
+  PASSWORD_REQUIREMENTS: "Senha deve conter pelo menos uma letra maiúscula, uma minúscula, um número e um símbolo",
   EMAIL_INVALID: "Email deve ter um formato válido",
   PRICE_POSITIVE: "Preço deve ser um valor positivo",
   QUANTITY_POSITIVE: "Quantidade deve ser um número inteiro positivo"
@@ -22,6 +23,15 @@ const validateCPF = (cpf: string): boolean => {
   return digits.length === CPF_DIGITS_LENGTH;
 };
 
+const validatePasswordStrength = (password: string): boolean => {
+  const hasUpperCase = /[A-Z]/.test(password);
+  const hasLowerCase = /[a-z]/.test(password);
+  const hasNumber = /[0-9]/.test(password);
+  const hasSymbol = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+
+  return hasUpperCase && hasLowerCase && hasNumber && hasSymbol;
+};
+
 export const UserSchema = z.object({
   id: z.number().int().positive().optional(),
   name: z.string()
@@ -30,7 +40,10 @@ export const UserSchema = z.object({
   email: z.string().email(VALIDATION_MESSAGES.EMAIL_INVALID),
   password: z.string()
     .min(PASSWORD_MIN_LENGTH, VALIDATION_MESSAGES.PASSWORD_TOO_SHORT)
-    .max(PASSWORD_MAX_LENGTH, VALIDATION_MESSAGES.PASSWORD_TOO_LONG),
+    .max(PASSWORD_MAX_LENGTH, VALIDATION_MESSAGES.PASSWORD_TOO_LONG)
+    .refine(validatePasswordStrength, {
+      message: VALIDATION_MESSAGES.PASSWORD_REQUIREMENTS,
+    }),
   role: z.enum(["ADMIN", "CUSTOMER"]).default("CUSTOMER").optional(),
   cpf: z.string().refine(validateCPF, {
     message: VALIDATION_MESSAGES.CPF_INVALID,

@@ -42,6 +42,44 @@ export default class UserController extends CRUDController<User> {
     res.status(200).json({ role });
   }
 
+  public async requestPasswordReset(req: Request, res: Response): Promise<void> {
+    try {
+      const { email } = req.body;
+
+      if (!email) {
+        res.status(400).json({ message: 'Email é obrigatório' });
+        return;
+      }
+
+      const { data, status } = await this.service.requestPasswordReset(email);
+      res.status(status).json(data);
+    } catch (error) {
+      this.handleError(res, error, 'Password reset request error');
+    }
+  }
+
+  public async resetPassword(req: Request, res: Response): Promise<void> {
+    try {
+      const { email, code, newPassword } = req.body;
+
+      if (!email || !code || !newPassword) {
+        res.status(400).json({
+          message: 'Email, código e nova senha são obrigatórios'
+        });
+        return;
+      }
+
+      const { data, status } = await this.service.resetPassword(
+        email,
+        code,
+        newPassword
+      );
+      res.status(status).json(data);
+    } catch (error) {
+      this.handleError(res, error, 'Password reset error');
+    }
+  }
+
   private _validateUserCreation(userData: any): void {
     this.validateRequestBody(userData);
 

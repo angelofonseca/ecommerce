@@ -8,6 +8,7 @@ import Layout from "./components/layout/Layout";
 import Categories from "./components/Categories";
 import Login from "./pages/Login";
 import Signin from "./pages/Signin";
+import ForgotPassword from "./pages/ForgotPassword";
 import AdminLogin from "./admin/pages/AdminLogin";
 import AdminLayout from "./admin/layout/AdminLayout";
 import AdminProduct from "./admin/pages/AdminProduct";
@@ -39,6 +40,7 @@ function App() {
         <Route path="checkout/success" element={<CheckoutSuccess />} />
         <Route path="login" element={<Login />} />
         <Route path="signin" element={<Signin />} />
+        <Route path="forgot-password" element={<ForgotPassword />} />
       </Route>
     </Routes>
   );

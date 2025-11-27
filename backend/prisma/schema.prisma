@@ -31,85 +31,101 @@ model Category {
 }
 
 model Product {
-  id          Int      @id @default(autoincrement())
-  name        String
-  photo       String?
-  description String?
-  price       Float
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  categoryId  Int
-  brandId     Int
+  id           Int      @id @default(autoincrement())
+  name         String
+  photo        String?
+  description  String?
+  price        Float
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  categoryId   Int
+  brandId      Int
   freeShipping Boolean  @default(false)
-  category    Category @relation(fields: [categoryId], references: [id])
-  brand       Brand    @relation(fields: [brandId], references: [id])
-  orders      Order[]
-  stock       Stock?
+  category     Category @relation(fields: [categoryId], references: [id])
+  brand        Brand    @relation(fields: [brandId], references: [id])
+  orders       Order[]
+  stock        Stock?
 
   @@map("product")
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  cpf       String   @unique
-  email     String   @unique
-  password  String
-  role      Role     @default(CUSTOMER)
-  phone     String?
-  address   String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  sale      Sale[]
+  id                   Int       @id @default(autoincrement())
+  name                 String
+  cpf                  String    @unique
+  email                String    @unique
+  password             String
+  role                 Role      @default(CUSTOMER)
+  phone                String?
+  address              String?
+  resetPasswordCode    String?
+  resetPasswordExpires DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  sale                 Sale[]
+  logs                 Log[]
 
   @@map("user")
 }
 
 model Sale {
-  id                 Int           @id @default(autoincrement())
-  userId             Int
-  status             SaleStatus    @default(PENDING)
-  paymentMethod      PaymentMethod?
-  totalValue         Decimal       @db.Decimal(10, 2)
-  shippingAddress    String
-  stripeCheckoutId   String?       @unique  // Stripe Checkout Session ID
-  stripePaymentId    String?       @unique  // Stripe Payment Intent ID
-  pixQrCode          String?       // QR Code do PIX (se for PIX)
-  pixExpiresAt       DateTime?     // Validade do PIX
-  boletoUrl          String?       // URL do boleto (se for boleto)
-  boletoBarcode      String?       // Código de barras do boleto
-  boletoExpiresAt    DateTime?     // Validade do boleto
-  paidAt             DateTime?     // Data/hora do pagamento
-  createdAt          DateTime      @default(now())
-  updatedAt          DateTime      @updatedAt
-  user               User          @relation(fields: [userId], references: [id])
-  orders             Order[]
+  id               Int            @id @default(autoincrement())
+  userId           Int
+  status           SaleStatus     @default(PENDING)
+  paymentMethod    PaymentMethod?
+  totalValue       Decimal        @db.Decimal(10, 2)
+  shippingAddress  String
+  stripeCheckoutId String?        @unique // Stripe Checkout Session ID
+  stripePaymentId  String?        @unique // Stripe Payment Intent ID
+  pixQrCode        String? // QR Code do PIX (se for PIX)
+  pixExpiresAt     DateTime? // Validade do PIX
+  boletoUrl        String? // URL do boleto (se for boleto)
+  boletoBarcode    String? // Código de barras do boleto
+  boletoExpiresAt  DateTime? // Validade do boleto
+  paidAt           DateTime? // Data/hora do pagamento
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  user             User           @relation(fields: [userId], references: [id])
+  orders           Order[]
 
   @@map("sale")
 }
 
 model Order {
-  id         Int      @id @default(autoincrement())
-  saleId     Int
-  productId  Int
-  quantity   Int
-  priceUnit  Decimal  @db.Decimal(10, 2)
-  subtotal   Decimal  @db.Decimal(10, 2) // quantity * priceUnit
-  createdAt  DateTime @default(now())
-  sale       Sale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
-  product    Product  @relation(fields: [productId], references: [id])
+  id        Int      @id @default(autoincrement())
+  saleId    Int
+  productId Int
+  quantity  Int
+  priceUnit Decimal  @db.Decimal(10, 2)
+  subtotal  Decimal  @db.Decimal(10, 2) // quantity * priceUnit
+  createdAt DateTime @default(now())
+  sale      Sale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id])
 
   @@map("order")
 }
 
 model Stock {
-  id        Int      @id @map("productId")
+  id        Int       @id @map("productId")
   quantity  Int
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
-  product   Product  @relation(fields: [id], references: [id])
+  product   Product   @relation(fields: [id], references: [id])
 
   @@map("stock")
+}
+
+model Log {
+  id        Int      @id @default(autoincrement())
+  userId    Int?
+  action    String
+  entity    String?
+  entityId  Int?
+  details   String?
+  createdAt DateTime @default(now())
+  user      User?    @relation(fields: [userId], references: [id])
+
+  @@map("log")
 }
 
 enum Role {

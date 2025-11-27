@@ -1,4 +1,5 @@
 import authMiddleware from "../middlewares/auth.middleware.js";
+import isAdminMiddleware from "../middlewares/isAdmin.middleware.js";
 import { Product } from "@prisma/client";
 import prisma from "../database/prismaClient.js";
 import CRUDRoutes from "./crud.routes.js";
@@ -18,9 +19,9 @@ export default class ProductRoutes extends CRUDRoutes<Product> {
     this.router.get("/", (req: Request, res: Response) => this.controller.findAll(req, res));
     this.router.get("/:id", (req: Request, res: Response) => this.controller.find(req, res));
     this.router.get("/category/:id", (req: Request, res: Response) => this.controller.findAllByCategory(req, res));
-    this.router.post("/", (req: Request, res: Response) => this.controller.create(req, res));
-    this.router.patch("/:id", (req: Request, res: Response) => this.controller.updateById(req, res));
-    this.router.delete("/:id", (req: Request, res: Response) => this.controller.deleteById(req, res));
+    this.router.post("/", authMiddleware, isAdminMiddleware, (req: Request, res: Response) => this.controller.create(req, res));
+    this.router.patch("/:id", authMiddleware, isAdminMiddleware, (req: Request, res: Response) => this.controller.updateById(req, res));
+    this.router.delete("/:id", authMiddleware, isAdminMiddleware, (req: Request, res: Response) => this.controller.deleteById(req, res));
 
     return this.router;
   }

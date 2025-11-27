@@ -12,7 +12,7 @@ const checkoutRouter = Router();
  */
 checkoutRouter.post(
   '/create-session',
-  // authMiddleware,
+  authMiddleware,
   (req, res) => CheckoutController.createCheckoutSession(req, res)
 );
 
@@ -40,7 +40,7 @@ checkoutRouter.get(
  */
 checkoutRouter.get(
   '/orders/:id',
-  // authMiddleware,
+  authMiddleware,
   (req, res) => CheckoutController.getOrderById(req, res)
 );
 
@@ -50,7 +50,7 @@ checkoutRouter.get(
  */
 checkoutRouter.get(
   '/orders/sale/:saleId',
-  // authMiddleware,
+  authMiddleware,
   (req, res) => CheckoutController.getOrdersBySale(req, res)
 );
 
@@ -61,7 +61,7 @@ checkoutRouter.get(
  */
 checkoutRouter.put(
   '/orders/:id',
-  // authMiddleware,
+  authMiddleware,
   (req, res) => CheckoutController.updateOrder(req, res)
 );
 
@@ -72,7 +72,7 @@ checkoutRouter.put(
  */
 checkoutRouter.delete(
   '/orders/:id',
-  // authMiddleware,
+  authMiddleware,
   (req, res) => CheckoutController.deleteOrder(req, res)
 );
 
@@ -82,8 +82,8 @@ checkoutRouter.delete(
  */
 checkoutRouter.get(
   '/orders',
-  // authMiddleware,
-  // isAdminMiddleware,
+  authMiddleware,
+  isAdminMiddleware,
   (req, res) => CheckoutController.getAllOrders(req, res)
 );
 

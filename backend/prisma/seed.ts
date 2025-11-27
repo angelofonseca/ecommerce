@@ -6,6 +6,22 @@ async function main() {
   console.log("🌱 Iniciando seed...");
 
   // ============================================
+  // LIMPEZA DO BANCO (para reexecutar o seed)
+  // ============================================
+  console.log("🧹 Limpando banco de dados...");
+
+  await prisma.order.deleteMany({});
+  await prisma.sale.deleteMany({});
+  // await prisma.log.deleteMany({}); // Descomentar após rodar migração
+  await prisma.user.deleteMany({});
+  await prisma.stock.deleteMany({});
+  await prisma.product.deleteMany({});
+  await prisma.category.deleteMany({});
+  await prisma.brand.deleteMany({});
+
+  console.log("✅ Banco limpo!");
+
+  // ============================================
   // CATEGORIAS
   // ============================================
   console.log("📦 Criando categorias...");
@@ -866,7 +882,7 @@ async function main() {
       name: "João Silva",
       cpf: "12345678901",
       email: "joao@teste.com",
-      password: bcrypt.hashSync("123456", 10),
+      password: bcrypt.hashSync("123456Abc@", 10),
       role: "CUSTOMER",
       phone: "11999999999",
       address: "Rua das Flores, 123, São Paulo - SP",
@@ -878,7 +894,7 @@ async function main() {
       name: "Maria Santos",
       cpf: "98765432100",
       email: "maria@teste.com",
-      password: bcrypt.hashSync("123456", 10),
+      password: bcrypt.hashSync("123456Abc@", 10),
       role: "CUSTOMER",
       phone: "11988888888",
       address: "Av. Paulista, 1000, São Paulo - SP",
@@ -890,7 +906,7 @@ async function main() {
       name: "Pedro Oliveira",
       cpf: "45678912300",
       email: "pedro@teste.com",
-      password: bcrypt.hashSync("123456", 10),
+      password: bcrypt.hashSync("123456Abc@", 10),
       role: "CUSTOMER",
       phone: "11977777777",
       address: "Rua Oscar Freire, 500, São Paulo - SP",
@@ -902,7 +918,7 @@ async function main() {
       name: "Admin Sistema",
       cpf: "11111111111",
       email: "admin@teste.com",
-      password: bcrypt.hashSync("123456", 10),
+      password: bcrypt.hashSync("123456Abc@", 10),
       role: "ADMIN",
       phone: "11999999991",
       address: "Rua Admin, 1, São Paulo - SP",
@@ -1131,7 +1147,7 @@ async function main() {
   // ============================================
   // VENDAS DE OUTUBRO
   // ============================================
-  
+
   // VENDA 7 - João (PAID) - Outubro
   const sale7 = await prisma.sale.create({
     data: {

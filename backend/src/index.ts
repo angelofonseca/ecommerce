@@ -10,6 +10,7 @@ import checkoutRouter from "./routes/checkout.routes.js";
 import salesRouter from "./routes/sales.routes.js";
 import paymentRouter from "./routes/payment.routes.js";
 import webhookRouter from "./routes/webhook.routes.js";
+import logRouter from "./routes/log.routes.js";
 
 dotenv.config();
 
@@ -42,6 +43,7 @@ app.use("/category", categoryRoutes.getRoutes());
 app.use("/checkout", checkoutRouter);
 app.use("/sales", salesRouter);
 app.use("/payment", paymentRouter);
+app.use("/logs", logRouter);
 
 app.get("/health", (req, res) => {
   res.status(200).json({

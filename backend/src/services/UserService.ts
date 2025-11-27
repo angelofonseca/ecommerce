@@ -8,20 +8,32 @@ import { User } from "@prisma/client";
 import { validateLogin, validateUser } from "../validations/validations.js";
 import UserModel from "../models/UserModel.js";
 import CRUDService from "./CRUDService.js";
+import LogService from "./LogService.js";
+import LogModel from "../models/LogModel.js";
+import prisma from "../database/prismaClient.js";
+import EmailService from "./EmailService.js";
 
 const BCRYPT_SALT_ROUNDS = 8;
 const DEFAULT_USER_ROLE = 'CUSTOMER';
 const ADMIN_ROLE = 'ADMIN';
+const RESET_CODE_EXPIRATION_MINUTES = 15;
 
 const ERROR_MESSAGES = {
   INVALID_CREDENTIALS: "Invalid email or password",
   EMAIL_CPF_EXISTS: "Email ou CPF já cadastrado",
-  ACCESS_DENIED: "Access denied: Admins only"
+  ACCESS_DENIED: "Access denied: Admins only",
+  USER_NOT_FOUND: "Usuário não encontrado",
+  INVALID_RESET_CODE: "Código de verificação inválido ou expirado",
+  RESET_CODE_EXPIRED: "Código de verificação expirado. Solicite um novo código."
 } as const;
 
 export default class UserService extends CRUDService<User> {
+  private logService: LogService;
+
   constructor(protected model: UserModel) {
     super(model);
+    const logModel = new LogModel(prisma.log);
+    this.logService = new LogService(logModel);
   }
 
   public async create(user: User): Promise<ServiceResponse<Message>> {
@@ -35,8 +47,34 @@ export default class UserService extends CRUDService<User> {
     user.password = this._hashPassword(user.password);
 
     try {
-      return await super.create(user);
+      const result = await super.create(user);
+
+      // Registrar log de criação de usuário
+      if (result.status === 201) {
+        try {
+          await this.logService.createLog({
+            action: 'USER_REGISTER',
+            entity: 'User',
+            details: `Novo usuário registrado: ${user.email}`,
+          });
+        } catch (error) {
+          console.error('Erro ao registrar log:', error);
+        }
+      }
+
+      return result;
     } catch (error) {
+      // Registrar tentativa falha de criação
+      try {
+        await this.logService.createLog({
+          action: 'USER_REGISTER_FAILED',
+          entity: 'User',
+          details: `Tentativa de registro falhou: ${user.email}`,
+        });
+      } catch (logError) {
+        console.error('Erro ao registrar log:', logError);
+      }
+
       return {
         status: 400,
         data: { message: ERROR_MESSAGES.EMAIL_CPF_EXISTS }
@@ -52,6 +90,17 @@ export default class UserService extends CRUDService<User> {
 
     const foundUser = await this.model.findByEmail(email);
     if (!foundUser) {
+      // Registrar tentativa de login falha
+      try {
+        await this.logService.createLog({
+          action: 'USER_LOGIN_FAILED',
+          entity: 'User',
+          details: `Tentativa de login com email não encontrado: ${email}`,
+        });
+      } catch (error) {
+        console.error('Erro ao registrar log:', error);
+      }
+
       return {
         status: 401,
         data: { message: ERROR_MESSAGES.INVALID_CREDENTIALS }
@@ -62,10 +111,36 @@ export default class UserService extends CRUDService<User> {
 
     const isPasswordValid = this._verifyPassword(password, hash);
     if (!isPasswordValid) {
+      // Registrar tentativa de login com senha inválida
+      try {
+        await this.logService.createLog({
+          userId: id,
+          action: 'USER_LOGIN_FAILED',
+          entity: 'User',
+          entityId: id,
+          details: `Tentativa de login com senha inválida: ${email}`,
+        });
+      } catch (error) {
+        console.error('Erro ao registrar log:', error);
+      }
+
       return {
         status: 401,
         data: { message: ERROR_MESSAGES.INVALID_CREDENTIALS }
       };
+    }
+
+    // Registrar login bem-sucedido
+    try {
+      await this.logService.createLog({
+        userId: id,
+        action: 'USER_LOGIN_SUCCESS',
+        entity: 'User',
+        entityId: id,
+        details: `Login realizado com sucesso: ${email}`,
+      });
+    } catch (error) {
+      console.error('Erro ao registrar log:', error);
     }
 
     const token = auth.createToken({ email, id, role });
@@ -121,5 +196,171 @@ export default class UserService extends CRUDService<User> {
 
   private _verifyPassword(password: string, hash: string): boolean {
     return bcrypt.compareSync(password, hash);
+  }
+
+  private _generateResetCode(): string {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+  }
+
+  public async requestPasswordReset(email: string): Promise<ServiceResponse<Message>> {
+    try {
+      const user = await this.model.findByEmail(email);
+
+      if (!user) {
+        // Por segurança, retornar sucesso mesmo se usuário não existir
+        return {
+          status: 200,
+          data: {
+            message: "Se o email estiver cadastrado, você receberá as instruções para redefinir sua senha."
+          }
+        };
+      }
+
+      // Gerar código de 6 dígitos
+      const resetCode = this._generateResetCode();
+
+      // Definir expiração (15 minutos)
+      const expiresAt = new Date();
+      expiresAt.setMinutes(expiresAt.getMinutes() + RESET_CODE_EXPIRATION_MINUTES);
+
+      // Atualizar usuário com código e expiração
+      await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          resetPasswordCode: resetCode,
+          resetPasswordExpires: expiresAt
+        }
+      });
+
+      // Enviar email
+      await EmailService.sendResetPasswordEmail(email, resetCode, user.name);
+
+      // Registrar log
+      try {
+        await this.logService.createLog({
+          userId: user.id,
+          action: 'PASSWORD_RESET_REQUESTED',
+          entity: 'User',
+          entityId: user.id,
+          details: `Solicitação de recuperação de senha para: ${email}`
+        });
+      } catch (error) {
+        console.error('Erro ao registrar log:', error);
+      }
+
+      return {
+        status: 200,
+        data: {
+          message: "Se o email estiver cadastrado, você receberá as instruções para redefinir sua senha."
+        }
+      };
+    } catch (error) {
+      console.error('Erro ao solicitar reset de senha:', error);
+      return {
+        status: 500,
+        data: { message: "Erro ao processar solicitação" }
+      };
+    }
+  }
+
+  public async resetPassword(
+    email: string,
+    code: string,
+    newPassword: string
+  ): Promise<ServiceResponse<Message>> {
+    try {
+      const user = await this.model.findByEmail(email);
+
+      if (!user) {
+        return {
+          status: 404,
+          data: { message: ERROR_MESSAGES.USER_NOT_FOUND }
+        };
+      }
+
+      // Verificar se há código de reset
+      if (!user.resetPasswordCode || !user.resetPasswordExpires) {
+        return {
+          status: 400,
+          data: { message: ERROR_MESSAGES.INVALID_RESET_CODE }
+        };
+      }
+
+      // Verificar se o código está correto
+      if (user.resetPasswordCode !== code) {
+        // Registrar tentativa falha
+        try {
+          await this.logService.createLog({
+            userId: user.id,
+            action: 'PASSWORD_RESET_FAILED',
+            entity: 'User',
+            entityId: user.id,
+            details: `Código de verificação inválido para: ${email}`
+          });
+        } catch (error) {
+          console.error('Erro ao registrar log:', error);
+        }
+
+        return {
+          status: 400,
+          data: { message: ERROR_MESSAGES.INVALID_RESET_CODE }
+        };
+      }
+
+      // Verificar se o código expirou
+      const now = new Date();
+      if (now > user.resetPasswordExpires) {
+        return {
+          status: 400,
+          data: { message: ERROR_MESSAGES.RESET_CODE_EXPIRED }
+        };
+      }
+
+      // Validar nova senha
+      const passwordValidation = validateUser({ ...user, password: newPassword });
+      if (passwordValidation) {
+        return passwordValidation;
+      }
+
+      // Hash da nova senha
+      const hashedPassword = this._hashPassword(newPassword);
+
+      // Atualizar senha e limpar código de reset
+      await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          password: hashedPassword,
+          resetPasswordCode: null,
+          resetPasswordExpires: null
+        }
+      });
+
+      // Enviar email de confirmação
+      await EmailService.sendPasswordChangedConfirmation(email, user.name);
+
+      // Registrar log
+      try {
+        await this.logService.createLog({
+          userId: user.id,
+          action: 'PASSWORD_RESET_SUCCESS',
+          entity: 'User',
+          entityId: user.id,
+          details: `Senha redefinida com sucesso para: ${email}`
+        });
+      } catch (error) {
+        console.error('Erro ao registrar log:', error);
+      }
+
+      return {
+        status: 200,
+        data: { message: "Senha alterada com sucesso! Faça login com sua nova senha." }
+      };
+    } catch (error) {
+      console.error('Erro ao resetar senha:', error);
+      return {
+        status: 500,
+        data: { message: "Erro ao processar solicitação" }
+      };
+    }
   }
 }

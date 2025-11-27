@@ -77,7 +77,7 @@ export default class SaleService {
     // Cria a sessão de checkout no Stripe
     // Mapear paymentMethod para os tipos aceitos pelo Stripe
     const stripePaymentMethods: Stripe.Checkout.SessionCreateParams.PaymentMethodType[] = ['card'];
-    
+
     // Adicionar outros métodos se suportados na sua região
     if (paymentMethod === 'BOLETO') {
       stripePaymentMethods.push('boleto');
@@ -391,16 +391,57 @@ export default class SaleService {
         throw new Error('Venda não encontrada');
       }
 
-      // Se mudar para CANCELLED ou REFUNDED e estava PAID, restaurar estoque
+      const previousStatus = sale.status;
+
+      // Se mudar de PENDING para PROCESSING ou PAID, decrementa estoque
       if (
-        (status === 'CANCELLED' || status === 'REFUNDED') &&
-        sale.status === 'PAID'
+        previousStatus === 'PENDING' &&
+        (status === 'PROCESSING' || status === 'PAID')
       ) {
         await prisma.$transaction(async (tx) => {
           // Atualiza status
           await tx.sale.update({
             where: { id: saleId },
-            data: { 
+            data: {
+              status,
+              ...(status === 'PAID' ? { paidAt: new Date() } : {})
+            },
+          });
+
+          // Decrementa estoque
+          for (const order of sale.orders) {
+            await tx.stock.update({
+              where: { id: order.productId },
+              data: {
+                quantity: {
+                  decrement: order.quantity,
+                },
+              },
+            });
+          }
+        });
+
+        console.log(`✅ Venda ${saleId} atualizada para ${status} e estoque decrementado`);
+      }
+      // Se mudar de PROCESSING para PAID, apenas atualiza status (estoque já foi decrementado)
+      else if (previousStatus === 'PROCESSING' && status === 'PAID') {
+        await this.saleModel.updateStatus(saleId, status);
+        await prisma.sale.update({
+          where: { id: saleId },
+          data: { paidAt: new Date() }
+        });
+        console.log(`✅ Venda ${saleId} atualizada para ${status}`);
+      }
+      // Se mudar para CANCELLED ou REFUNDED e estava PAID ou PROCESSING, restaurar estoque
+      else if (
+        (status === 'CANCELLED' || status === 'REFUNDED') &&
+        (previousStatus === 'PAID' || previousStatus === 'PROCESSING')
+      ) {
+        await prisma.$transaction(async (tx) => {
+          // Atualiza status
+          await tx.sale.update({
+            where: { id: saleId },
+            data: {
               status,
               ...(status === 'REFUNDED' ? { refundedAt: new Date() } : {})
             },
