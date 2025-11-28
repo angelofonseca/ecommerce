@@ -31,6 +31,9 @@ export default class UserRoutes extends CRUDRoutes<User> {
     this.router.post("/forgot-password", (req, res) =>
       this.controller.requestPasswordReset(req, res)
     );
+    this.router.post("/validate-reset-code", (req, res) =>
+      this.controller.validateResetCode(req, res)
+    );
     this.router.post("/reset-password", (req, res) =>
       this.controller.resetPassword(req, res)
     );

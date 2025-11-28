@@ -222,3 +222,58 @@ export async function resetPassword(email: string, code: string, newPassword: st
 
   return data;
 }
+
+export async function validateResetCode(email: string, code: string) {
+  const response = await fetch(`${BACKEND_BASEURL}/user/validate-reset-code`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, code }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Código inválido ou expirado");
+  }
+
+  return data;
+}
+
+// ============================================
+// BACKUP E RESTORE
+// ============================================
+
+export async function createBackup(token: string) {
+  const response = await fetch(`${BACKEND_BASEURL}/backup`, {
+    method: "GET",
+    headers: {
+      "authorization": `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || "Erro ao criar backup");
+  }
+
+  return await response.json();
+}
+
+export async function restoreBackup(token: string, backupData: Record<string, unknown>) {
+  const response = await fetch(`${BACKEND_BASEURL}/backup/restore`, {
+    method: "POST",
+    headers: {
+      "authorization": `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(backupData),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Erro ao restaurar backup");
+  }
+
+  return data;
+}

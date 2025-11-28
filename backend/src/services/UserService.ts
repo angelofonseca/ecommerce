@@ -363,4 +363,53 @@ export default class UserService extends CRUDService<User> {
       };
     }
   }
+
+  public async validateResetCode(
+    email: string,
+    code: string
+  ): Promise<ServiceResponse<Message | { valid: boolean }>> {
+    try {
+      const user = await this.model.findByEmail(email);
+
+      if (!user) {
+        return {
+          status: 404,
+          data: { message: ERROR_MESSAGES.USER_NOT_FOUND }
+        };
+      }
+
+      if (!user.resetPasswordCode || !user.resetPasswordExpires) {
+        return {
+          status: 400,
+          data: { message: ERROR_MESSAGES.INVALID_RESET_CODE }
+        };
+      }
+
+      if (user.resetPasswordCode !== code) {
+        return {
+          status: 400,
+          data: { message: ERROR_MESSAGES.INVALID_RESET_CODE }
+        };
+      }
+
+      const now = new Date();
+      if (now > user.resetPasswordExpires) {
+        return {
+          status: 400,
+          data: { message: ERROR_MESSAGES.RESET_CODE_EXPIRED }
+        };
+      }
+
+      return {
+        status: 200,
+        data: { valid: true }
+      };
+    } catch (error) {
+      console.error('Erro ao validar código de reset:', error);
+      return {
+        status: 500,
+        data: { message: "Erro ao processar solicitação" }
+      };
+    }
+  }
 }

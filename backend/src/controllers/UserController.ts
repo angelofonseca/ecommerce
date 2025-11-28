@@ -80,6 +80,22 @@ export default class UserController extends CRUDController<User> {
     }
   }
 
+  public async validateResetCode(req: Request, res: Response): Promise<void> {
+    try {
+      const { email, code } = req.body;
+
+      if (!email || !code) {
+        res.status(400).json({ message: 'Email e código são obrigatórios' });
+        return;
+      }
+
+      const { data, status } = await this.service.validateResetCode(email, code);
+      res.status(status).json(data);
+    } catch (error) {
+      this.handleError(res, error, 'Validate reset code error');
+    }
+  }
+
   private _validateUserCreation(userData: any): void {
     this.validateRequestBody(userData);
 

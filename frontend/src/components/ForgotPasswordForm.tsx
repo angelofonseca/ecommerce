@@ -11,14 +11,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { requestPasswordReset, resetPassword } from "@/services/api";
+import {
+  requestPasswordReset,
+  resetPassword,
+  validateResetCode,
+} from "@/services/api";
 
 export function ForgotPasswordForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
   const navigate = useNavigate();
-  const [step, setStep] = useState<"email" | "code">("email");
+  const [step, setStep] = useState<"email" | "verify" | "reset">("email");
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -38,12 +42,30 @@ export function ForgotPasswordForm({
     try {
       const response = await requestPasswordReset(email);
       setSuccess(response.message || "Código enviado para seu email!");
-      setStep("code");
+      setStep("verify");
     } catch (err) {
       setError(
         err instanceof Error
           ? err.message
           : "Erro ao solicitar recuperação de senha"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerifyCode = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setError(null);
+    setSuccess(null);
+    setLoading(true);
+
+    try {
+      await validateResetCode(email, code);
+      setStep("reset");
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Código inválido ou expirado"
       );
     } finally {
       setLoading(false);
@@ -162,6 +184,58 @@ export function ForgotPasswordForm({
                     onClick={() => navigate("/login")}
                   >
                     Voltar ao Login
+                  </Button>
+                </div>
+              </div>
+            </form>
+          ) : step === "verify" ? (
+            <form onSubmit={handleVerifyCode}>
+              <div className="flex flex-col gap-6">
+                <div className="grid gap-3">
+                  <Label htmlFor="code">Código de Verificação</Label>
+                  <Input
+                    id="code"
+                    type="text"
+                    name="code"
+                    placeholder="123456"
+                    value={code}
+                    onChange={(e) => setCode(e.target.value)}
+                    maxLength={6}
+                    required
+                    disabled={loading}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Digite o código de 6 dígitos enviado para {email}
+                  </p>
+                </div>
+
+                {error && (
+                  <div className="text-sm text-red-600 bg-red-50 p-3 rounded">
+                    {error}
+                  </div>
+                )}
+                {success && (
+                  <div className="text-sm text-green-600 bg-green-50 p-3 rounded">
+                    {success}
+                  </div>
+                )}
+
+                <div className="flex flex-col gap-3">
+                  <Button type="submit" className="w-full" disabled={loading}>
+                    {loading ? "Verificando..." : "Validar Código"}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full"
+                    onClick={() => {
+                      setStep("email");
+                      setCode("");
+                      setError(null);
+                      setSuccess(null);
+                    }}
+                  >
+                    Voltar
                   </Button>
                 </div>
               </div>
