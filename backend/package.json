@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "npx nodemon --exec node --loader ts-node/esm src/index.ts",
-    "build": "tsc",
+    "build": "prisma generate && tsc",
+    "vercel-build": "prisma generate && prisma migrate deploy && tsc",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down -v",
     "db:generate": "npx prisma generate",
