@@ -1,7 +1,5 @@
 node_modules
 .env
-backend/prisma/migrations
 backend/src/generated
 backend/dist
-.env
 MIGRATION-GUIDE.md
