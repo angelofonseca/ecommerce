@@ -9,6 +9,7 @@ import Categories from "./components/Categories";
 import Login from "./pages/Login";
 import Signin from "./pages/Signin";
 import ForgotPassword from "./pages/ForgotPassword";
+import ActivateAccount from "./pages/ActivateAccount";
 import AdminLogin from "./admin/pages/AdminLogin";
 import AdminLayout from "./admin/layout/AdminLayout";
 import AdminProduct from "./admin/pages/AdminProduct";
@@ -43,6 +44,7 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="signin" element={<Signin />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
+        <Route path="activate/:token" element={<ActivateAccount />} />
       </Route>
     </Routes>
   );

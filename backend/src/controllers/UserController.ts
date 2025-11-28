@@ -96,6 +96,22 @@ export default class UserController extends CRUDController<User> {
     }
   }
 
+  public async activateAccount(req: Request, res: Response): Promise<void> {
+    try {
+      const { token } = req.params;
+
+      if (!token) {
+        res.status(400).json({ message: 'Token de ativação é obrigatório' });
+        return;
+      }
+
+      const { data, status } = await this.service.activateAccount(token);
+      res.status(status).json(data);
+    } catch (error) {
+      this.handleError(res, error, 'Account activation error');
+    }
+  }
+
   private _validateUserCreation(userData: any): void {
     this.validateRequestBody(userData);
 

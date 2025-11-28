@@ -50,18 +50,20 @@ model Product {
 }
 
 model User {
-  id                   Int       @id @default(autoincrement())
+  id                   Int        @id @default(autoincrement())
   name                 String
-  cpf                  String    @unique
-  email                String    @unique
+  cpf                  String     @unique
+  email                String     @unique
   password             String
-  role                 Role      @default(CUSTOMER)
+  role                 Role       @default(CUSTOMER)
+  status               UserStatus @default(INACTIVE)
   phone                String?
   address              String?
+  activationToken      String?    @unique
   resetPasswordCode    String?
   resetPasswordExpires DateTime?
-  createdAt            DateTime  @default(now())
-  updatedAt            DateTime  @updatedAt
+  createdAt            DateTime   @default(now())
+  updatedAt            DateTime   @updatedAt
   sale                 Sale[]
   logs                 Log[]
 
@@ -131,6 +133,11 @@ model Log {
 enum Role {
   ADMIN
   CUSTOMER
+}
+
+enum UserStatus {
+  INACTIVE
+  ACTIVE
 }
 
 enum SaleStatus {

@@ -246,4 +246,144 @@ export default class EmailService {
       console.error("Erro ao enviar email de confirmação:", error);
     }
   }
+
+  public static async sendActivationEmail(
+    email: string,
+    activationToken: string,
+    userName: string
+  ): Promise<void> {
+    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:3000";
+    const activationLink = `${frontendUrl}/activate/${activationToken}`;
+
+    const mailOptions = {
+      from: `"${process.env.MAILTRAP_FROM_NAME || 'E-commerce Support'}" <${process.env.MAILTRAP_FROM_EMAIL || 'noreply@ecommerce.com'}>`,
+      to: email,
+      subject: "Ative sua conta - E-commerce",
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              line-height: 1.6;
+              color: #333;
+            }
+            .container {
+              max-width: 600px;
+              margin: 0 auto;
+              padding: 20px;
+              background-color: #f9f9f9;
+            }
+            .header {
+              background-color: #2196F3;
+              color: white;
+              padding: 20px;
+              text-align: center;
+              border-radius: 5px 5px 0 0;
+            }
+            .content {
+              background-color: white;
+              padding: 30px;
+              border-radius: 0 0 5px 5px;
+            }
+            .button {
+              display: inline-block;
+              background-color: #2196F3;
+              color: white;
+              padding: 15px 30px;
+              text-decoration: none;
+              border-radius: 5px;
+              margin: 20px 0;
+              font-weight: bold;
+            }
+            .button:hover {
+              background-color: #1976D2;
+            }
+            .info-box {
+              background-color: #e3f2fd;
+              border-left: 4px solid #2196F3;
+              padding: 15px;
+              margin: 20px 0;
+            }
+            .footer {
+              text-align: center;
+              margin-top: 20px;
+              color: #666;
+              font-size: 12px;
+            }
+            .link-text {
+              word-break: break-all;
+              color: #666;
+              font-size: 12px;
+              margin-top: 10px;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1>🎉 Bem-vindo ao E-commerce!</h1>
+            </div>
+            <div class="content">
+              <p>Olá, <strong>${userName}</strong>!</p>
+              
+              <p>Obrigado por se cadastrar em nossa plataforma!</p>
+              
+              <p>Para concluir seu cadastro e começar a usar sua conta, você precisa ativar seu email clicando no botão abaixo:</p>
+              
+              <div style="text-align: center;">
+                <a href="${activationLink}" class="button">
+                  ✅ Ativar Minha Conta
+                </a>
+              </div>
+              
+              <div class="info-box">
+                <strong>💡 Dica:</strong> Se o botão acima não funcionar, copie e cole o link abaixo no seu navegador:
+                <div class="link-text">${activationLink}</div>
+              </div>
+              
+              <p><strong>Por que preciso ativar minha conta?</strong></p>
+              <ul>
+                <li>✓ Verificar que o email fornecido é válido</li>
+                <li>✓ Garantir a segurança da sua conta</li>
+                <li>✓ Proteger contra cadastros fraudulentos</li>
+              </ul>
+              
+              <p>Se você não se cadastrou em nossa plataforma, pode ignorar este email com segurança.</p>
+              
+              <p>Atenciosamente,<br>
+              <strong>Equipe E-commerce</strong></p>
+            </div>
+            <div class="footer">
+              <p>Este é um email automático, por favor não responda.</p>
+              <p>&copy; ${new Date().getFullYear()} E-commerce. Todos os direitos reservados.</p>
+            </div>
+          </div>
+        </body>
+        </html>
+      `,
+      text: `
+        Olá, ${userName}!
+        
+        Obrigado por se cadastrar no E-commerce!
+        
+        Para ativar sua conta, acesse o link abaixo:
+        ${activationLink}
+        
+        Se você não se cadastrou em nossa plataforma, pode ignorar este email.
+        
+        Atenciosamente,
+        Equipe E-commerce
+      `,
+    };
+
+    try {
+      await transporter.sendMail(mailOptions);
+      console.log(`Email de ativação enviado para: ${email}`);
+    } catch (error) {
+      console.error("Erro ao enviar email de ativação:", error);
+      throw new Error("Falha ao enviar email de ativação");
+    }
+  }
 }

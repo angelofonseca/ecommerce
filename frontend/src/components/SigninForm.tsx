@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { CheckCircle2, Mail } from "lucide-react";
 import { useState } from "react";
 import { registerUser } from "@/services/api";
 
@@ -20,6 +22,7 @@ export function SigninForm({
     address: "",
   });
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
@@ -30,13 +33,14 @@ export function SigninForm({
     event.preventDefault();
     const { confirmPassword, ...rest } = form;
     if (confirmPassword !== form.password) {
-      alert("Senhas não coincidem");
+      setError("Senhas não coincidem");
+      setSuccess(false);
       return;
     }
 
     try {
       await registerUser(rest);
-      alert("Usuário cadastrado com sucesso!");
+      setSuccess(true);
       setError(null);
       setForm({
         name: "",
@@ -48,13 +52,40 @@ export function SigninForm({
         address: "",
       });
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : "Erro ao cadastrar usuário. CPF ou email já cadastrado.";
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Erro ao cadastrar usuário. CPF ou email já cadastrado.";
       setError(errorMessage);
+      setSuccess(false);
     }
   };
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
+      {success && (
+        <Alert className="border-green-500 bg-green-50">
+          <CheckCircle2 className="h-4 w-4 text-green-600" />
+          <AlertTitle className="text-green-600">
+            Cadastro Realizado!
+          </AlertTitle>
+          <AlertDescription className="text-green-600">
+            <div className="flex items-start gap-2 mt-2">
+              <Mail className="h-5 w-5 mt-0.5 flex-shrink-0" />
+              <div>
+                <p className="font-semibold">
+                  Verifique seu email para ativar sua conta.
+                </p>
+                <p className="text-sm mt-1">
+                  Enviamos um link de ativação para o email cadastrado. Clique
+                  no link para ativar sua conta e poder fazer login.
+                </p>
+              </div>
+            </div>
+          </AlertDescription>
+        </Alert>
+      )}
+
       <Card>
         <CardHeader>
           <CardTitle>Faça seu Cadastro</CardTitle>

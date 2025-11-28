@@ -27,7 +27,10 @@ export default class UserRoutes extends CRUDRoutes<User> {
     );
     this.router.post("/admin", (req, res) => this.controller.adminLogin(req, res));
 
-    // Rotas de recuperação de senha
+    this.router.get("/activate/:token", (req, res) =>
+      this.controller.activateAccount(req, res)
+    );
+
     this.router.post("/forgot-password", (req, res) =>
       this.controller.requestPasswordReset(req, res)
     );

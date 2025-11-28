@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 import auth from "../utils/auth.js";
 import Message from "../Interfaces/Message";
 import Token from "../Interfaces/Token";
@@ -24,7 +25,10 @@ const ERROR_MESSAGES = {
   ACCESS_DENIED: "Access denied: Admins only",
   USER_NOT_FOUND: "Usuário não encontrado",
   INVALID_RESET_CODE: "Código de verificação inválido ou expirado",
-  RESET_CODE_EXPIRED: "Código de verificação expirado. Solicite um novo código."
+  RESET_CODE_EXPIRED: "Código de verificação expirado. Solicite um novo código.",
+  ACCOUNT_NOT_ACTIVATED: "Conta não ativada. Verifique seu email para ativar sua conta.",
+  INVALID_ACTIVATION_TOKEN: "Token de ativação inválido",
+  ACCOUNT_ALREADY_ACTIVE: "Conta já está ativa"
 } as const;
 
 export default class UserService extends CRUDService<User> {
@@ -46,25 +50,33 @@ export default class UserService extends CRUDService<User> {
 
     user.password = this._hashPassword(user.password);
 
+    const activationToken = this._generateActivationToken();
+    user.activationToken = activationToken;
+
     try {
       const result = await super.create(user);
 
-      // Registrar log de criação de usuário
       if (result.status === 201) {
         try {
+          await EmailService.sendActivationEmail(user.email, activationToken, user.name);
+
           await this.logService.createLog({
             action: 'USER_REGISTER',
             entity: 'User',
-            details: `Novo usuário registrado: ${user.email}`,
+            details: `Novo usuário registrado: ${user.email} (aguardando ativação)`,
           });
         } catch (error) {
-          console.error('Erro ao registrar log:', error);
+          console.error('Erro ao enviar email de ativação ou registrar log:', error);
         }
       }
 
-      return result;
+      return {
+        status: 201,
+        data: {
+          message: "Cadastro realizado com sucesso! Verifique seu email para ativar sua conta."
+        }
+      };
     } catch (error) {
-      // Registrar tentativa falha de criação
       try {
         await this.logService.createLog({
           action: 'USER_REGISTER_FAILED',
@@ -127,6 +139,25 @@ export default class UserService extends CRUDService<User> {
       return {
         status: 401,
         data: { message: ERROR_MESSAGES.INVALID_CREDENTIALS }
+      };
+    }
+
+    if (foundUser.status !== 'ACTIVE') {
+      try {
+        await this.logService.createLog({
+          userId: id,
+          action: 'USER_LOGIN_FAILED',
+          entity: 'User',
+          entityId: id,
+          details: `Tentativa de login com conta não ativada: ${email}`,
+        });
+      } catch (error) {
+        console.error('Erro ao registrar log:', error);
+      }
+
+      return {
+        status: 403,
+        data: { message: ERROR_MESSAGES.ACCOUNT_NOT_ACTIVATED }
       };
     }
 
@@ -200,6 +231,10 @@ export default class UserService extends CRUDService<User> {
 
   private _generateResetCode(): string {
     return Math.floor(100000 + Math.random() * 900000).toString();
+  }
+
+  private _generateActivationToken(): string {
+    return crypto.randomBytes(32).toString('hex');
   }
 
   public async requestPasswordReset(email: string): Promise<ServiceResponse<Message>> {
@@ -409,6 +444,59 @@ export default class UserService extends CRUDService<User> {
       return {
         status: 500,
         data: { message: "Erro ao processar solicitação" }
+      };
+    }
+  }
+
+  public async activateAccount(token: string): Promise<ServiceResponse<Message>> {
+    try {
+      const user = await prisma.user.findUnique({
+        where: { activationToken: token }
+      });
+
+      if (!user) {
+        return {
+          status: 400,
+          data: { message: ERROR_MESSAGES.INVALID_ACTIVATION_TOKEN }
+        };
+      }
+
+      if (user.status === 'ACTIVE') {
+        return {
+          status: 200,
+          data: { message: ERROR_MESSAGES.ACCOUNT_ALREADY_ACTIVE }
+        };
+      }
+
+      await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          status: 'ACTIVE',
+          activationToken: null
+        }
+      });
+
+      try {
+        await this.logService.createLog({
+          userId: user.id,
+          action: 'USER_ACCOUNT_ACTIVATED',
+          entity: 'User',
+          entityId: user.id,
+          details: `Conta ativada com sucesso: ${user.email}`
+        });
+      } catch (error) {
+        console.error('Erro ao registrar log:', error);
+      }
+
+      return {
+        status: 200,
+        data: { message: "Conta ativada com sucesso! Agora você pode fazer login." }
+      };
+    } catch (error) {
+      console.error('Erro ao ativar conta:', error);
+      return {
+        status: 500,
+        data: { message: "Erro ao ativar conta" }
       };
     }
   }
